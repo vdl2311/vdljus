@@ -1,0 +1,6 @@
+{
+  "name": "JusFlow",
+  "description": "Plataforma Jurídica Inteligente com Copiloto IA, DataJud, CRM, Gestão de Prazos, Financeiro, Contratos e Compliance",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

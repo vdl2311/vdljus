@@ -1,0 +1,89 @@
+{
+  "collections": {
+    "clients": {
+      "schema": {
+        "id": "string",
+        "name": "string",
+        "type": "string",
+        "document": "string",
+        "email": "string",
+        "phone": "string",
+        "cep": "string",
+        "address": "string",
+        "status": "string",
+        "tags": "array",
+        "notes": "string",
+        "createdAt": "string",
+        "processCount": "number",
+        "taskCount": "number",
+        "financialBalance": "number"
+      },
+      "rules": "allow read, write: if true;"
+    },
+    "processes": {
+      "schema": {
+        "id": "string",
+        "cnj": "string",
+        "title": "string",
+        "clientId": "string",
+        "clientName": "string",
+        "area": "string",
+        "risk": "string",
+        "court": "string",
+        "division": "string",
+        "class": "string",
+        "value": "number",
+        "plaintiff": "string",
+        "defendant": "string",
+        "subject": "string",
+        "status": "string",
+        "notes": "string",
+        "aiSummary": "string",
+        "lastMovementDate": "string",
+        "createdAt": "string"
+      },
+      "rules": "allow read, write: if true;"
+    },
+    "tasks": {
+      "schema": {
+        "id": "string",
+        "title": "string",
+        "description": "string",
+        "column": "string",
+        "priority": "string",
+        "processId": "string",
+        "processTitle": "string",
+        "assignedTo": "string",
+        "dueDate": "string"
+      },
+      "rules": "allow read, write: if true;"
+    },
+    "financials": {
+      "schema": {
+        "id": "string",
+        "title": "string",
+        "amount": "number",
+        "type": "string",
+        "category": "string",
+        "status": "string",
+        "date": "string",
+        "clientId": "string",
+        "clientName": "string"
+      },
+      "rules": "allow read, write: if true;"
+    },
+    "events": {
+      "schema": {
+        "id": "string",
+        "title": "string",
+        "start": "string",
+        "end": "string",
+        "type": "string",
+        "processId": "string",
+        "processTitle": "string",
+        "description": "string"
+      },
+      "rules": "allow read, write: if true;"
+    }
+  }
+}
