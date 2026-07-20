@@ -149,7 +149,7 @@ export const ProcessosView: React.FC = () => {
             placeholder="Pesquisar por Título, CNJ, Autor ou Réu..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
+            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all"
           />{" "}
         </div>{" "}
         {/* Filters */}{" "}
@@ -162,7 +162,7 @@ export const ProcessosView: React.FC = () => {
             <select
               value={filterArea}
               onChange={(e) => setFilterArea(e.target.value)}
-              className="bg-transparent border-0 outline-0 focus:ring-0 text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
             >
               {" "}
               <option value="All">Todas Áreas</option>{" "}
@@ -179,7 +179,7 @@ export const ProcessosView: React.FC = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-transparent border-0 outline-0 focus:ring-0 text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
             >
               {" "}
               <option value="All">Todos Status</option>{" "}
@@ -210,7 +210,7 @@ export const ProcessosView: React.FC = () => {
                   {p.area}{" "}
                 </span>{" "}
                 <span
-                  className={`text-[9px] font-bold px-2 py-0.5 rounded-md uppercase ${getRiskStyle(p.risk)}`}
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase ${getRiskStyle(p.risk)}`}
                 >
                   {" "}
                   Risco {p.risk}{" "}
@@ -309,7 +309,7 @@ export const ProcessosView: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           {" "}
-          <div className="w-full max-w-xl bg-card border border-border rounded-xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto no-scrollbar">
+          <div role="dialog" aria-modal="true" className="w-full max-w-xl bg-card border border-border rounded-xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto no-scrollbar">
             {" "}
             <div className="flex justify-between items-center mb-4 text-left">
               {" "}
@@ -346,10 +346,12 @@ export const ProcessosView: React.FC = () => {
                   <input
                     type="text"
                     required
+                    pattern="\d{7}-\d{2}\.\d{4}\.\d{1}\.\d{2}\.\d{4}"
+                    title="O formato CNJ deve ser NNNNNNN-DD.AAAA.J.TR.OOOO"
                     placeholder="Ex: 5001234-56.2025.8.26.0100"
                     value={cnj}
                     onChange={(e) => handleCnjChange(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Title */}{" "}
@@ -364,7 +366,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: Revisional de Alimentos / Cobrança Indevida"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Client Link Dropdown */}{" "}
@@ -377,7 +379,7 @@ export const ProcessosView: React.FC = () => {
                     required
                     value={clientId}
                     onChange={(e) => setClientId(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   >
                     {" "}
                     <option value="">Selecione do CRM...</option>{" "}
@@ -397,7 +399,7 @@ export const ProcessosView: React.FC = () => {
                   <select
                     value={area}
                     onChange={(e) => setArea(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   >
                     {" "}
                     <option value="Civil">Civil</option>{" "}
@@ -416,7 +418,7 @@ export const ProcessosView: React.FC = () => {
                   <select
                     value={risk}
                     onChange={(e) => setRisk(e.target.value as ProcessRisk)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   >
                     {" "}
                     <option value="low">
@@ -441,7 +443,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: 50000"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Tribunal */}{" "}
@@ -456,7 +458,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: TJSP / TRT2 / TRF3"
                     value={court}
                     onChange={(e) => setCourt(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Vara */}{" "}
@@ -471,7 +473,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: 12ª Vara Cível Federal"
                     value={division}
                     onChange={(e) => setDivision(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Classe */}{" "}
@@ -486,7 +488,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: Monitória / Mandado de Segurança"
                     value={classType}
                     onChange={(e) => setClassType(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Assunto */}{" "}
@@ -501,7 +503,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: Repetição de Indébito / ISS"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Plaintiff */}{" "}
@@ -516,7 +518,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Nome completo do Autor"
                     value={plaintiff}
                     onChange={(e) => setPlaintiff(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Defendant */}{" "}
@@ -531,7 +533,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Nome completo do Réu"
                     value={defendant}
                     onChange={(e) => setDefendant(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -546,7 +548,7 @@ export const ProcessosView: React.FC = () => {
                   rows={2}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Submit Buttons */}{" "}

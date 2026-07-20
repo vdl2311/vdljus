@@ -41,6 +41,7 @@ export interface Process {
   notes?: string;
   aiSummary?: string;
   lastMovementDate?: string;
+  outcome?: string;
   createdAt: string;
 }
 
@@ -96,7 +97,7 @@ export interface CalendarEvent {
   title: string;
   start: string; // ISO date-time
   end: string; // ISO date-time
-  type: 'hearing' | 'deadline' | 'task';
+  type: 'hearing' | 'deadline' | 'task' | 'dispatch' | 'pericia';
   processId?: string;
   processTitle?: string;
   description?: string;
@@ -153,6 +154,7 @@ export interface Article {
   url?: string;
   tags: string[];
   summary?: string;
+  referenceCode?: string;
 }
 
 export interface ModelTemplate {

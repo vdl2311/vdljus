@@ -68,6 +68,7 @@ export const ContratosView: React.FC = () => {
         title: docTitle,
         content: docContent,
         status: "signed",
+        signers: [client.name],
       });
       setIsSigning(false);
       setSignedDocId(newDoc.id);
@@ -140,7 +141,7 @@ export const ContratosView: React.FC = () => {
                   setSelectedClientId(e.target.value);
                   setShowSignatureAudit(false);
                 }}
-                className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
               >
                 {" "}
                 <option value="">Selecione no CRM...</option>{" "}
@@ -218,7 +219,7 @@ export const ContratosView: React.FC = () => {
                 {" "}
                 <div>
                   {" "}
-                  <span className="block text-[8px] text-muted-foreground uppercase font-sans">
+                  <span className="block text-[10px] text-muted-foreground uppercase font-sans">
                     Endereço de IP
                   </span>{" "}
                   <span className="font-bold">
@@ -227,7 +228,7 @@ export const ContratosView: React.FC = () => {
                 </div>{" "}
                 <div>
                   {" "}
-                  <span className="block text-[8px] text-muted-foreground uppercase font-sans">
+                  <span className="block text-[10px] text-muted-foreground uppercase font-sans">
                     Certificado Criptográfico
                   </span>{" "}
                   <span className="font-bold truncate block">
@@ -236,7 +237,7 @@ export const ContratosView: React.FC = () => {
                 </div>{" "}
                 <div>
                   {" "}
-                  <span className="block text-[8px] text-muted-foreground uppercase font-sans">
+                  <span className="block text-[10px] text-muted-foreground uppercase font-sans">
                     Carimbo de Data/Hora
                   </span>{" "}
                   <span className="font-bold">
@@ -245,7 +246,7 @@ export const ContratosView: React.FC = () => {
                 </div>{" "}
                 <div>
                   {" "}
-                  <span className="block text-[8px] text-muted-foreground uppercase font-sans">
+                  <span className="block text-[10px] text-muted-foreground uppercase font-sans">
                     Validade Legal
                   </span>{" "}
                   <span className="font-bold text-emerald-500 uppercase">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useJusFlow } from "../../store/JusFlowContext";
 import {
   Plus,
@@ -9,29 +9,69 @@ import {
   Lock,
   Trash2,
   X,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 export const EquipeView: React.FC = () => {
   const { teamMembers, addTeamMember, deleteTeamMember } = useJusFlow();
   const [isModalOpen, setIsModalOpen] = useState(false); // Form states
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("partner");
   const [oab, setOab] = useState("");
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const roleOptions = [
+    { id: "admin", label: "Administrador" },
+    { id: "partner", label: "Sócio" },
+    { id: "lawyer", label: "Advogado" },
+    { id: "intern", label: "Estagiário" },
+    { id: "secretary", label: "Secretária" },
+  ];
+
+  const selectedRoleOption = roleOptions.find((opt) => opt.id === role) || roleOptions[1];
+
+  const handleSelectRole = (roleId: string) => {
+    setRole(roleId);
+    setIsDropdownOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   const handleAddMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
-    addTeamMember({
-      name,
-      email,
-      role: role as any,
-      oab: oab || undefined,
-      twoFactorEnabled: true,
-    });
-    setName("");
-    setEmail("");
-    setRole("partner");
-    setOab("");
-    setIsModalOpen(false);
+    setIsSubmitting(true);
+    
+    // Simulate network latency for better UX feedback
+    setTimeout(() => {
+      addTeamMember({
+        name,
+        email,
+        role: role as any,
+        oab: oab || undefined,
+        twoFAEnabled: true,
+        permissions: [],
+      });
+      setName("");
+      setEmail("");
+      setRole("partner");
+      setOab("");
+      setIsSubmitting(false);
+      setIsModalOpen(false);
+    }, 600);
   };
   const getRoleBadge = (r: string) => {
     switch (r) {
@@ -40,7 +80,10 @@ export const EquipeView: React.FC = () => {
       case "partner":
         return "bg-emerald-950 text-emerald-300";
       case "associate":
+      case "lawyer":
         return "bg-indigo-950 text-indigo-300";
+      case "secretary":
+        return "bg-amber-950 text-amber-300";
       default:
         return "bg-muted text-muted-foreground";
     }
@@ -48,13 +91,16 @@ export const EquipeView: React.FC = () => {
   const getRoleName = (r: string) => {
     switch (r) {
       case "admin":
-        return "Sócio Diretor";
+        return "Administrador";
       case "partner":
         return "Sócio";
       case "associate":
-        return "Advogado Associado";
+      case "lawyer":
+        return "Advogado";
+      case "secretary":
+        return "Secretária";
       default:
-        return "Estagiário / Paralegal";
+        return "Estagiário";
     }
   };
   return (
@@ -96,7 +142,7 @@ export const EquipeView: React.FC = () => {
               <div className="flex justify-between items-center">
                 {" "}
                 <span
-                  className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded ${getRoleBadge(member.role)}`}
+                  className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getRoleBadge(member.role)}`}
                 >
                   {" "}
                   {getRoleName(member.role)}{" "}
@@ -150,7 +196,7 @@ export const EquipeView: React.FC = () => {
                   <Lock className="w-3.5 h-3.5 text-emerald-500" /> Autenticação
                   2FA
                 </span>{" "}
-                {member.twoFactorEnabled ? (
+                {member.twoFAEnabled ? (
                   <span className="text-emerald-500 font-bold flex items-center gap-1 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded uppercase">
                     {" "}
                     <ShieldCheck className="w-3.5 h-3.5" /> Ativo{" "}
@@ -169,7 +215,7 @@ export const EquipeView: React.FC = () => {
       {/* Creation Modal */}{" "}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
+          <div role="dialog" aria-modal="true" className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
             <div className="flex justify-between items-start mb-6 text-center relative">
               <div className="w-full">
                 <h3 className="text-lg font-bold text-foreground">
@@ -197,7 +243,7 @@ export const EquipeView: React.FC = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />
               </div>
 
@@ -211,23 +257,47 @@ export const EquipeView: React.FC = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-foreground block">
                     Cargo
                   </label>
-                  <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground outline-0 appearance-none"
-                    style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '2.5rem' }}
-                  >
-                    <option value="associate">Advogado</option>
-                    <option value="partner">Sócio</option>
-                    <option value="intern">Estagiário</option>
-                  </select>
+                  <div className="relative" ref={dropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground flex items-center justify-between cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
+                    >
+                      <span>{selectedRoleOption.label}</span>
+                      <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0" />
+                    </button>
+                    {isDropdownOpen && (
+                      <div className="absolute right-0 mt-1 w-full min-w-[160px] bg-card border border-border rounded-lg shadow-xl z-50 py-1 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150">
+                        {roleOptions.map((opt) => {
+                          const isSelected = role === opt.id;
+                          return (
+                            <button
+                              key={opt.id}
+                              type="button"
+                              onClick={() => handleSelectRole(opt.id)}
+                              className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm cursor-pointer transition-colors text-left font-medium ${
+                                isSelected
+                                  ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400"
+                                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+                              }`}
+                            >
+                              <span>{opt.label}</span>
+                              {isSelected && (
+                                <Check className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -240,7 +310,7 @@ export const EquipeView: React.FC = () => {
                   placeholder="OAB/SP 123.456"
                   value={oab}
                   onChange={(e) => setOab(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />
               </div>
 
@@ -248,47 +318,43 @@ export const EquipeView: React.FC = () => {
                 <label className="text-sm font-medium text-foreground block">
                   Permissões de acesso
                 </label>
-                <div className="grid grid-cols-2 gap-y-3 gap-x-2">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Processos</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Clientes</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Prazos</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Tarefas</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Financeiro</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Documentos</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Contratos</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Administração</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Relatórios</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
-                    <span className="text-sm text-foreground">Equipe</span>
-                  </label>
+                <div className="grid grid-cols-2 gap-y-3 gap-x-4">
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                      <span className="text-sm text-foreground">Processos</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                      <span className="text-sm text-foreground">Prazos</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                      <span className="text-sm text-foreground">Financeiro</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                      <span className="text-sm text-foreground">Contratos</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                      <span className="text-sm text-foreground">Relatórios</span>
+                    </label>
+                  </div>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                      <span className="text-sm text-foreground">Documentos</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                      <span className="text-sm text-foreground">Administração</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                      <span className="text-sm text-foreground">Equipe</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -305,9 +371,15 @@ export const EquipeView: React.FC = () => {
               <div className="pt-2 flex flex-col gap-3">
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-[#8fcbaf] hover:bg-[#7dbd9f] text-white text-sm font-semibold rounded-md shadow-sm transition-colors flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full py-2.5 bg-[#8fcbaf] hover:bg-[#7dbd9f] text-white text-sm font-semibold rounded-md shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <Plus className="w-4 h-4" /> Convidar
+                  {isSubmitting ? (
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <Plus className="w-4 h-4" />
+                  )}
+                  {isSubmitting ? "Convidando..." : "Convidar"}
                 </button>
                 <button
                   type="button"

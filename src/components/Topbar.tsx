@@ -136,7 +136,7 @@ export const Topbar: React.FC<{
           {" "}
           <Search className="w-4 h-4 xs:w-3.5 xs:h-3.5" />{" "}
           <span className="hidden xs:inline flex-1">Pesquisar...</span>{" "}
-          <kbd className="hidden sm:inline-block px-1 bg-muted rounded text-[9px] font-mono">
+          <kbd className="hidden sm:inline-block px-1 bg-muted rounded text-[10px] font-mono">
             {" "}
             ⌘K{" "}
           </kbd>{" "}
@@ -177,7 +177,7 @@ export const Topbar: React.FC<{
             {" "}
             <Bell className="w-5 h-5" />{" "}
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center animate-pulse">
+              <span aria-label={`${unreadCount} notificações não lidas`} className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
                 {" "}
                 {unreadCount}{" "}
               </span>
@@ -204,7 +204,7 @@ export const Topbar: React.FC<{
                   </button>
                 )}{" "}
               </div>{" "}
-              <div className="max-h-64 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
+              <div className="max-h-64 overflow-y-auto divide-y divide-border/50 dark:divide-border">
                 {" "}
                 {notifications.length === 0 ? (
                   <div className="p-6 text-center text-xs text-muted-foreground">
@@ -242,7 +242,7 @@ export const Topbar: React.FC<{
                         <div className="flex gap-2 items-start">
                           {" "}
                           <span
-                            className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase shrink-0 mt-0.5 ${color}`}
+                            className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase shrink-0 mt-0.5 ${color}`}
                           >
                             {" "}
                             {n.type}{" "}
@@ -296,7 +296,7 @@ export const Topbar: React.FC<{
             </div>{" "}
           </button>{" "}
           {isUserMenuOpen && (
-            <div className="absolute right-0 mt-2 w-52 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+            <div className="absolute right-0 mt-2 w-52 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden divide-y divide-border/50 dark:divide-border">
               {" "}
               <div className="p-3 text-left">
                 {" "}

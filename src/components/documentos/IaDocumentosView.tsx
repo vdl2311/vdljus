@@ -50,6 +50,7 @@ export const IaDocumentosView: React.FC = () => {
         title: `${docType}: ${clientName.split(" ")[0]} - ${docTitle}`,
         content: data.text,
         status: "draft",
+        signers: [],
       });
     } catch (err) {
       console.error(err);
@@ -150,7 +151,7 @@ export const IaDocumentosView: React.FC = () => {
                   <select
                     value={docType}
                     onChange={(e) => setDocType(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   >
                     {" "}
                     <option value="Petição Inicial">
@@ -178,7 +179,7 @@ export const IaDocumentosView: React.FC = () => {
                     placeholder="Ex: Ação Rescisória / Restabelecimento de Benefício"
                     value={docTitle}
                     onChange={(e) => setDocTitle(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Client Link drop */}{" "}
@@ -191,7 +192,7 @@ export const IaDocumentosView: React.FC = () => {
                     required
                     value={clientName}
                     onChange={(e) => setClientName(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   >
                     {" "}
                     <option value="">Selecione no CRM...</option>{" "}
@@ -214,7 +215,7 @@ export const IaDocumentosView: React.FC = () => {
                     rows={3}
                     value={facts}
                     onChange={(e) => setFacts(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 {/* Pedidos */}{" "}
@@ -229,7 +230,7 @@ export const IaDocumentosView: React.FC = () => {
                     rows={2}
                     value={requests}
                     onChange={(e) => setRequests(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -300,7 +301,7 @@ export const IaDocumentosView: React.FC = () => {
                 <textarea
                   value={generatedText}
                   onChange={(e) => setGeneratedText(e.target.value)}
-                  className="w-full h-full bg-transparent border-0 outline-0 resize-none font-serif text-xs text-card-foreground select-all leading-relaxed"
+                  className="w-full h-full bg-transparent border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 resize-none font-serif text-xs text-card-foreground select-all leading-relaxed"
                 />
               ) : (
                 <div className="h-full flex flex-col items-center justify-center text-center text-muted-foreground">
@@ -343,7 +344,7 @@ export const IaDocumentosView: React.FC = () => {
               placeholder="Cole o corpo do documento aqui..."
               value={contractText}
               onChange={(e) => setContractText(e.target.value)}
-              className="flex-1 w-full bg-background border border-border focus:border-emerald-500 rounded-md p-3 text-xs text-card-foreground outline-0 resize-none font-mono"
+              className="flex-1 w-full bg-background border border-border focus:border-emerald-500 rounded-md p-3 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 resize-none font-mono"
             />{" "}
             <button
               onClick={handleReviewContract}
@@ -391,7 +392,7 @@ export const IaDocumentosView: React.FC = () => {
                     {" "}
                     <div>
                       {" "}
-                      <span className="text-muted-foreground block font-semibold text-[9px] uppercase">
+                      <span className="text-muted-foreground block font-semibold text-[10px] uppercase">
                         Score de Conformidade
                       </span>{" "}
                       <span className="text-sm font-bold text-foreground">
@@ -425,7 +426,7 @@ export const IaDocumentosView: React.FC = () => {
                               {risk.clause}
                             </span>{" "}
                             <span
-                              className={`text-[8px] font-bold uppercase px-1.5 py-0.2 rounded ${levelColor}`}
+                              className={`text-[10px] font-bold uppercase px-1.5 py-0.2 rounded ${levelColor}`}
                             >
                               {" "}
                               Risco {risk.level}{" "}

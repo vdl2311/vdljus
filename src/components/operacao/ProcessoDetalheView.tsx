@@ -198,6 +198,33 @@ export const ProcessoDetalheView: React.FC = () => {
   return (
     <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
+      {/* Breadcrumb Navigation */}
+      <nav className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/20 px-3 py-1.5 rounded-lg border border-border text-left" aria-label="Breadcrumb">
+        <button
+          onClick={() => {
+            setSelectedProcessId(null);
+            setActiveTab("principal.dashboard");
+          }}
+          className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+        >
+          Início
+        </button>
+        <span>/</span>
+        <button
+          onClick={() => {
+            setSelectedProcessId(null);
+            setActiveTab("operacao.processos");
+          }}
+          className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+        >
+          Processos
+        </button>
+        <span>/</span>
+        <span className="text-foreground font-semibold truncate max-w-[180px] sm:max-w-xs" aria-current="page">
+          {process.title} ({process.cnj})
+        </span>
+      </nav>
+
       {/* Back button and header */}{" "}
       <div className="flex items-center gap-3">
         {" "}
@@ -389,7 +416,7 @@ export const ProcessoDetalheView: React.FC = () => {
                   <Icon className="w-3.5 h-3.5 shrink-0" />{" "}
                   <span>{tab.label}</span>{" "}
                   <span
-                    className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${IsActive ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400" : "bg-muted text-muted-foreground"}`}
+                    className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${IsActive ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400" : "bg-muted text-muted-foreground"}`}
                   >
                     {" "}
                     {tab.count}{" "}
@@ -414,7 +441,7 @@ export const ProcessoDetalheView: React.FC = () => {
                     required
                     value={newDesc}
                     onChange={(e) => setNewDesc(e.target.value)}
-                    className="flex-1 bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-1.5 text-xs text-card-foreground outline-0"
+                    className="flex-1 bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-1.5 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                   <button
                     type="submit"
@@ -440,7 +467,7 @@ export const ProcessoDetalheView: React.FC = () => {
                           <Clock className="w-3 h-3" />{" "}
                           {new Date(m.date).toLocaleDateString("pt-BR")}{" "}
                         </span>{" "}
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400 uppercase text-[8px] bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded">
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400 uppercase text-[10px] bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded">
                           {" "}
                           Andamento{" "}
                         </span>{" "}
@@ -536,14 +563,14 @@ export const ProcessoDetalheView: React.FC = () => {
                             {" "}
                             {d.title}{" "}
                           </p>{" "}
-                          <p className="text-[9px] text-muted-foreground mt-0.5">
+                          <p className="text-[10px] text-muted-foreground mt-0.5">
                             Vence em:{" "}
                             {new Date(d.date).toLocaleDateString("pt-BR")}
                           </p>{" "}
                         </div>{" "}
                       </div>{" "}
                       <span
-                        className={`text-[8px] font-bold uppercase px-1.5 py-0.5 rounded ${d.priority === "critical" ? "bg-rose-950 text-rose-400" : "bg-amber-950 text-amber-400"}`}
+                        className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${d.priority === "critical" ? "bg-rose-950 text-rose-400" : "bg-amber-950 text-amber-400"}`}
                       >
                         {" "}
                         {d.priority}{" "}
@@ -578,17 +605,17 @@ export const ProcessoDetalheView: React.FC = () => {
                           {t.description}
                         </p>
                       )}{" "}
-                      <span className="text-[9px] text-muted-foreground block mt-1">
+                      <span className="text-[10px] text-muted-foreground block mt-1">
                         Responsável: {t.assigneeName || "Ninguém"}
                       </span>{" "}
                     </div>{" "}
                     <div className="text-right flex flex-col items-end gap-1 shrink-0">
                       {" "}
-                      <span className="text-[8px] font-bold uppercase px-1.5 py-0.5 bg-purple-100 text-purple-600 dark:bg-purple-950 dark:text-purple-400 rounded">
+                      <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 bg-purple-100 text-purple-600 dark:bg-purple-950 dark:text-purple-400 rounded">
                         {" "}
                         {t.column.replace("_", " ")}{" "}
                       </span>{" "}
-                      <span className="text-[8px] text-muted-foreground">
+                      <span className="text-[10px] text-muted-foreground">
                         Prioridade: {t.priority.toUpperCase()}
                       </span>{" "}
                     </div>{" "}
@@ -614,7 +641,7 @@ export const ProcessoDetalheView: React.FC = () => {
                     <div className="text-left">
                       {" "}
                       <span
-                        className={`text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase mr-2 ${f.type === "income" ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400" : "bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400"}`}
+                        className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full uppercase mr-2 ${f.type === "income" ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400" : "bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400"}`}
                       >
                         {" "}
                         {f.type === "income" ? "Crédito" : "Débito"}{" "}
@@ -622,7 +649,7 @@ export const ProcessoDetalheView: React.FC = () => {
                       <span className="text-xs font-bold text-foreground">
                         {f.title}
                       </span>{" "}
-                      <p className="text-[9px] text-muted-foreground mt-0.5">
+                      <p className="text-[10px] text-muted-foreground mt-0.5">
                         Data: {f.date} • Categoria: {f.category}
                       </p>{" "}
                     </div>{" "}
@@ -637,7 +664,7 @@ export const ProcessoDetalheView: React.FC = () => {
                       </span>{" "}
                       <button
                         onClick={() => toggleFinancialPaid(f.id)}
-                        className={`text-[9px] font-bold uppercase mt-1 px-1.5 py-0.2 rounded cursor-pointer ${f.status === "paid" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
+                        className={`text-[10px] font-bold uppercase mt-1 px-1.5 py-0.2 rounded cursor-pointer ${f.status === "paid" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
                       >
                         {" "}
                         {f.status === "paid" ? "Pago" : "Pendente"}{" "}
@@ -667,13 +694,13 @@ export const ProcessoDetalheView: React.FC = () => {
                       <h4 className="text-xs font-bold text-foreground">
                         {doc.title}
                       </h4>{" "}
-                      <p className="text-[9px] text-muted-foreground mt-0.5">
+                      <p className="text-[10px] text-muted-foreground mt-0.5">
                         Criado em:{" "}
                         {new Date(doc.createdAt).toLocaleDateString("pt-BR")}
                       </p>{" "}
                     </div>{" "}
                     <span
-                      className={`text-[8px] font-bold uppercase px-1.5 py-0.5 rounded ${doc.status === "signed" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
+                      className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${doc.status === "signed" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
                     >
                       {" "}
                       {doc.status}{" "}
@@ -713,7 +740,7 @@ export const ProcessoDetalheView: React.FC = () => {
                       {new Date(e.date).toLocaleDateString("pt-BR")}
                     </span>{" "}
                     <span
-                      className={`px-1.5 rounded uppercase font-bold text-[8px] shrink-0 ${e.color}`}
+                      className={`px-1.5 rounded uppercase font-bold text-[10px] shrink-0 ${e.color}`}
                     >
                       {" "}
                       {e.type}{" "}

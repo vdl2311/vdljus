@@ -46,7 +46,7 @@ export const ConhecimentoView: React.FC = () => {
             placeholder="Pesquisar súmulas, acórdãos, jurisprudência..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
+            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all"
           />{" "}
         </div>{" "}
         {/* Quick categories */}{" "}
@@ -83,7 +83,7 @@ export const ConhecimentoView: React.FC = () => {
               {/* Card top bar */}{" "}
               <div className="flex justify-between items-center">
                 {" "}
-                <span className="text-[9px] font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded">
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded">
                   {" "}
                   {art.category}{" "}
                 </span>{" "}
@@ -116,7 +116,7 @@ export const ConhecimentoView: React.FC = () => {
                 {art.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-[8px] font-semibold bg-muted text-muted-foreground px-1.5 py-0.5 rounded-sm"
+                    className="text-[10px] font-semibold bg-muted text-muted-foreground px-1.5 py-0.5 rounded-sm"
                   >
                     {" "}
                     #{tag}{" "}

@@ -81,8 +81,13 @@ export const AgendaView: React.FC = () => {
       default:
         return "Reunião";
     }
-  }; // Calendar rendering helper: simplified current month grid (July 2026)
-  const daysInMonth = Array.from({ length: 31 }, (_, i) => i + 1);
+  };  // Calendar rendering helper: dynamic current month
+  const today = new Date();
+  const currentMonthName = today.toLocaleDateString("pt-BR", { month: "long" });
+  const currentYear = today.getFullYear();
+  const daysInMonth = new Date(currentYear, today.getMonth() + 1, 0).getDate();
+  const firstDayOfMonth = new Date(currentYear, today.getMonth(), 1).getDay();
+  const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   return (
     <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
@@ -150,7 +155,7 @@ export const AgendaView: React.FC = () => {
                   {/* Calendar Node Date */}{" "}
                   <div className="w-12 h-12 bg-background/80 border border-border rounded-xl flex flex-col items-center justify-center shrink-0">
                     {" "}
-                    <span className="text-[9px] font-bold text-muted-foreground uppercase">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase">
                       Jul
                     </span>{" "}
                     <span className="text-sm font-bold text-foreground leading-none">
@@ -165,7 +170,7 @@ export const AgendaView: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-2">
                       {" "}
                       <span
-                        className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded ${getBadgeStyle(app.type)}`}
+                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getBadgeStyle(app.type)}`}
                       >
                         {" "}
                         {getTypeName(app.type)}{" "}
@@ -226,8 +231,8 @@ export const AgendaView: React.FC = () => {
           {" "}
           <div className="flex justify-between items-center mb-4">
             {" "}
-            <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
-              Julho de 2026
+            <h3 className="text-xs font-bold text-foreground uppercase tracking-wider capitalize">
+              {currentMonthName} de {currentYear}
             </h3>{" "}
             <span className="text-[10px] text-muted-foreground">
               Escritório Central (UTC)
@@ -243,14 +248,14 @@ export const AgendaView: React.FC = () => {
           <div className="grid grid-cols-7 gap-2 mt-2 h-72">
             {" "}
             {/* Padding offset */}{" "}
-            {Array.from({ length: 3 }).map((_, idx) => (
+            {Array.from({ length: firstDayOfMonth }).map((_, idx) => (
               <div
-                key={idx}
+                key={`offset-${idx}`}
                 className="p-2 border border-border/20 bg-muted/20 rounded-md text-muted-foreground text-xs text-left"
               />
             ))}{" "}
-            {daysInMonth.map((day) => {
-              const fullDateStr = `2026-07-${day.toString().padStart(2, "0")}`;
+            {daysArray.map((day) => {
+              const fullDateStr = `${currentYear}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
               const dayApps = appointments.filter(
                 (a) => a.date === fullDateStr,
               );
@@ -269,7 +274,7 @@ export const AgendaView: React.FC = () => {
                       <span
                         key={a.id}
                         title={`${a.title} às ${a.time}`}
-                        className={`block text-[8px] font-bold uppercase py-0.2 px-1 rounded truncate ${a.type === "hearing" ? "bg-rose-950 text-rose-300" : "bg-emerald-950 text-emerald-300"}`}
+                        className={`block text-[10px] font-bold uppercase py-0.2 px-1 rounded truncate ${a.type === "hearing" ? "bg-rose-950 text-rose-300" : "bg-emerald-950 text-emerald-300"}`}
                       >
                         {" "}
                         {a.time} - {a.title}{" "}
@@ -286,7 +291,7 @@ export const AgendaView: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           {" "}
-          <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
+          <div role="dialog" aria-modal="true" className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
             {" "}
             <div className="flex justify-between items-center mb-4 text-left">
               {" "}
@@ -324,7 +329,7 @@ export const AgendaView: React.FC = () => {
                   placeholder="Ex: Audiência de Instrução e Julgamento"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Date & Time */}{" "}
@@ -340,7 +345,7 @@ export const AgendaView: React.FC = () => {
                     required
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 <div className="space-y-1.5">
@@ -353,7 +358,7 @@ export const AgendaView: React.FC = () => {
                     required
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -366,7 +371,7 @@ export const AgendaView: React.FC = () => {
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as any)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 >
                   {" "}
                   <option value="hearing">Audiência Judicial</option>{" "}
@@ -385,7 +390,7 @@ export const AgendaView: React.FC = () => {
                   placeholder="https://meet.google.com/abc-defg-hij"
                   value={virtualLink}
                   onChange={(e) => setVirtualLink(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Location physical */}{" "}
@@ -399,7 +404,7 @@ export const AgendaView: React.FC = () => {
                   placeholder="Ex: Sala de Audiências da 2ª Vara Cível de SP"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Linked Process */}{" "}
@@ -411,7 +416,7 @@ export const AgendaView: React.FC = () => {
                 <select
                   value={processId}
                   onChange={(e) => setProcessId(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 >
                   {" "}
                   <option value="">

@@ -293,7 +293,7 @@ export const CopilotoView: React.FC = () => {
                 }
               }}
               placeholder="Pergunte sobre as finanças, OAB, processos parados ou peça conselho estratégico..."
-              className="flex-1 bg-transparent border-0 outline-0 resize-none text-xs text-card-foreground focus:ring-0 placeholder:text-muted-foreground py-1 no-scrollbar min-h-[24px]"
+              className="flex-1 bg-transparent border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 resize-none text-xs text-card-foreground focus:ring-0 placeholder:text-muted-foreground py-1 no-scrollbar min-h-[24px]"
             />{" "}
             <button
               onClick={() => handleSendMessage(input)}
@@ -304,7 +304,7 @@ export const CopilotoView: React.FC = () => {
               <Send className="w-3.5 h-3.5" />{" "}
             </button>{" "}
           </div>{" "}
-          <div className="flex justify-between max-w-3xl mx-auto px-1 mt-1.5 text-[9px] text-muted-foreground">
+          <div className="flex justify-between max-w-3xl mx-auto px-1 mt-1.5 text-[10px] text-muted-foreground">
             {" "}
             <span>Acesso em tempo real aos dados locais</span>{" "}
             <span className="flex items-center gap-1">

@@ -28,7 +28,8 @@ export const ConflitoInteresseView: React.FC = () => {
     ); // Check if searched name matches a client or adverse party in processes
     const matchingProcesses = processes.filter(
       (p) =>
-        p.adverseParty.toLowerCase().includes(lowercaseQuery) ||
+        p.plaintiff.toLowerCase().includes(lowercaseQuery) ||
+        p.defendant.toLowerCase().includes(lowercaseQuery) ||
         p.clientName.toLowerCase().includes(lowercaseQuery),
     );
     if (matchingClients.length > 0 || matchingProcesses.length > 0) {
@@ -100,7 +101,7 @@ export const ConflitoInteresseView: React.FC = () => {
                 placeholder="Ex: Banco Itaú / Carlos Silva"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
               />{" "}
             </div>{" "}
             <button
@@ -176,7 +177,7 @@ export const ConflitoInteresseView: React.FC = () => {
                               </span>{" "}
                             </div>{" "}
                           </div>{" "}
-                          <span className="text-[9px] font-bold uppercase bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 px-2 py-0.5 rounded">
+                          <span className="text-[10px] font-bold uppercase bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 px-2 py-0.5 rounded">
                             {" "}
                             Impedimento{" "}
                           </span>{" "}

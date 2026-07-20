@@ -85,6 +85,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Global Focus Styles for Accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  transition: outline-color 0.2s ease-in-out;
+}
+
+/* Ensure buttons don't have default outlines that clash */
+button:focus {
+  outline: none;
+}
+button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 /* Scrollbar styling matching the system's design colors */
 ::-webkit-scrollbar {
   width: 6px;

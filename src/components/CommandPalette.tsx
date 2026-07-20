@@ -136,7 +136,7 @@ export const CommandPalette: React.FC = () => {
             placeholder="Pesquisar (CNJ, clientes, prazos...)"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 bg-transparent border-0 outline-0 focus:ring-0 text-sm text-foreground min-w-0 truncate"
+            className="flex-1 bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-sm text-foreground min-w-0 truncate"
           />{" "}
           <button
             onClick={() => setIsCommandPaletteOpen(false)}

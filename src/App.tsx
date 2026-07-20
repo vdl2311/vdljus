@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from "sonner";
 import { JusFlowProvider, useJusFlow } from "./store/JusFlowContext";
 import { Sidebar } from "./components/Sidebar";
 import { Topbar } from "./components/Topbar";
@@ -94,6 +95,11 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background text-foreground transition-colors">
+      {/* Skip Navigation Link */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">
+        Pular para o conteúdo principal
+      </a>
+
       {/* Sidebar Navigation */}
       <Sidebar isOpenOnMobile={mobileSidebarOpen} onCloseMobile={() => setMobileSidebarOpen(false)} />
 
@@ -103,13 +109,16 @@ const AppContent: React.FC = () => {
         <Topbar onLogout={() => setCurrentUser(null)} onToggleMobileSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)} />
 
         {/* Dynamic View Panel */}
-        <main className="flex-1 overflow-hidden relative">
+        <main id="main-content" className="flex-1 overflow-hidden relative w-full max-w-[1600px] mx-auto">
           {renderActiveView()}
         </main>
       </div>
 
       {/* Ctrl+K Search Palette */}
       <CommandPalette />
+      
+      {/* Toast Notifications */}
+      <Toaster position="bottom-right" richColors closeButton />
     </div>
   );
 };

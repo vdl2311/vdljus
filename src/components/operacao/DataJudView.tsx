@@ -111,7 +111,7 @@ export const DataJudView: React.FC = () => {
                     placeholder="Ex: 5001234-56.2025.8.26.0100"
                     value={cnj}
                     onChange={(e) => handleCnjChange(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 font-mono focus:ring-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 font-mono focus:ring-0"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -157,7 +157,7 @@ export const DataJudView: React.FC = () => {
                       {log.cnj}
                     </span>{" "}
                     <span
-                      className={`font-bold px-1 rounded-sm text-[8px] uppercase ${log.status === "success" ? "bg-emerald-950 text-emerald-400" : "bg-rose-950 text-rose-400"}`}
+                      className={`font-bold px-1 rounded-sm text-[10px] uppercase ${log.status === "success" ? "bg-emerald-950 text-emerald-400" : "bg-rose-950 text-rose-400"}`}
                     >
                       {" "}
                       {log.status}{" "}
@@ -240,7 +240,7 @@ export const DataJudView: React.FC = () => {
                     <span className="text-[10px] font-bold text-emerald-500 block">
                       Sincronizado
                     </span>{" "}
-                    <span className="text-[9px] text-muted-foreground block mt-0.5">
+                    <span className="text-[10px] text-muted-foreground block mt-0.5">
                       Valor: R$ {result.value.toLocaleString()}
                     </span>{" "}
                   </div>{" "}
@@ -249,7 +249,7 @@ export const DataJudView: React.FC = () => {
                   {" "}
                   <div>
                     {" "}
-                    <span className="text-muted-foreground block font-bold text-[9px] uppercase">
+                    <span className="text-muted-foreground block font-bold text-[10px] uppercase">
                       Classe
                     </span>{" "}
                     <span className="font-semibold text-foreground block truncate">
@@ -258,7 +258,7 @@ export const DataJudView: React.FC = () => {
                   </div>{" "}
                   <div>
                     {" "}
-                    <span className="text-muted-foreground block font-bold text-[9px] uppercase">
+                    <span className="text-muted-foreground block font-bold text-[10px] uppercase">
                       Assunto Principal
                     </span>{" "}
                     <span className="font-semibold text-foreground block truncate">
@@ -267,7 +267,7 @@ export const DataJudView: React.FC = () => {
                   </div>{" "}
                   <div>
                     {" "}
-                    <span className="text-muted-foreground block font-bold text-[9px] uppercase">
+                    <span className="text-muted-foreground block font-bold text-[10px] uppercase">
                       Vara / Órgão Julgador
                     </span>{" "}
                     <span className="font-semibold text-foreground block truncate">
@@ -276,7 +276,7 @@ export const DataJudView: React.FC = () => {
                   </div>{" "}
                   <div>
                     {" "}
-                    <span className="text-muted-foreground block font-bold text-[9px] uppercase">
+                    <span className="text-muted-foreground block font-bold text-[10px] uppercase">
                       Autor (Polo Ativo)
                     </span>{" "}
                     <span className="font-bold text-foreground block truncate">
@@ -285,7 +285,7 @@ export const DataJudView: React.FC = () => {
                   </div>{" "}
                   <div>
                     {" "}
-                    <span className="text-muted-foreground block font-bold text-[9px] uppercase">
+                    <span className="text-muted-foreground block font-bold text-[10px] uppercase">
                       Réu (Polo Passivo)
                     </span>{" "}
                     <span className="font-bold text-foreground block truncate">

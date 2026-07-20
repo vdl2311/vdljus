@@ -380,7 +380,7 @@ export const DashboardView: React.FC = () => {
                     >
                       {" "}
                       {/* Tooltip on hover */}{" "}
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 bg-foreground text-background text-[9px] py-1 px-1.5 rounded scale-0 group-hover:scale-100 whitespace-nowrap transition-all z-10">
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 bg-foreground text-background text-[10px] py-1 px-1.5 rounded scale-0 group-hover:scale-100 whitespace-nowrap transition-all z-10">
                         {" "}
                         Rec: R$ {d.r.toLocaleString()}{" "}
                       </span>{" "}
@@ -391,13 +391,13 @@ export const DashboardView: React.FC = () => {
                       className="w-3 sm:w-4 bg-rose-400 hover:bg-rose-500 rounded-t-sm transition-all duration-300 relative"
                     >
                       {" "}
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 bg-foreground text-background text-[9px] py-1 px-1.5 rounded scale-0 group-hover:scale-100 whitespace-nowrap transition-all z-10">
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 bg-foreground text-background text-[10px] py-1 px-1.5 rounded scale-0 group-hover:scale-100 whitespace-nowrap transition-all z-10">
                         {" "}
                         Des: R$ {d.d.toLocaleString()}{" "}
                       </span>{" "}
                     </div>{" "}
                   </div>{" "}
-                  <span className="text-[9px] font-bold text-muted-foreground mt-2">
+                  <span className="text-[10px] font-bold text-muted-foreground mt-2">
                     {d.m}
                   </span>{" "}
                 </div>
@@ -475,7 +475,7 @@ export const DashboardView: React.FC = () => {
                   {" "}
                   {processes.length}{" "}
                 </span>{" "}
-                <span className="text-[8px] text-muted-foreground font-bold uppercase tracking-wider">
+                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
                   Causas
                 </span>{" "}
               </div>{" "}
@@ -552,7 +552,7 @@ export const DashboardView: React.FC = () => {
                     </p>{" "}
                   </div>{" "}
                   <span
-                    className={`text-[8px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0 ${d.priority === "critical" ? "bg-rose-950 text-rose-400" : "bg-amber-950 text-amber-400"}`}
+                    className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0 ${d.priority === "critical" ? "bg-rose-950 text-rose-400" : "bg-amber-950 text-amber-400"}`}
                   >
                     {" "}
                     {d.priority}{" "}
@@ -611,7 +611,7 @@ export const DashboardView: React.FC = () => {
                   <span className="text-[10px] font-bold text-amber-500 block">
                     Sem Movimento
                   </span>{" "}
-                  <span className="text-[9px] text-muted-foreground">
+                  <span className="text-[10px] text-muted-foreground">
                     Último: {p.lastMovementDate || "Início"}
                   </span>{" "}
                 </div>{" "}

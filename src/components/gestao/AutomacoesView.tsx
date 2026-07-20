@@ -223,7 +223,7 @@ export const AutomacoesView: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           {" "}
-          <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
+          <div role="dialog" aria-modal="true" className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
             {" "}
             <div className="flex justify-between items-center mb-4 text-left">
               {" "}
@@ -255,7 +255,7 @@ export const AutomacoesView: React.FC = () => {
                 <select
                   value={triggerInput}
                   onChange={(e) => setTriggerInput(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 >
                   {" "}
                   <option value="Alteração de Status para Sentença">
@@ -281,7 +281,7 @@ export const AutomacoesView: React.FC = () => {
                 <select
                   value={actionInput}
                   onChange={(e) => setActionInput(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 >
                   {" "}
                   <option value="Enviar Notificação por E-mail ao Cliente">
@@ -310,7 +310,7 @@ export const AutomacoesView: React.FC = () => {
                   value={descInput}
                   onChange={(e) => setDescInput(e.target.value)}
                   rows={2}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Buttons */}{" "}

@@ -51,13 +51,13 @@ export const PortalClienteView: React.FC = () => {
         {/* Impersonator */}{" "}
         <div className="flex items-center gap-2 bg-card border border-border p-2 rounded-md shrink-0 text-xs">
           {" "}
-          <span className="font-bold text-muted-foreground uppercase text-[9px] shrink-0">
+          <span className="font-bold text-muted-foreground uppercase text-[10px] shrink-0">
             Simular como:
           </span>{" "}
           <select
             value={selectedClientId}
             onChange={(e) => setSelectedClientId(e.target.value)}
-            className="bg-transparent border-0 outline-0 font-semibold focus:ring-0 text-xs cursor-pointer text-card-foreground"
+            className="bg-transparent border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 font-semibold focus:ring-0 text-xs cursor-pointer text-card-foreground"
           >
             {" "}
             {clients.map((c) => (
@@ -108,15 +108,15 @@ export const PortalClienteView: React.FC = () => {
                           CNJ: {p.cnj} ({p.court})
                         </span>{" "}
                       </div>{" "}
-                      <span className="text-[9px] font-bold uppercase bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-bold uppercase bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded">
                         {" "}
-                        Fase: {p.stage}{" "}
+                        Fase: {p.status === "active" ? "Ativo" : p.status === "completed" ? "Concluído" : p.status === "suspended" ? "Suspenso" : "Arquivado"}{" "}
                       </span>{" "}
                     </div>{" "}
                     {/* AI Translation section! */}{" "}
                     <div className="p-3 bg-card rounded border border-border/60 space-y-1.5 text-xs">
                       {" "}
-                      <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider block">
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider block">
                         Explicação em Linguagem Simples (IA)
                       </span>{" "}
                       <p className="text-[11px] text-muted-foreground leading-relaxed font-normal">
@@ -171,7 +171,7 @@ export const PortalClienteView: React.FC = () => {
                         })}{" "}
                       </span>{" "}
                       {f.status === "paid" ? (
-                        <span className="text-[9px] font-bold uppercase bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-full">
+                        <span className="text-[10px] font-bold uppercase bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-full">
                           {" "}
                           Pago e Compensado{" "}
                         </span>
@@ -219,7 +219,7 @@ export const PortalClienteView: React.FC = () => {
                 {" "}
                 <div>
                   {" "}
-                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">
+                  <span className="text-[10px] text-muted-foreground uppercase font-bold block">
                     Nome
                   </span>{" "}
                   <span className="font-bold text-foreground">
@@ -228,7 +228,7 @@ export const PortalClienteView: React.FC = () => {
                 </div>{" "}
                 <div>
                   {" "}
-                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">
+                  <span className="text-[10px] text-muted-foreground uppercase font-bold block">
                     Documento Civil
                   </span>{" "}
                   <span className="font-mono">
@@ -237,7 +237,7 @@ export const PortalClienteView: React.FC = () => {
                 </div>{" "}
                 <div>
                   {" "}
-                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">
+                  <span className="text-[10px] text-muted-foreground uppercase font-bold block">
                     E-mail Cadastrado
                   </span>{" "}
                   <span>{activeClient.email}</span>{" "}
@@ -263,7 +263,7 @@ export const PortalClienteView: React.FC = () => {
                     <span className="font-semibold text-foreground truncate pr-2">
                       {doc.title}
                     </span>{" "}
-                    <span className="text-[8px] font-bold uppercase bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded shrink-0">
+                    <span className="text-[10px] font-bold uppercase bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded shrink-0">
                       {" "}
                       Assinado{" "}
                     </span>{" "}

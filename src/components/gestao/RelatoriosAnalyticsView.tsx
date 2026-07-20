@@ -13,9 +13,9 @@ import {
 export const RelatoriosAnalyticsView: React.FC = () => {
   const { processes, financials, tasks } = useJusFlow(); // On-the-fly math
   const activeCount = processes.filter((p) => p.status === "active").length;
-  const closedCount = processes.filter((p) => p.status === "closed").length;
+  const closedCount = processes.filter((p) => p.status === "completed").length;
   const winCount = processes.filter(
-    (p) => p.status === "closed" && p.outcome === "Procedente",
+    (p) => p.status === "completed" && p.outcome === "Procedente",
   ).length;
   const winRatio =
     closedCount > 0 ? Math.round((winCount / closedCount) * 100) : 85;

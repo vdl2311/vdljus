@@ -118,7 +118,7 @@ export const ComplianceView: React.FC = () => {
             required
             value={textToAudit}
             onChange={(e) => setTextToAudit(e.target.value)}
-            className="flex-1 w-full bg-background border border-border focus:border-emerald-500 rounded-md p-3 text-xs text-card-foreground outline-0 resize-none font-sans"
+            className="flex-1 w-full bg-background border border-border focus:border-emerald-500 rounded-md p-3 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 resize-none font-sans"
           />{" "}
           <button
             onClick={handleRunAudit}
@@ -169,7 +169,7 @@ export const ComplianceView: React.FC = () => {
                   {" "}
                   <div>
                     {" "}
-                    <span className="text-[9px] text-muted-foreground block font-bold uppercase">
+                    <span className="text-[10px] text-muted-foreground block font-bold uppercase">
                       Status de Adequação
                     </span>{" "}
                     <span className="text-sm font-bold text-foreground">
@@ -178,7 +178,7 @@ export const ComplianceView: React.FC = () => {
                     </span>{" "}
                   </div>{" "}
                   <span
-                    className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded ${getStatusBadge(auditResult.level)}`}
+                    className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getStatusBadge(auditResult.level)}`}
                   >
                     {" "}
                     OAB CED{" "}

@@ -178,7 +178,7 @@ export const SuporteView: React.FC = () => {
                     {t.subject}
                   </span>{" "}
                   <span
-                    className={`text-[8px] font-bold uppercase px-2 py-0.5 rounded ${getStatusStyle(t.status)}`}
+                    className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${getStatusStyle(t.status)}`}
                   >
                     {" "}
                     {getStatusName(t.status)}{" "}
@@ -187,7 +187,7 @@ export const SuporteView: React.FC = () => {
                 <p className="text-[11px] text-muted-foreground font-normal leading-relaxed">
                   {t.details}
                 </p>{" "}
-                <div className="flex gap-4 text-[9px] text-muted-foreground border-t border-border/40 pt-1.5">
+                <div className="flex gap-4 text-[10px] text-muted-foreground border-t border-border/40 pt-1.5">
                   {" "}
                   <span>
                     Categoria:{" "}
@@ -214,7 +214,7 @@ export const SuporteView: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           {" "}
-          <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
+          <div role="dialog" aria-modal="true" className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
             {" "}
             <div className="flex justify-between items-center mb-4 text-left">
               {" "}
@@ -246,7 +246,7 @@ export const SuporteView: React.FC = () => {
                 <select
                   value={categoryInput}
                   onChange={(e) => setCategoryInput(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 >
                   {" "}
                   <option value="Processual">
@@ -272,7 +272,7 @@ export const SuporteView: React.FC = () => {
                   placeholder="Ex: Não consigo abrir o PDF assinado da Procuração"
                   value={subjectInput}
                   onChange={(e) => setSubjectInput(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Details */}{" "}
@@ -287,7 +287,7 @@ export const SuporteView: React.FC = () => {
                   value={detailsInput}
                   onChange={(e) => setDetailsInput(e.target.value)}
                   rows={4}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0 resize-none font-sans"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 resize-none font-sans"
                 />{" "}
               </div>{" "}
               {/* Buttons */}{" "}

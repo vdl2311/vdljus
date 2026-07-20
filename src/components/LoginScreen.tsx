@@ -95,7 +95,7 @@ export const LoginScreen: React.FC<{
 
       {/* Painel Direito */}
       <div className="flex flex-1 items-center justify-center p-8">
-        <div className="w-full max-w-sm space-y-8">
+        <div role="dialog" aria-modal="true" className="w-full max-w-sm space-y-8">
           <div className="flex flex-col space-y-2 lg:hidden items-center mb-8">
             <div className="w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center shadow-lg mb-2">
               <Sparkle className="w-6 h-6 animate-pulse" />

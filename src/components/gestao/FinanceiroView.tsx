@@ -181,7 +181,7 @@ export const FinanceiroView: React.FC = () => {
             placeholder="Pesquisar lançamentos ou categorias..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
+            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all"
           />{" "}
         </div>{" "}
         <div className="flex gap-2 shrink-0">
@@ -192,7 +192,7 @@ export const FinanceiroView: React.FC = () => {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="bg-transparent border-0 outline-0 focus:ring-0 text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
             >
               {" "}
               <option value="All">Créditos/Débitos</option>{" "}
@@ -205,7 +205,7 @@ export const FinanceiroView: React.FC = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-transparent border-0 outline-0 focus:ring-0 text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
             >
               {" "}
               <option value="All">Status Pagamento</option>{" "}
@@ -218,7 +218,7 @@ export const FinanceiroView: React.FC = () => {
       {/* Main List */}{" "}
       <div className="bg-card border border-border rounded-xl shadow-sm text-left overflow-hidden">
         {" "}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-full">
           {" "}
           <table className="w-full text-xs text-left">
             {" "}
@@ -233,7 +233,7 @@ export const FinanceiroView: React.FC = () => {
                 <th className="px-5 py-3 text-center">Status</th>{" "}
               </tr>{" "}
             </thead>{" "}
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-foreground ">
+            <tbody className="divide-y divide-border/50 dark:divide-border text-foreground ">
               {" "}
               {filtered.map((f) => (
                 <tr
@@ -257,7 +257,7 @@ export const FinanceiroView: React.FC = () => {
                   <td className="px-5 py-3">
                     {" "}
                     <span
-                      className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded ${f.type === "income" ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400" : "bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400"}`}
+                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${f.type === "income" ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400" : "bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400"}`}
                     >
                       {" "}
                       {f.type === "income" ? "Crédito" : "Débito"}{" "}
@@ -277,7 +277,7 @@ export const FinanceiroView: React.FC = () => {
                     {" "}
                     <button
                       onClick={() => toggleFinancialPaid(f.id)}
-                      className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded cursor-pointer ${f.status === "paid" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
+                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded cursor-pointer ${f.status === "paid" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
                     >
                       {" "}
                       {f.status === "paid" ? "Pago" : "Pendente"}{" "}
@@ -306,7 +306,7 @@ export const FinanceiroView: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           {" "}
-          <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
+          <div role="dialog" aria-modal="true" className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
             {" "}
             <div className="flex justify-between items-center mb-4 text-left">
               {" "}
@@ -345,7 +345,7 @@ export const FinanceiroView: React.FC = () => {
                   placeholder="Ex: Honorários Contratuais de Sucumbência"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Value & Date */}{" "}
@@ -362,7 +362,7 @@ export const FinanceiroView: React.FC = () => {
                     placeholder="Ex: 1500"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 <div className="space-y-1.5">
@@ -375,7 +375,7 @@ export const FinanceiroView: React.FC = () => {
                     required
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -390,7 +390,7 @@ export const FinanceiroView: React.FC = () => {
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as any)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   >
                     {" "}
                     <option value="income">Receita (+)</option>{" "}
@@ -405,7 +405,7 @@ export const FinanceiroView: React.FC = () => {
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value as any)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   >
                     {" "}
                     <option value="pending">Aguardando Pagamento</option>{" "}
@@ -422,7 +422,7 @@ export const FinanceiroView: React.FC = () => {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 >
                   {" "}
                   <option value="Honorários">
@@ -445,7 +445,7 @@ export const FinanceiroView: React.FC = () => {
                 <select
                   value={clientId}
                   onChange={(e) => setClientId(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 >
                   {" "}
                   <option value="">Nenhum (Despesa/Receita Geral)</option>{" "}

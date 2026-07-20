@@ -93,8 +93,6 @@ export const Sidebar: React.FC<{
         { id: "operacao.agenda", label: "Agenda", icon: Calendar },
         { id: "operacao.prazos", label: "Prazos", icon: AlarmClock },
         { id: "operacao.tarefas", label: "Tarefas", icon: CheckSquare },
-        { id: "gestao.clientes", label: "Clientes", icon: Users },
-        { id: "gestao.financeiro", label: "Financeiro", icon: DollarSign },
       ],
     },
     {
@@ -102,13 +100,14 @@ export const Sidebar: React.FC<{
       label: "DOCUMENTOS",
       items: [
         { id: "documentos.contratos", label: "Contratos", icon: FileText },
-        { id: "documentos.ia_alternativo", label: "Documentos", icon: FileText },
       ],
     },
     {
       id: "gestao",
       label: "GESTÃO",
       items: [
+        { id: "gestao.clientes", label: "Clientes", icon: Users },
+        { id: "gestao.financeiro", label: "Financeiro", icon: DollarSign },
         { id: "gestao.automacoes", label: "Automações", icon: Zap },
         { id: "documentos.conhecimento", label: "Conhecimento", icon: Book },
         { id: "gestao.compliance", label: "Conformidade", icon: ShieldCheck },
@@ -136,12 +135,17 @@ export const Sidebar: React.FC<{
           className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-40 md:hidden"
         />
       )}
-      <div
+      <aside
+        role="navigation"
         className={`fixed inset-y-0 left-0 z-50 md:relative flex flex-col border-r h-screen transition-all duration-300 select-none bg-card border-border text-muted-foreground ${isCollapsed ? "w-16" : "w-64"} ${isOpenOnMobile ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
         {/* Brand Header */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-border shrink-0">
-          <div className="flex items-center gap-2.5 overflow-hidden">
+          <button 
+            onClick={() => handleTabClick("principal.dashboard")}
+            className="flex items-center gap-2.5 overflow-hidden text-left cursor-pointer hover:opacity-80 transition-opacity"
+            title="Ir para a página inicial"
+          >
             <div className="flex items-center justify-center rounded-lg w-9 h-9 bg-emerald-600 dark:bg-emerald-700 text-white shrink-0 shadow-md">
               <Scale className="w-5 h-5 text-white" />
             </div>
@@ -155,7 +159,7 @@ export const Sidebar: React.FC<{
                 </span>
               </div>
             )}
-          </div>
+          </button>
           {/* Close / Collapse toggler */}
           <div className="flex items-center gap-1">
             {onCloseMobile && (
@@ -202,6 +206,7 @@ export const Sidebar: React.FC<{
                     return (
                       <button
                         key={item.id}
+                        aria-current={isActive ? "page" : undefined}
                         onClick={() => handleTabClick(item.id === "documentos.ia_alternativo" ? "documentos.ia" : item.id)}
                         title={item.label}
                         className={`p-2.5 rounded-md transition-all relative group ${isActive ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 font-semibold" : "hover:bg-accent hover:text-accent-foreground text-muted-foreground hover:text-foreground"}`}
@@ -223,7 +228,7 @@ export const Sidebar: React.FC<{
                   className={`flex items-center justify-between w-full px-2 py-1 text-[10px] font-bold tracking-wider uppercase transition-colors rounded-md ${hasActiveChild ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground hover:text-muted-foreground"}`}
                 >
                   <span>{group.label}</span>
-                  <span className="text-[9px] opacity-75">
+                  <span className="text-[10px] opacity-75">
                     {isOpen ? "▼" : "▶"}
                   </span>
                 </button>
@@ -239,6 +244,7 @@ export const Sidebar: React.FC<{
                       return (
                         <button
                           key={item.id}
+                          aria-current={isActive ? "page" : undefined}
                           onClick={() => handleTabClick(item.id === "documentos.ia_alternativo" ? "documentos.ia" : item.id)}
                           className={`flex items-center gap-3 px-3 py-2 text-xs font-semibold rounded-lg transition-all ${isActive ? "bg-[#eaf6f0] dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 font-semibold" : "hover:bg-accent hover:text-accent-foreground text-muted-foreground hover:text-foreground"}`}
                         >
@@ -299,7 +305,7 @@ export const Sidebar: React.FC<{
             </div>
           )}
         </div>
-      </div>
+      </aside>
     </>
   );
 };

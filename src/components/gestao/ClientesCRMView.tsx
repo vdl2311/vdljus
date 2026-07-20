@@ -29,7 +29,7 @@ export const ClientesCRMView: React.FC = () => {
   const handleCreateClient = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !document.trim() || !email.trim()) return;
-    addClient({ name, email, phone, document, type, status, address });
+    addClient({ name, email, phone, document, type, status, address, cep: "", tags: [] });
     setName("");
     setEmail("");
     setPhone("");
@@ -84,7 +84,7 @@ export const ClientesCRMView: React.FC = () => {
             placeholder="Pesquisar por nome, CPF/CNPJ, e-mail..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
+            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all"
           />{" "}
         </div>{" "}
         {/* Filters */}{" "}
@@ -96,7 +96,7 @@ export const ClientesCRMView: React.FC = () => {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="bg-transparent border-0 outline-0 focus:ring-0 text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
             >
               {" "}
               <option value="All">Todos Tipos</option>{" "}
@@ -109,7 +109,7 @@ export const ClientesCRMView: React.FC = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-transparent border-0 outline-0 focus:ring-0 text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
             >
               {" "}
               <option value="All">Todos Status</option>{" "}
@@ -138,12 +138,12 @@ export const ClientesCRMView: React.FC = () => {
                   {" "}
                   <div>
                     {" "}
-                    <span className="text-[9px] font-bold uppercase tracking-wider bg-muted text-muted-foreground px-2 py-0.5 rounded mr-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-muted text-muted-foreground px-2 py-0.5 rounded mr-2">
                       {" "}
                       {c.type.toUpperCase()}{" "}
                     </span>{" "}
                     <span
-                      className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded ${c.status === "active" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
+                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${c.status === "active" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
                     >
                       {" "}
                       {c.status}{" "}
@@ -231,7 +231,7 @@ export const ClientesCRMView: React.FC = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           {" "}
-          <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
+          <div role="dialog" aria-modal="true" className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
             {" "}
             <div className="flex justify-between items-center mb-4 text-left">
               {" "}
@@ -266,7 +266,7 @@ export const ClientesCRMView: React.FC = () => {
                   placeholder="Nome do cliente PF ou PJ por extenso"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Email & Phone */}{" "}
@@ -283,7 +283,7 @@ export const ClientesCRMView: React.FC = () => {
                     placeholder="email@cliente.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 <div className="space-y-1.5">
@@ -296,7 +296,7 @@ export const ClientesCRMView: React.FC = () => {
                     placeholder="(11) 99999-9999"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -311,12 +311,14 @@ export const ClientesCRMView: React.FC = () => {
                   <input
                     type="text"
                     required
+                    pattern="\d{11}|\d{14}"
+                    title="Insira 11 dígitos para CPF ou 14 dígitos para CNPJ"
                     placeholder="Somente dígitos"
                     value={document}
                     onChange={(e) =>
                       setDocument(e.target.value.replace(/\D/g, ""))
                     }
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   />{" "}
                 </div>{" "}
                 <div className="space-y-1.5">
@@ -327,7 +329,7 @@ export const ClientesCRMView: React.FC = () => {
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as any)}
-                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                   >
                     {" "}
                     <option value="pf">Pessoa Física (PF)</option>{" "}
@@ -344,7 +346,7 @@ export const ClientesCRMView: React.FC = () => {
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 >
                   {" "}
                   <option value="prospect">
@@ -367,7 +369,7 @@ export const ClientesCRMView: React.FC = () => {
                   placeholder="Rua, número, complemento, bairro, cidade/UF"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50"
                 />{" "}
               </div>{" "}
               {/* Buttons */}{" "}

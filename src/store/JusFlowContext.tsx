@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { db } from "../lib/firebase";
 import { onSnapshot, collection, doc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
@@ -99,7 +100,7 @@ interface JusFlowState {
   addArticle: (art: Omit<Article, "id" | "confidence" | "verified">) => void;
   addTemplate: (temp: Omit<ModelTemplate, "id">) => void;
   
-  addDocument: (doc: Omit<Document, "id" | "createdAt">) => void;
+  addDocument: (doc: Omit<Document, "id" | "createdAt">) => Document;
   signDocument: (id: string, signers: string[]) => void;
   deleteDocument: (id: string) => void;
   
@@ -789,7 +790,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
       createdAt: new Date().toISOString()
     };
     setClients(prev => [newC, ...prev]);
-    setDoc(doc(db, "clients", newC.id), newC).catch(console.error);
+    setDoc(doc(db, "clients", newC.id), newC).then(() => toast.success("Cliente criado com sucesso")).catch(e => { console.error(e); toast.error("Erro ao criar cliente") });
   };
 
   const updateClient = (id: string, updates: Partial<Client>) => {
@@ -798,8 +799,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteClient = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setClients(prev => prev.filter(c => c.id !== id));
-    deleteDoc(doc(db, "clients", id)).catch(console.error);
+    deleteDoc(doc(db, "clients", id)).then(() => toast.success("Cliente excluído")).catch(e => { console.error(e); toast.error("Erro ao excluir cliente") });
   };
 
   const addProcess = (p: Omit<Process, "id" | "createdAt" | "aiSummary">) => {
@@ -810,7 +812,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
       aiSummary: "Processo cadastrado no sistema. Aguardando sincronização de andamentos DataJud..."
     };
     setProcesses(prev => [newP, ...prev]);
-    setDoc(doc(db, "processes", newP.id), newP).catch(console.error);
+    setDoc(doc(db, "processes", newP.id), newP).then(() => toast.success("Processo criado com sucesso")).catch(e => { console.error(e); toast.error("Erro ao criar processo") });
 
     const initMovement: Movement = {
       id: "m_init_" + Date.now(),
@@ -832,8 +834,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteProcess = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setProcesses(prev => prev.filter(p => p.id !== id));
-    deleteDoc(doc(db, "processes", id)).catch(console.error);
+    deleteDoc(doc(db, "processes", id)).then(() => toast.success("Processo excluído")).catch(e => { console.error(e); toast.error("Erro ao excluir processo") });
   };
 
   const addMovement = (processId: string, desc: string, details?: string) => {
@@ -869,6 +872,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteDeadline = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setDeadlines(prev => prev.filter(d => d.id !== id));
     deleteDoc(doc(db, "deadlines", id)).catch(console.error);
   };
@@ -876,7 +880,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const addTask = (t: Omit<Task, "id">) => {
     const newT: Task = { ...t, id: "t_" + Date.now() };
     setTasks(prev => [newT, ...prev]);
-    setDoc(doc(db, "tasks", newT.id), newT).catch(console.error);
+    setDoc(doc(db, "tasks", newT.id), newT).then(() => toast.success("Tarefa criada")).catch(e => { console.error(e); toast.error("Erro ao criar tarefa") });
   };
 
   const updateTaskColumn = (id: string, column: Task["column"]) => {
@@ -902,8 +906,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteTask = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setTasks(prev => prev.filter(t => t.id !== id));
-    deleteDoc(doc(db, "tasks", id)).catch(console.error);
+    deleteDoc(doc(db, "tasks", id)).then(() => toast.success("Tarefa excluída")).catch(e => { console.error(e); toast.error("Erro ao excluir") });
   };
 
   const addFinancial = (f: Omit<FinancialLaunch, "id">) => {
@@ -925,6 +930,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteFinancial = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setFinancials(prev => prev.filter(f => f.id !== id));
     deleteDoc(doc(db, "financials", id)).catch(console.error);
   };
@@ -936,6 +942,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteEvent = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setEvents(prev => prev.filter(e => e.id !== id));
     deleteDoc(doc(db, "events", id)).catch(console.error);
   };
@@ -950,6 +957,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteWorkflow = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setWorkflows(prev => prev.filter(w => w.id !== id));
   };
 
@@ -983,6 +991,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteTeamMember = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setTeamMembers(prev => prev.filter(m => m.id !== id));
     deleteDoc(doc(db, "teamMembers", id)).catch(console.error);
   };
@@ -1002,7 +1011,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setTemplates(prev => [newT, ...prev]);
   };
 
-  const addDocument = (d: Omit<Document, "id" | "createdAt">) => {
+  const addDocument = (d: Omit<Document, "id" | "createdAt">): Document => {
     const newD: Document = {
       ...d,
       id: "doc_" + Date.now(),
@@ -1010,6 +1019,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
     setDocuments(prev => [newD, ...prev]);
     setDoc(doc(db, "documents", newD.id), newD).catch(console.error);
+    return newD;
   };
 
   const signDocument = (id: string, signers: string[]) => {
@@ -1024,6 +1034,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteDocument = (id: string) => {
+    if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
     setDocuments(prev => prev.filter(d => d.id !== id));
     deleteDoc(doc(db, "documents", id)).catch(console.error);
   };
