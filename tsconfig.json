@@ -17,7 +17,16 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
+      ],
+      "convex/react": [
+        "./src/lib/convex-compat.ts"
+      ],
+      "../../../convex/_generated/api": [
+        "./convex/_generated/api.ts"
+      ],
+      "../../convex/_generated/api": [
+        "./convex/_generated/api.ts"
       ]
     },
     "allowImportingTsExtensions": true,

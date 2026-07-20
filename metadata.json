@@ -1,6 +1,6 @@
 {
-  "name": "JusFlow",
-  "description": "Plataforma Jurídica Inteligente com Copiloto IA, DataJud, CRM, Gestão de Prazos, Financeiro, Contratos e Compliance",
+  "name": "Jurisistem",
+  "description": "Sistema jurídico inteligente para advogados e escritórios de advocacia, com gestão de processos, clientes, tarefas, prazos, faturamento e integração com IA.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

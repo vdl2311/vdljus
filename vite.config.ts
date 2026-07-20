@@ -8,7 +8,10 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(__dirname, './src'),
+        'convex/react': path.resolve(__dirname, './src/lib/convex-compat.ts'),
+        '../../../convex/_generated/api': path.resolve(__dirname, './convex/_generated/api.ts'),
+        '../../convex/_generated/api': path.resolve(__dirname, './convex/_generated/api.ts'),
       },
     },
     server: {
