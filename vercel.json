@@ -1,11 +1,9 @@
 {
-  "framework": "vite",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
+  "version": 2,
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/server"
+      "source": "/api/:match*",
+      "destination": "/api"
     },
     {
       "source": "/(.*)",
