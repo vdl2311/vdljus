@@ -71,7 +71,7 @@ export const DataJudView: React.FC = () => {
       {/* Header */}{" "}
       <div className="text-left">
         {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Plataforma DataJud
         </h2>{" "}
         <p className="text-xs text-muted-foreground">
@@ -89,7 +89,7 @@ export const DataJudView: React.FC = () => {
             {" "}
             <div className="flex items-center gap-2">
               {" "}
-              <Database className="w-4.5 h-4.5 text-cyan-500" />{" "}
+              <Database className="w-4.5 h-4.5 text-emerald-500" />{" "}
               <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
                 Nova Consulta CNJ
               </h3>{" "}
@@ -111,14 +111,14 @@ export const DataJudView: React.FC = () => {
                     placeholder="Ex: 5001234-56.2025.8.26.0100"
                     value={cnj}
                     onChange={(e) => handleCnjChange(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 font-mono focus:ring-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 font-mono focus:ring-0"
                   />{" "}
                 </div>{" "}
               </div>{" "}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-2 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-600 hover:to-indigo-700 disabled:opacity-50 text-white font-bold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 shadow-md shadow-cyan-500/10 cursor-pointer"
+                className="w-full py-2 bg-gradient-to-r from-emerald-500 to-indigo-600 hover:from-emerald-600 hover:to-indigo-700 disabled:opacity-50 text-white font-bold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/10 cursor-pointer"
               >
                 {" "}
                 {isLoading
@@ -184,7 +184,7 @@ export const DataJudView: React.FC = () => {
           {isLoading && (
             <div className="h-[300px] bg-card border border-border rounded-xl flex flex-col items-center justify-center p-6 text-center animate-pulse">
               {" "}
-              <Database className="w-10 h-10 text-cyan-500 animate-bounce mb-3" />{" "}
+              <Database className="w-10 h-10 text-emerald-500 animate-bounce mb-3" />{" "}
               <p className="text-xs font-bold text-foreground ">
                 Conectando ao WebService do CNJ / DataJud...
               </p>{" "}
@@ -227,11 +227,11 @@ export const DataJudView: React.FC = () => {
                   {" "}
                   <div>
                     {" "}
-                    <span className="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950 px-2 py-0.5 rounded uppercase">
+                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2 py-0.5 rounded uppercase">
                       {" "}
                       Tribunal: {result.tribunal}{" "}
                     </span>{" "}
-                    <h3 className="text-sm font-black text-card-foreground mt-1.5 select-all">
+                    <h3 className="text-sm font-bold text-card-foreground mt-1.5 select-all">
                       {result.cnj}
                     </h3>{" "}
                   </div>{" "}
@@ -299,7 +299,7 @@ export const DataJudView: React.FC = () => {
                 {" "}
                 <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-4 flex items-center gap-1.5">
                   {" "}
-                  <Calendar className="w-4 h-4 text-cyan-500" /> Andamentos
+                  <Calendar className="w-4 h-4 text-emerald-500" /> Andamentos
                   Estruturados Importados ({result.movements.length}){" "}
                 </h3>{" "}
                 <div className="relative pl-4 border-l border-border space-y-4 py-1.5">
@@ -307,7 +307,7 @@ export const DataJudView: React.FC = () => {
                   {result.movements.map((m: any, idx: number) => (
                     <div key={idx} className="relative">
                       {" "}
-                      <span className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 border-white bg-cyan-500" />{" "}
+                      <span className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 border-white bg-emerald-500" />{" "}
                       <div className="space-y-0.5">
                         {" "}
                         <span className="text-[10px] text-muted-foreground font-bold block">

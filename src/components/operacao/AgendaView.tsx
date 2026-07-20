@@ -67,7 +67,7 @@ export const AgendaView: React.FC = () => {
       case "pericia":
         return "bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400 border border-purple-200 dark:border-purple-900/40";
       default:
-        return "bg-cyan-50 text-cyan-600 dark:bg-cyan-950/40 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-900/40";
+        return "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/40";
     }
   };
   const getTypeName = (t: AppointmentType) => {
@@ -91,7 +91,7 @@ export const AgendaView: React.FC = () => {
         {" "}
         <div className="text-left">
           {" "}
-          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
             Agenda Forense
           </h2>{" "}
           <p className="text-xs text-muted-foreground">
@@ -120,7 +120,7 @@ export const AgendaView: React.FC = () => {
           </div>{" "}
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 shadow-md shadow-cyan-600/10 cursor-pointer"
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-600/10 cursor-pointer"
           >
             {" "}
             <Plus className="w-4 h-4" /> Marcar Compromisso{" "}
@@ -153,7 +153,7 @@ export const AgendaView: React.FC = () => {
                     <span className="text-[9px] font-bold text-muted-foreground uppercase">
                       Jul
                     </span>{" "}
-                    <span className="text-sm font-black text-foreground leading-none">
+                    <span className="text-sm font-bold text-foreground leading-none">
                       {" "}
                       {app.date.split("-")[2] ||
                         app.date.split("/")[0] ||
@@ -179,7 +179,7 @@ export const AgendaView: React.FC = () => {
                         {" "}
                         <Scale className="w-3.5 h-3.5 text-muted-foreground shrink-0" />{" "}
                         Proc:{" "}
-                        <span className="font-semibold text-cyan-600 dark:text-cyan-400">
+                        <span className="font-semibold text-emerald-600 dark:text-emerald-400">
                           {app.processTitle}
                         </span>{" "}
                       </p>
@@ -226,7 +226,7 @@ export const AgendaView: React.FC = () => {
           {" "}
           <div className="flex justify-between items-center mb-4">
             {" "}
-            <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">
+            <h3 className="text-xs font-bold text-foreground uppercase tracking-wider">
               Julho de 2026
             </h3>{" "}
             <span className="text-[10px] text-muted-foreground">
@@ -269,7 +269,7 @@ export const AgendaView: React.FC = () => {
                       <span
                         key={a.id}
                         title={`${a.title} às ${a.time}`}
-                        className={`block text-[8px] font-bold uppercase py-0.2 px-1 rounded truncate ${a.type === "hearing" ? "bg-rose-950 text-rose-300" : "bg-cyan-950 text-cyan-300"}`}
+                        className={`block text-[8px] font-bold uppercase py-0.2 px-1 rounded truncate ${a.type === "hearing" ? "bg-rose-950 text-rose-300" : "bg-emerald-950 text-emerald-300"}`}
                       >
                         {" "}
                         {a.time} - {a.title}{" "}
@@ -324,7 +324,7 @@ export const AgendaView: React.FC = () => {
                   placeholder="Ex: Audiência de Instrução e Julgamento"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Date & Time */}{" "}
@@ -340,7 +340,7 @@ export const AgendaView: React.FC = () => {
                     required
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 <div className="space-y-1.5">
@@ -353,7 +353,7 @@ export const AgendaView: React.FC = () => {
                     required
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -366,7 +366,7 @@ export const AgendaView: React.FC = () => {
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as any)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 >
                   {" "}
                   <option value="hearing">Audiência Judicial</option>{" "}
@@ -385,7 +385,7 @@ export const AgendaView: React.FC = () => {
                   placeholder="https://meet.google.com/abc-defg-hij"
                   value={virtualLink}
                   onChange={(e) => setVirtualLink(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Location physical */}{" "}
@@ -399,7 +399,7 @@ export const AgendaView: React.FC = () => {
                   placeholder="Ex: Sala de Audiências da 2ª Vara Cível de SP"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Linked Process */}{" "}
@@ -411,7 +411,7 @@ export const AgendaView: React.FC = () => {
                 <select
                   value={processId}
                   onChange={(e) => setProcessId(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 >
                   {" "}
                   <option value="">
@@ -437,7 +437,7 @@ export const AgendaView: React.FC = () => {
                 </button>{" "}
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
                 >
                   {" "}
                   Confirmar Agendamento{" "}

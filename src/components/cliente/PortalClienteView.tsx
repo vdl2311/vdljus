@@ -1,299 +1,290 @@
 import React, { useState } from "react";
 import { useJusFlow } from "../../store/JusFlowContext";
 import {
-  Folder,
-  FileText,
-  CreditCard,
-  MessageSquare,
-  CheckCircle2,
-  ChevronRight,
   User,
+  Scale,
+  DollarSign,
+  FileText,
+  CheckCircle2,
+  ShieldCheck,
+  HelpCircle,
+  MessageSquare,
+  ArrowUpRight,
 } from "lucide-react";
-
 export const PortalClienteView: React.FC = () => {
   const { clients, processes, financials, documents } = useJusFlow();
   const [selectedClientId, setSelectedClientId] = useState(
     clients[0]?.id || "",
   );
-  
-  // Form states
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
-
+  const [copiedText, setCopiedText] = useState("");
   const activeClient =
     clients.find((c) => c.id === selectedClientId) || clients[0];
-
   const clientProcesses = processes.filter(
-    (p) => p.clientId === activeClient?.id && p.status === "active"
+    (p) => p.clientId === activeClient?.id,
   );
-  
   const clientFinancials = financials.filter(
-    (f) => f.clientId === activeClient?.id && f.status === "pending"
+    (f) => f.clientId === activeClient?.id,
   );
-  
   const clientDocs = documents.filter((d) =>
-    d.title.includes(activeClient?.name.split(" ")[0] || "")
+    d.title.includes(activeClient?.name.split(" ")[0] || ""),
   );
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!subject || !message) return;
-    
-    setShowSuccess(true);
-    setSubject("");
-    setMessage("");
-    setTimeout(() => setShowSuccess(false), 5000);
+  const triggerCopy = (text: string, label: string) => {
+    setCopiedText(`${label} copiado para a área de transferência!`);
+    setTimeout(() => setCopiedText(""), 3500);
   };
-
   return (
-    <div className="p-6 space-y-6 overflow-y-auto h-full bg-[#f8fafc] dark:bg-[#0b0f17] transition-colors text-left font-sans">
-      {/* Header and selector impersonator */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e2e8f0] dark:border-slate-800 pb-5">
-        <div>
-          <h2 className="text-xl font-bold text-[#0f172a] dark:text-white tracking-tight">
-            Área do Cliente
-          </h2>
-          <p className="text-xs text-[#64748b] dark:text-slate-400 mt-1">
-            Acompanhe seus processos, envie documentos e fale diretamente com sua equipe jurídica.
-          </p>
-        </div>
-        
-        {/* Simular como */}
-        <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-[#e2e8f0] dark:border-slate-800 px-3 py-1.5 rounded-lg shrink-0 shadow-sm">
-          <span className="font-bold text-[#64748b] dark:text-slate-500 uppercase text-[9px] tracking-wider">
-            Simular Cliente:
-          </span>
+    <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
+      {" "}
+      {/* Header and selector impersonator */}{" "}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {" "}
+        <div className="text-left">
+          {" "}
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
+            Portal do Cliente
+          </h2>{" "}
+          <p className="text-xs text-muted-foreground">
+            Módulo externo simplificado para o cliente acompanhar andamentos
+            processuais traduzidos e pagar honorários.
+          </p>{" "}
+        </div>{" "}
+        {/* Impersonator */}{" "}
+        <div className="flex items-center gap-2 bg-card border border-border p-2 rounded-md shrink-0 text-xs">
+          {" "}
+          <span className="font-bold text-muted-foreground uppercase text-[9px] shrink-0">
+            Simular como:
+          </span>{" "}
           <select
             value={selectedClientId}
             onChange={(e) => setSelectedClientId(e.target.value)}
-            className="bg-transparent border-0 outline-0 font-semibold focus:ring-0 text-xs cursor-pointer text-[#0f172a] dark:text-white"
+            className="bg-transparent border-0 outline-0 font-semibold focus:ring-0 text-xs cursor-pointer text-card-foreground"
           >
+            {" "}
             {clients.map((c) => (
-              <option key={c.id} value={c.id} className="dark:bg-slate-950">
+              <option key={c.id} value={c.id}>
                 {c.name}
               </option>
-            ))}
-          </select>
+            ))}{" "}
+          </select>{" "}
+        </div>{" "}
+      </div>{" "}
+      {copiedText && (
+        <div className="p-3 bg-emerald-950/40 border border-emerald-800 text-emerald-300 text-xs rounded-md flex items-center gap-2 text-left animate-bounce">
+          {" "}
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />{" "}
+          <span>{copiedText}</span>{" "}
         </div>
-      </div>
-
-      {showSuccess && (
-        <div className="p-4 bg-[#f0fdf4] dark:bg-[#062f1d] border border-emerald-200 dark:border-emerald-900 text-emerald-800 dark:text-emerald-300 text-xs rounded-xl flex items-center gap-2 animate-fade-in shadow-xs">
-          <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
-          <span className="font-medium">Mensagem enviada com sucesso! Retornaremos o seu contato em breve.</span>
-        </div>
-      )}
-
+      )}{" "}
       {activeClient ? (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Columns - Processes, Documents, Financials */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
+          {" "}
+          {/* Main timeline processes - 2 columns */}{" "}
           <div className="lg:col-span-2 space-y-6">
-            
-            {/* Meus processos card */}
-            <div className="bg-white dark:bg-slate-900 border border-[#e2e8f0] dark:border-slate-800 rounded-xl p-5 shadow-xs">
-              <div className="flex items-center gap-2 mb-4">
-                <Folder className="w-5 h-5 text-[#10b981]" />
-                <h3 className="font-bold text-sm text-[#0f172a] dark:text-white uppercase tracking-wider">
-                  Meus processos
-                </h3>
-              </div>
-              
+            {" "}
+            {/* Process card list */}{" "}
+            <div className="p-5 bg-card border border-border rounded-xl shadow-sm space-y-4">
+              {" "}
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                {" "}
+                <Scale className="w-4.5 h-4.5 text-emerald-500" /> Seus Processos
+                em Andamento{" "}
+              </h3>{" "}
               <div className="space-y-4">
+                {" "}
                 {clientProcesses.map((p) => (
                   <div
                     key={p.id}
-                    className="p-4 bg-slate-50 dark:bg-slate-950/40 border border-[#e2e8f0] dark:border-slate-800/80 rounded-lg space-y-2.5"
+                    className="p-4 bg-background rounded-md border border-border space-y-3"
                   >
+                    {" "}
                     <div className="flex justify-between items-start flex-wrap gap-2">
+                      {" "}
                       <div>
-                        <span className="font-semibold text-xs text-[#0f172a] dark:text-white block leading-tight">
+                        {" "}
+                        <span className="font-bold text-xs text-card-foreground block leading-tight">
                           {p.title}
-                        </span>
-                        <span className="text-[10px] font-mono text-[#64748b] dark:text-slate-400 block mt-1">
-                          Número: {p.cnj} ({p.court})
-                        </span>
-                      </div>
-                      <span className="text-[9px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-md">
-                        {p.stage}
-                      </span>
-                    </div>
-                    {p.aiSummary && (
-                      <div className="p-3 bg-white dark:bg-slate-900 rounded border border-[#e2e8f0] dark:border-slate-800/50 text-xs">
-                        <span className="text-[9px] text-[#10b981] font-bold uppercase tracking-wider block mb-1">
-                          Resumo Simplicado
-                        </span>
-                        <p className="text-[11px] text-[#475569] dark:text-slate-300 leading-relaxed">
-                          {p.aiSummary}
-                        </p>
-                      </div>
-                    )}
+                        </span>{" "}
+                        <span className="text-[10px] font-mono text-muted-foreground block mt-1">
+                          CNJ: {p.cnj} ({p.court})
+                        </span>{" "}
+                      </div>{" "}
+                      <span className="text-[9px] font-bold uppercase bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded">
+                        {" "}
+                        Fase: {p.stage}{" "}
+                      </span>{" "}
+                    </div>{" "}
+                    {/* AI Translation section! */}{" "}
+                    <div className="p-3 bg-card rounded border border-border/60 space-y-1.5 text-xs">
+                      {" "}
+                      <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider block">
+                        Explicação em Linguagem Simples (IA)
+                      </span>{" "}
+                      <p className="text-[11px] text-muted-foreground leading-relaxed font-normal">
+                        {" "}
+                        {p.aiSummary ||
+                          "Nossos advogados estão redigindo minutas processuais e preparando as teses de defesa. Você será notificado de qualquer decisão judicial."}{" "}
+                      </p>{" "}
+                    </div>{" "}
                   </div>
-                ))}
-                
+                ))}{" "}
                 {clientProcesses.length === 0 && (
-                  <div className="py-10 text-center">
-                    <p className="text-sm font-semibold text-[#0f172a] dark:text-white">
-                      Nenhum processo ativo
-                    </p>
-                    <p className="text-xs text-[#64748b] dark:text-slate-400 mt-1">
-                      Você não possui processos ativos vinculados ao seu cadastro neste momento.
-                    </p>
+                  <div className="py-12 text-center text-xs text-muted-foreground font-normal">
+                    {" "}
+                    Nenhum processo judicial ativo associado a esta conta.{" "}
                   </div>
-                )}
-              </div>
-            </div>
-
-            {/* Documentos card */}
-            <div className="bg-white dark:bg-slate-900 border border-[#e2e8f0] dark:border-slate-800 rounded-xl p-5 shadow-xs">
-              <div className="flex items-center gap-2 mb-4">
-                <FileText className="w-5 h-5 text-[#10b981]" />
-                <h3 className="font-bold text-sm text-[#0f172a] dark:text-white uppercase tracking-wider">
-                  Documentos
-                </h3>
-              </div>
-              
-              <div className="space-y-2">
-                {clientDocs.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="p-3 bg-slate-50 dark:bg-slate-950/40 border border-[#e2e8f0] dark:border-slate-800/80 rounded-lg flex justify-between items-center text-xs"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <FileText className="w-4 h-4 text-[#64748b]" />
-                      <span className="font-medium text-[#0f172a] dark:text-white truncate">
-                        {doc.title}
-                      </span>
-                    </div>
-                    <span className="text-[9px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-md">
-                      Disponível
-                    </span>
-                  </div>
-                ))}
-                
-                {clientDocs.length === 0 && (
-                  <div className="py-10 text-center">
-                    <p className="text-sm font-semibold text-[#0f172a] dark:text-white">
-                      Nenhum documento disponível
-                    </p>
-                    <p className="text-xs text-[#64748b] dark:text-slate-400 mt-1">
-                      Não há documentos ou relatórios compartilhados com você no momento.
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Honorários e boletos card */}
-            <div className="bg-white dark:bg-slate-900 border border-[#e2e8f0] dark:border-slate-800 rounded-xl p-5 shadow-xs">
-              <div className="flex items-center gap-2 mb-4">
-                <CreditCard className="w-5 h-5 text-[#10b981]" />
-                <h3 className="font-bold text-sm text-[#0f172a] dark:text-white uppercase tracking-wider">
-                  Honorários e boletos
-                </h3>
-              </div>
-              
-              <div className="space-y-2">
+                )}{" "}
+              </div>{" "}
+            </div>{" "}
+            {/* Invoices pay board */}{" "}
+            <div className="p-5 bg-card border border-border rounded-xl shadow-sm space-y-4">
+              {" "}
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                {" "}
+                <DollarSign className="w-4.5 h-4.5 text-emerald-500" /> Faturas e
+                Cobranças de Honorários{" "}
+              </h3>{" "}
+              <div className="space-y-3">
+                {" "}
                 {clientFinancials.map((f) => (
                   <div
                     key={f.id}
-                    className="p-4 bg-slate-50 dark:bg-slate-950/40 border border-[#e2e8f0] dark:border-slate-800/80 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs"
+                    className="p-3.5 bg-background rounded-md border border-border/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs"
                   >
-                    <div className="space-y-1">
-                      <span className="font-semibold text-[#0f172a] dark:text-white block">
+                    {" "}
+                    <div className="text-left space-y-1">
+                      {" "}
+                      <span className="font-bold text-card-foreground block">
                         {f.title}
-                      </span>
-                      <span className="text-[10px] text-[#64748b] dark:text-slate-400 block">
-                        Vencimento: {new Date(f.date).toLocaleDateString("pt-BR")}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-                      <span className="font-extrabold text-sm text-[#0f172a] dark:text-white">
+                      </span>{" "}
+                      <span className="text-[10px] text-muted-foreground block">
+                        Vencimento:{" "}
+                        {new Date(f.date).toLocaleDateString("pt-BR")}
+                      </span>{" "}
+                    </div>{" "}
+                    <div className="flex items-center gap-4 shrink-0 w-full sm:w-auto justify-between sm:justify-end">
+                      {" "}
+                      <span className="font-bold text-foreground">
+                        {" "}
                         {f.amount.toLocaleString("pt-BR", {
                           style: "currency",
                           currency: "BRL",
-                        })}
-                      </span>
-                      <button className="px-3 py-1 bg-[#10b981] hover:bg-[#0d9488] text-white text-xs font-bold rounded-lg cursor-pointer transition-colors shadow-sm">
-                        Visualizar Boleto
-                      </button>
-                    </div>
+                        })}{" "}
+                      </span>{" "}
+                      {f.status === "paid" ? (
+                        <span className="text-[9px] font-bold uppercase bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-full">
+                          {" "}
+                          Pago e Compensado{" "}
+                        </span>
+                      ) : (
+                        <div className="flex gap-2">
+                          {" "}
+                          <button
+                            onClick={() =>
+                              triggerCopy(
+                                `00020101021126380014br.gov.pix0114+5511999999995204000053039865407${f.amount}5802BR5915JUSFLOWADVOCAC6009SAOPAULO62070503***`,
+                                "Código PIX",
+                              )
+                            }
+                            className="px-2.5 py-1 bg-card dark:bg-muted hover:bg-accent hover:text-accent-foreground text-foreground text-[10px] font-bold rounded cursor-pointer transition-colors"
+                          >
+                            {" "}
+                            Pagar via Pix{" "}
+                          </button>{" "}
+                        </div>
+                      )}{" "}
+                    </div>{" "}
                   </div>
-                ))}
-                
+                ))}{" "}
                 {clientFinancials.length === 0 && (
-                  <div className="py-10 text-center">
-                    <p className="text-sm font-semibold text-[#0f172a] dark:text-white">
-                      Sem lançamentos
-                    </p>
-                    <p className="text-xs text-[#64748b] dark:text-slate-400 mt-1">
-                      Você não possui faturas ou cobranças pendentes de pagamento.
-                    </p>
+                  <div className="py-12 text-center text-xs text-muted-foreground font-normal">
+                    {" "}
+                    Nenhuma fatura pendente de faturamento.{" "}
                   </div>
-                )}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right Column - Falar com seu advogado form */}
-          <div>
-            <div className="bg-white dark:bg-slate-900 border border-[#e2e8f0] dark:border-slate-800 rounded-xl p-5 shadow-xs sticky top-24">
-              <div className="flex items-center gap-2 mb-1">
-                <MessageSquare className="w-5 h-5 text-[#10b981]" />
-                <h3 className="font-bold text-sm text-[#0f172a] dark:text-white uppercase tracking-wider">
-                  Falar com seu advogado
-                </h3>
-              </div>
-              <p className="text-xs text-[#64748b] dark:text-slate-400 mb-5">
-                Envie uma mensagem direto para o escritório
-              </p>
-              
-              <form onSubmit={handleSendMessage} className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-[#475569] dark:text-slate-300 uppercase tracking-wide">
-                    Assunto
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    placeholder="Ex: Dúvida sobre andamento"
-                    className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-[#e2e8f0] dark:border-slate-800 rounded-lg outline-hidden focus:border-[#10b981] focus:ring-1 focus:ring-[#10b981] text-[#0f172a] dark:text-white transition-all"
-                  />
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-[#475569] dark:text-slate-300 uppercase tracking-wide">
-                    Mensagem
-                  </label>
-                  <textarea
-                    required
-                    rows={5}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Digite sua dúvida ou mensagem detalhada..."
-                    className="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-[#e2e8f0] dark:border-slate-800 rounded-lg outline-hidden focus:border-[#10b981] focus:ring-1 focus:ring-[#10b981] text-[#0f172a] dark:text-white transition-all resize-none"
-                  />
-                </div>
-                
-                <button
-                  type="submit"
-                  className="w-full py-2.5 bg-[#10b981] hover:bg-[#0d9488] text-white font-bold text-xs rounded-lg transition-colors cursor-pointer shadow-sm flex items-center justify-center gap-1.5"
-                >
-                  Enviar mensagem
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </form>
-            </div>
-          </div>
+                )}{" "}
+              </div>{" "}
+            </div>{" "}
+          </div>{" "}
+          {/* Side columns: client profile and documents folder (1 column) */}{" "}
+          <div className="space-y-6">
+            {" "}
+            {/* Customer Profile card */}{" "}
+            <div className="p-5 bg-card border border-border rounded-xl shadow-sm text-left space-y-3">
+              {" "}
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5 border-b border-border pb-2.5">
+                {" "}
+                <User className="w-4.5 h-4.5 text-emerald-500" /> Seu Perfil de
+                Outorga{" "}
+              </h3>{" "}
+              <div className="space-y-1.5 text-xs text-muted-foreground">
+                {" "}
+                <div>
+                  {" "}
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">
+                    Nome
+                  </span>{" "}
+                  <span className="font-bold text-foreground">
+                    {activeClient.name}
+                  </span>{" "}
+                </div>{" "}
+                <div>
+                  {" "}
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">
+                    Documento Civil
+                  </span>{" "}
+                  <span className="font-mono">
+                    {activeClient.document}
+                  </span>{" "}
+                </div>{" "}
+                <div>
+                  {" "}
+                  <span className="text-[9px] text-muted-foreground uppercase font-bold block">
+                    E-mail Cadastrado
+                  </span>{" "}
+                  <span>{activeClient.email}</span>{" "}
+                </div>{" "}
+              </div>{" "}
+            </div>{" "}
+            {/* Document checklist vault */}{" "}
+            <div className="p-5 bg-card border border-border rounded-xl shadow-sm text-left space-y-3">
+              {" "}
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5 border-b border-border pb-2.5">
+                {" "}
+                <FileText className="w-4.5 h-4.5 text-emerald-500" /> Seus
+                Documentos & Procurações{" "}
+              </h3>{" "}
+              <div className="space-y-2">
+                {" "}
+                {clientDocs.map((doc) => (
+                  <div
+                    key={doc.id}
+                    className="p-2.5 bg-background border border-border rounded-md flex justify-between items-center text-[11px]"
+                  >
+                    {" "}
+                    <span className="font-semibold text-foreground truncate pr-2">
+                      {doc.title}
+                    </span>{" "}
+                    <span className="text-[8px] font-bold uppercase bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded shrink-0">
+                      {" "}
+                      Assinado{" "}
+                    </span>{" "}
+                  </div>
+                ))}{" "}
+                {clientDocs.length === 0 && (
+                  <span className="text-[10px] text-muted-foreground block py-6 text-center">
+                    Nenhum documento assinado pendente de guarda.
+                  </span>
+                )}{" "}
+              </div>{" "}
+            </div>{" "}
+          </div>{" "}
         </div>
       ) : (
-        <div className="p-12 bg-white dark:bg-slate-900 border border-[#e2e8f0] dark:border-slate-800 rounded-xl text-center text-xs text-muted-foreground shadow-xs">
-          Nenhum cliente selecionado.
+        <div className="p-12 bg-card border border-border rounded-xl text-center text-xs text-muted-foreground">
+          {" "}
+          Nenhum cliente cadastrado no CRM. Cadastre um cliente para simular o
+          portal externo.{" "}
         </div>
-      )}
+      )}{" "}
     </div>
   );
 };

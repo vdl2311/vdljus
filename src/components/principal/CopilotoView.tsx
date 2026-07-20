@@ -144,7 +144,7 @@ export const CopilotoView: React.FC = () => {
         return (
           <h4
             key={i}
-            className="text-xs font-extrabold uppercase text-cyan-400 mt-3 mb-1.5"
+            className="text-xs font-bold uppercase text-emerald-400 mt-3 mb-1.5"
           >
             {content.substring(4)}
           </h4>
@@ -152,14 +152,14 @@ export const CopilotoView: React.FC = () => {
       }
       if (content.startsWith("## ")) {
         return (
-          <h3 key={i} className="text-sm font-black text-white mt-4 mb-2">
+          <h3 key={i} className="text-sm font-bold text-foreground mt-4 mb-2">
             {content.substring(3)}
           </h3>
         );
       }
       if (content.startsWith("# ")) {
         return (
-          <h2 key={i} className="text-base font-black text-white mt-5 mb-3">
+          <h2 key={i} className="text-base font-bold text-foreground mt-5 mb-3">
             {content.substring(2)}
           </h2>
         );
@@ -185,7 +185,7 @@ export const CopilotoView: React.FC = () => {
             className="flex gap-2 text-xs text-muted-foreground ml-2 mb-1.5"
           >
             {" "}
-            <span className="font-bold text-cyan-400">{num}.</span>{" "}
+            <span className="font-bold text-emerald-400">{num}.</span>{" "}
             <div className="flex-1">{parseBold(cleanText)}</div>{" "}
           </div>
         );
@@ -205,7 +205,7 @@ export const CopilotoView: React.FC = () => {
     const parts = text.split(/\*\*(.*?)\*\*/g);
     return parts.map((part, i) =>
       i % 2 === 1 ? (
-        <strong key={i} className="text-cyan-300 font-bold">
+        <strong key={i} className="text-emerald-300 font-bold">
           {part}
         </strong>
       ) : (
@@ -232,7 +232,7 @@ export const CopilotoView: React.FC = () => {
                 {" "}
                 {/* Avatar */}{" "}
                 <div
-                  className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 shadow-md ${isAI ? "bg-cyan-600 text-white" : "bg-muted text-card-foreground"}`}
+                  className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 shadow-md ${isAI ? "bg-emerald-600 text-white" : "bg-muted text-card-foreground"}`}
                 >
                   {" "}
                   {isAI ? (
@@ -243,7 +243,7 @@ export const CopilotoView: React.FC = () => {
                 </div>{" "}
                 {/* Bubble content */}{" "}
                 <div
-                  className={`p-4 rounded-xl border ${isAI ? "bg-card border-border/80 rounded-tl-none shadow-sm" : "bg-cyan-950/40 border-cyan-900/60 rounded-tr-none text-slate-100 shadow-sm shadow-cyan-950/10"}`}
+                  className={`p-4 rounded-xl border ${isAI ? "bg-card border-border/80 rounded-tl-none shadow-sm" : "bg-emerald-100 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900/60 rounded-tr-none text-emerald-900 dark:text-emerald-100 shadow-sm shadow-emerald-950/10"}`}
                 >
                   {" "}
                   {isAI ? (
@@ -251,7 +251,7 @@ export const CopilotoView: React.FC = () => {
                       {formatContent(m.content)}
                     </div>
                   ) : (
-                    <p className="text-xs text-slate-100 leading-relaxed font-medium">
+                    <p className="text-xs text-foreground leading-relaxed font-medium">
                       {m.content}
                     </p>
                   )}{" "}
@@ -262,7 +262,7 @@ export const CopilotoView: React.FC = () => {
           {isLoading && (
             <div className="flex gap-3 max-w-[80%] self-start text-left">
               {" "}
-              <div className="w-8 h-8 rounded-md bg-cyan-600 text-white flex items-center justify-center shrink-0 animate-spin">
+              <div className="w-8 h-8 rounded-md bg-emerald-600 text-white flex items-center justify-center shrink-0 animate-spin">
                 {" "}
                 <Loader2 className="w-4 h-4" />{" "}
               </div>{" "}
@@ -271,7 +271,7 @@ export const CopilotoView: React.FC = () => {
                 <span className="text-xs text-muted-foreground">
                   Copiloto analisando jurisprudências e faturamento...
                 </span>{" "}
-                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-ping" />{" "}
+                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping" />{" "}
               </div>{" "}
             </div>
           )}{" "}
@@ -280,7 +280,7 @@ export const CopilotoView: React.FC = () => {
         {/* Input area */}{" "}
         <div className="p-4 border-t border-slate-900 bg-card/40">
           {" "}
-          <div className="max-w-3xl mx-auto flex items-center gap-2 bg-card border border-border rounded-xl px-4 py-2.5 shadow-lg focus-within:border-cyan-600/80 transition-colors">
+          <div className="max-w-3xl mx-auto flex items-center gap-2 bg-card border border-border rounded-xl px-4 py-2.5 shadow-lg focus-within:border-emerald-600/80 transition-colors">
             {" "}
             <textarea
               rows={1}
@@ -298,7 +298,7 @@ export const CopilotoView: React.FC = () => {
             <button
               onClick={() => handleSendMessage(input)}
               disabled={!input.trim() || isLoading}
-              className="p-2 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:hover:bg-cyan-600 text-white transition-colors cursor-pointer shrink-0 shadow-md"
+              className="p-2 rounded-md bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:hover:bg-emerald-600 text-white transition-colors cursor-pointer shrink-0 shadow-md"
             >
               {" "}
               <Send className="w-3.5 h-3.5" />{" "}
@@ -318,9 +318,9 @@ export const CopilotoView: React.FC = () => {
         {" "}
         <div>
           {" "}
-          <div className="flex items-center gap-1.5 text-xs font-bold text-white uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-foreground uppercase tracking-wider">
             {" "}
-            <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />{" "}
+            <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />{" "}
             Sugestões Rápidas{" "}
           </div>{" "}
           <p className="hidden md:block text-[10px] text-muted-foreground mt-1 leading-snug">
@@ -336,11 +336,11 @@ export const CopilotoView: React.FC = () => {
             <button
               key={idx}
               onClick={() => handleSendMessage(s.prompt)}
-              className="min-w-[140px] md:min-w-0 w-auto md:w-full text-left p-2.5 bg-card hover:bg-accent hover:text-accent-foreground/80 border border-border/80 rounded-md text-[11px] text-muted-foreground hover:text-cyan-300 font-medium transition-all flex items-center justify-between gap-2 group cursor-pointer snap-start shrink-0"
+              className="min-w-[140px] md:min-w-0 w-auto md:w-full text-left p-2.5 bg-card hover:bg-accent hover:text-accent-foreground/80 border border-border/80 rounded-md text-[11px] text-muted-foreground hover:text-emerald-300 font-medium transition-all flex items-center justify-between gap-2 group cursor-pointer snap-start shrink-0"
             >
               {" "}
               <span className="truncate">{s.label}</span>{" "}
-              <ArrowRight className="w-3 h-3 text-muted-foreground group-hover:text-cyan-400 transition-colors shrink-0" />{" "}
+              <ArrowRight className="w-3 h-3 text-muted-foreground group-hover:text-emerald-400 transition-colors shrink-0" />{" "}
             </button>
           ))}{" "}
         </div>{" "}

@@ -142,8 +142,8 @@ export const Sidebar: React.FC<{
         {/* Brand Header */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-border shrink-0">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="flex items-center justify-center rounded-lg w-9 h-9 bg-primary text-primary-foreground shrink-0 shadow-md">
-              <Scale className="w-5 h-5" />
+            <div className="flex items-center justify-center rounded-lg w-9 h-9 bg-emerald-600 dark:bg-emerald-700 text-white shrink-0 shadow-md">
+              <Scale className="w-5 h-5 text-white" />
             </div>
             {!isCollapsed && (
               <div className="flex flex-col">
@@ -207,7 +207,7 @@ export const Sidebar: React.FC<{
                         className={`p-2.5 rounded-md transition-all relative group ${isActive ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 font-semibold" : "hover:bg-accent hover:text-accent-foreground text-muted-foreground hover:text-foreground"}`}
                       >
                         <Icon className={`w-5 h-5 ${isActive ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`} /> {/* Tooltip */}
-                        <span className="absolute left-14 scale-0 group-hover:scale-100 transition-all rounded-md bg-background text-white text-xs py-1 px-2 z-50 whitespace-nowrap shadow-xl">
+                        <span className="absolute left-14 scale-0 group-hover:scale-100 transition-all rounded-md bg-foreground text-background text-xs py-1 px-2 z-50 whitespace-nowrap shadow-xl">
                           {item.label}
                         </span>
                       </button>

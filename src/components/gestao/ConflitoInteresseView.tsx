@@ -65,7 +65,7 @@ export const ConflitoInteresseView: React.FC = () => {
       {/* Header */}{" "}
       <div className="text-left">
         {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Conflito de Interesse
         </h2>{" "}
         <p className="text-xs text-muted-foreground">
@@ -100,7 +100,7 @@ export const ConflitoInteresseView: React.FC = () => {
                 placeholder="Ex: Banco Itaú / Carlos Silva"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
               />{" "}
             </div>{" "}
             <button
@@ -124,7 +124,7 @@ export const ConflitoInteresseView: React.FC = () => {
                   <div className="flex items-center gap-2">
                     {" "}
                     <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0" />{" "}
-                    <h4 className="text-xs font-extrabold uppercase tracking-widest text-rose-800 dark:text-rose-300">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-rose-800 dark:text-rose-300">
                       {" "}
                       Impedimento Ético Detectado!{" "}
                     </h4>{" "}
@@ -159,7 +159,7 @@ export const ConflitoInteresseView: React.FC = () => {
                           <div className="flex items-center gap-2.5">
                             {" "}
                             {isClient ? (
-                              <UserCheck className="w-4.5 h-4.5 text-cyan-500" />
+                              <UserCheck className="w-4.5 h-4.5 text-emerald-500" />
                             ) : (
                               <Scale className="w-4.5 h-4.5 text-indigo-500" />
                             )}{" "}
@@ -192,7 +192,7 @@ export const ConflitoInteresseView: React.FC = () => {
                 <div className="flex items-center gap-2">
                   {" "}
                   <ShieldCheck className="w-6 h-6 text-emerald-600 dark:text-emerald-400 shrink-0" />{" "}
-                  <h4 className="text-xs font-extrabold uppercase tracking-widest text-emerald-800 dark:text-emerald-300">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
                     {" "}
                     Nenhum Impedimento Encontrado{" "}
                   </h4>{" "}

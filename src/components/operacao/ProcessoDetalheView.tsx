@@ -64,7 +64,7 @@ export const ProcessoDetalheView: React.FC = () => {
         </p>{" "}
         <button
           onClick={() => setActiveTab("operacao.processos")}
-          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold rounded-md transition-colors cursor-pointer"
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-md transition-colors cursor-pointer"
         >
           {" "}
           Ir para Processos{" "}
@@ -87,7 +87,7 @@ export const ProcessoDetalheView: React.FC = () => {
       title: m.description,
       desc: m.details || "",
       type: "movement" as const,
-      color: "border-cyan-500 text-cyan-600 bg-cyan-50 dark:bg-cyan-950/40",
+      color: "border-emerald-500 text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40",
     })),
     ...procDeadlines.map((d) => ({
       date: d.date.split("T")[0],
@@ -213,7 +213,7 @@ export const ProcessoDetalheView: React.FC = () => {
         </button>{" "}
         <div className="text-left">
           {" "}
-          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+          <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
             Contencioso Judicial
           </span>{" "}
           <h2 className="text-base font-bold text-foreground leading-tight">
@@ -228,11 +228,11 @@ export const ProcessoDetalheView: React.FC = () => {
           {" "}
           <div>
             {" "}
-            <span className="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/40 px-2 py-0.5 rounded-full uppercase">
+            <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full uppercase">
               {" "}
               {process.area}{" "}
             </span>{" "}
-            <h3 className="text-base font-extrabold text-foreground mt-1 leading-tight">
+            <h3 className="text-base font-bold text-foreground mt-1 leading-tight">
               {" "}
               {process.title}{" "}
             </h3>{" "}
@@ -262,7 +262,7 @@ export const ProcessoDetalheView: React.FC = () => {
               className="px-3.5 py-1.5 bg-card hover:bg-accent hover:text-accent-foreground disabled:opacity-50 text-white text-[10px] font-bold rounded-md transition-colors border border-border flex items-center gap-1.5 cursor-pointer shrink-0"
             >
               {" "}
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />{" "}
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />{" "}
               {isGeneratingSummary
                 ? "Processando..."
                 : "Regerar Resumo IA"}{" "}
@@ -295,7 +295,7 @@ export const ProcessoDetalheView: React.FC = () => {
             <span className="text-muted-foreground block font-semibold text-[10px] uppercase">
               Tribunal / Vara
             </span>{" "}
-            <span className="font-bold text-cyan-600 dark:text-cyan-400 block truncate mt-0.5">
+            <span className="font-bold text-emerald-600 dark:text-emerald-400 block truncate mt-0.5">
               {process.court} - {process.division}
             </span>{" "}
           </div>{" "}
@@ -325,12 +325,12 @@ export const ProcessoDetalheView: React.FC = () => {
           {" "}
           <div className="flex items-center gap-2">
             {" "}
-            <Sparkles className="w-4.5 h-4.5 text-cyan-400 animate-pulse shrink-0" />{" "}
-            <h4 className="text-xs font-black uppercase tracking-widest text-cyan-400">
+            <Sparkles className="w-4.5 h-4.5 text-emerald-400 animate-pulse shrink-0" />{" "}
+            <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400">
               Resumo Gerado por IA
             </h4>{" "}
           </div>{" "}
-          <div className="mt-3 text-xs text-card-foreground leading-relaxed font-normal whitespace-pre-wrap max-h-48 overflow-y-auto no-scrollbar">
+          <div className="mt-3 text-xs text-slate-200 leading-relaxed font-normal whitespace-pre-wrap max-h-48 overflow-y-auto no-scrollbar">
             {" "}
             {process.aiSummary}{" "}
           </div>{" "}
@@ -383,13 +383,13 @@ export const ProcessoDetalheView: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveSubTab(tab.id as any)}
-                  className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all cursor-pointer shrink-0 ${IsActive ? "border-cyan-500 text-cyan-600 dark:text-cyan-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
+                  className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all cursor-pointer shrink-0 ${IsActive ? "border-emerald-500 text-emerald-600 dark:text-emerald-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
                 >
                   {" "}
                   <Icon className="w-3.5 h-3.5 shrink-0" />{" "}
                   <span>{tab.label}</span>{" "}
                   <span
-                    className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${IsActive ? "bg-cyan-100 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-400" : "bg-muted text-muted-foreground"}`}
+                    className={`px-1.5 py-0.2 rounded-full text-[9px] font-bold ${IsActive ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400" : "bg-muted text-muted-foreground"}`}
                   >
                     {" "}
                     {tab.count}{" "}
@@ -414,11 +414,11 @@ export const ProcessoDetalheView: React.FC = () => {
                     required
                     value={newDesc}
                     onChange={(e) => setNewDesc(e.target.value)}
-                    className="flex-1 bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-1.5 text-xs text-card-foreground outline-0"
+                    className="flex-1 bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-1.5 text-xs text-card-foreground outline-0"
                   />{" "}
                   <button
                     type="submit"
-                    className="px-3.5 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors cursor-pointer shrink-0 flex items-center gap-1 shadow-md shadow-cyan-600/10"
+                    className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors cursor-pointer shrink-0 flex items-center gap-1 shadow-md shadow-emerald-600/10"
                   >
                     {" "}
                     <Plus className="w-3.5 h-3.5" /> Incluir{" "}
@@ -440,7 +440,7 @@ export const ProcessoDetalheView: React.FC = () => {
                           <Clock className="w-3 h-3" />{" "}
                           {new Date(m.date).toLocaleDateString("pt-BR")}{" "}
                         </span>{" "}
-                        <span className="font-bold text-cyan-600 dark:text-cyan-400 uppercase text-[8px] bg-cyan-50 dark:bg-cyan-950 px-1.5 py-0.5 rounded">
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400 uppercase text-[8px] bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded">
                           {" "}
                           Andamento{" "}
                         </span>{" "}
@@ -504,7 +504,7 @@ export const ProcessoDetalheView: React.FC = () => {
                     {" "}
                     <button
                       type="submit"
-                      className="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer flex items-center justify-center gap-1"
+                      className="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer flex items-center justify-center gap-1"
                     >
                       {" "}
                       <Plus className="w-3.5 h-3.5" /> Adicionar{" "}
@@ -526,7 +526,7 @@ export const ProcessoDetalheView: React.FC = () => {
                           type="checkbox"
                           checked={d.completed}
                           onChange={() => toggleDeadlineCompleted(d.id)}
-                          className="w-4 h-4 text-cyan-600 border-border rounded focus:ring-0 cursor-pointer"
+                          className="w-4 h-4 text-emerald-600 border-border rounded focus:ring-0 cursor-pointer"
                         />{" "}
                         <div className="text-left">
                           {" "}
@@ -629,7 +629,7 @@ export const ProcessoDetalheView: React.FC = () => {
                     <div className="text-right shrink-0">
                       {" "}
                       <span
-                        className={`text-xs font-black block ${f.type === "income" ? "text-emerald-600" : "text-rose-600"}`}
+                        className={`text-xs font-bold block ${f.type === "income" ? "text-emerald-600" : "text-rose-600"}`}
                       >
                         {" "}
                         {f.type === "income" ? "+" : "-"} R${" "}
@@ -695,7 +695,7 @@ export const ProcessoDetalheView: React.FC = () => {
           {" "}
           <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-4 flex items-center gap-1.5">
             {" "}
-            <Clock className="w-4 h-4 text-cyan-500 shrink-0" /> Timeline
+            <Clock className="w-4 h-4 text-emerald-500 shrink-0" /> Timeline
             Unificada do Processo{" "}
           </h3>{" "}
           <div className="relative pl-4 border-l border-border space-y-5 py-2 max-h-[500px] overflow-y-auto no-scrollbar">
@@ -704,7 +704,7 @@ export const ProcessoDetalheView: React.FC = () => {
               <div key={idx} className="relative group">
                 {" "}
                 {/* Timeline node dot */}{" "}
-                <span className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 border-white bg-cyan-500 group-hover:scale-125 transition-transform" />{" "}
+                <span className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 border-white bg-emerald-500 group-hover:scale-125 transition-transform" />{" "}
                 <div className="space-y-0.5">
                   {" "}
                   <div className="flex items-center justify-between text-[10px]">

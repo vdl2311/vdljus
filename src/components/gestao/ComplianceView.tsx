@@ -61,7 +61,7 @@ export const ComplianceView: React.FC = () => {
       {/* Header */}{" "}
       <div className="text-left">
         {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Compliance & Ética
         </h2>{" "}
         <p className="text-xs text-muted-foreground">
@@ -79,10 +79,10 @@ export const ComplianceView: React.FC = () => {
             );
             setAuditResult(null);
           }}
-          className={`flex items-center gap-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${auditMode === "oab" ? "border-cyan-500 text-cyan-600 dark:text-cyan-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
+          className={`flex items-center gap-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${auditMode === "oab" ? "border-emerald-500 text-emerald-600 dark:text-emerald-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
         >
           {" "}
-          <Bot className="w-4 h-4 text-cyan-500 shrink-0" /> Publicidade OAB
+          <Bot className="w-4 h-4 text-emerald-500 shrink-0" /> Publicidade OAB
           (Art. 39 a 47){" "}
         </button>{" "}
         <button
@@ -93,10 +93,10 @@ export const ComplianceView: React.FC = () => {
             );
             setAuditResult(null);
           }}
-          className={`flex items-center gap-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${auditMode === "lgpd" ? "border-cyan-500 text-cyan-600 dark:text-cyan-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
+          className={`flex items-center gap-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${auditMode === "lgpd" ? "border-emerald-500 text-emerald-600 dark:text-emerald-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
         >
           {" "}
-          <ShieldAlert className="w-4 h-4 text-cyan-500 shrink-0" /> Segurança
+          <ShieldAlert className="w-4 h-4 text-emerald-500 shrink-0" /> Segurança
           de Dados & LGPD{" "}
         </button>{" "}
       </div>{" "}
@@ -118,12 +118,12 @@ export const ComplianceView: React.FC = () => {
             required
             value={textToAudit}
             onChange={(e) => setTextToAudit(e.target.value)}
-            className="flex-1 w-full bg-background border border-border focus:border-cyan-500 rounded-md p-3 text-xs text-card-foreground outline-0 resize-none font-sans"
+            className="flex-1 w-full bg-background border border-border focus:border-emerald-500 rounded-md p-3 text-xs text-card-foreground outline-0 resize-none font-sans"
           />{" "}
           <button
             onClick={handleRunAudit}
             disabled={isLoading || !textToAudit.trim()}
-            className="w-full mt-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white font-bold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 shadow-md shadow-cyan-600/10 cursor-pointer"
+            className="w-full mt-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/10 cursor-pointer"
           >
             {" "}
             {isLoading ? (
@@ -139,7 +139,7 @@ export const ComplianceView: React.FC = () => {
           {" "}
           <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
             {" "}
-            <HelpCircle className="w-4.5 h-4.5 text-cyan-500" /> Relatório Ético
+            <HelpCircle className="w-4.5 h-4.5 text-emerald-500" /> Relatório Ético
             Consolidado{" "}
           </h3>{" "}
           <p className="text-[10px] text-muted-foreground mb-4 leading-snug">
@@ -151,7 +151,7 @@ export const ComplianceView: React.FC = () => {
             {isLoading ? (
               <div className="h-full flex flex-col items-center justify-center text-center animate-pulse">
                 {" "}
-                <RefreshCw className="w-8 h-8 text-cyan-500 animate-spin mb-3" />{" "}
+                <RefreshCw className="w-8 h-8 text-emerald-500 animate-spin mb-3" />{" "}
                 <p className="font-bold text-foreground ">
                   Auditando sob o Código de Ética e Disciplina da OAB...
                 </p>{" "}
@@ -172,7 +172,7 @@ export const ComplianceView: React.FC = () => {
                     <span className="text-[9px] text-muted-foreground block font-bold uppercase">
                       Status de Adequação
                     </span>{" "}
-                    <span className="text-sm font-black text-foreground">
+                    <span className="text-sm font-bold text-foreground">
                       {" "}
                       {getStatusName(auditResult.level)}{" "}
                     </span>{" "}
@@ -198,9 +198,9 @@ export const ComplianceView: React.FC = () => {
                     </p>{" "}
                   </div>{" "}
                   {/* Recommendations */}{" "}
-                  <div className="p-3 bg-cyan-50/40 dark:bg-cyan-950/20 border border-cyan-100 dark:border-cyan-900/30 rounded-md space-y-2">
+                  <div className="p-3 bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 rounded-md space-y-2">
                     {" "}
-                    <span className="font-bold text-cyan-800 dark:text-cyan-400 block text-[10px] uppercase">
+                    <span className="font-bold text-emerald-800 dark:text-emerald-400 block text-[10px] uppercase">
                       Plano de Ajuste Recomendado
                     </span>{" "}
                     <div className="space-y-1.5 text-[11px]">
@@ -213,7 +213,7 @@ export const ComplianceView: React.FC = () => {
                               className="flex items-start gap-1.5 text-muted-foreground leading-relaxed"
                             >
                               {" "}
-                              <span className="text-cyan-600 dark:text-cyan-400 shrink-0 font-bold">
+                              <span className="text-emerald-600 dark:text-emerald-400 shrink-0 font-bold">
                                 •
                               </span>{" "}
                               <span>{rec}</span>{" "}

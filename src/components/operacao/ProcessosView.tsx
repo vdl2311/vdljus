@@ -122,7 +122,7 @@ export const ProcessosView: React.FC = () => {
         {" "}
         <div className="text-left">
           {" "}
-          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
             Painel Processual
           </h2>{" "}
           <p className="text-xs text-muted-foreground">
@@ -131,7 +131,7 @@ export const ProcessosView: React.FC = () => {
         </div>{" "}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-cyan-600/10 cursor-pointer"
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-emerald-600/10 cursor-pointer"
         >
           {" "}
           <Plus className="w-4 h-4" /> Cadastrar Processo{" "}
@@ -149,7 +149,7 @@ export const ProcessosView: React.FC = () => {
             placeholder="Pesquisar por Título, CNJ, Autor ou Réu..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border focus:border-cyan-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
+            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
           />{" "}
         </div>{" "}
         {/* Filters */}{" "}
@@ -197,7 +197,7 @@ export const ProcessosView: React.FC = () => {
         {filtered.map((p) => (
           <div
             key={p.id}
-            className="bg-card border border-border rounded-xl p-5 shadow-sm flex flex-col justify-between hover:border-cyan-500/40 transition-all group relative"
+            className="bg-card border border-border rounded-xl p-5 shadow-sm flex flex-col justify-between hover:border-emerald-500/40 transition-all group relative"
           >
             {" "}
             <div>
@@ -219,7 +219,7 @@ export const ProcessosView: React.FC = () => {
               {/* Title & CNJ */}{" "}
               <div className="text-left space-y-1">
                 {" "}
-                <h4 className="text-sm font-bold text-foreground group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors line-clamp-1">
+                <h4 className="text-sm font-bold text-foreground group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-1">
                   {" "}
                   {p.title}{" "}
                 </h4>{" "}
@@ -257,7 +257,7 @@ export const ProcessosView: React.FC = () => {
                   <span className="text-muted-foreground">
                     Tribunal/Vara:
                   </span>{" "}
-                  <span className="font-semibold text-cyan-600 dark:text-cyan-400 truncate max-w-[160px]">
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400 truncate max-w-[160px]">
                     {p.court} - {p.division}
                   </span>{" "}
                 </div>{" "}
@@ -271,7 +271,7 @@ export const ProcessosView: React.FC = () => {
                   setSelectedProcessId(p.id);
                   setActiveTab("operacao.processo_detalhe");
                 }}
-                className="flex-1 py-1.5 bg-muted hover:bg-cyan-50 dark:hover:bg-cyan-950/20 text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 text-[10px] font-bold rounded-md border border-border hover:border-cyan-500/30 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                className="flex-1 py-1.5 bg-muted hover:bg-emerald-50 dark:hover:bg-emerald-950/20 text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 text-[10px] font-bold rounded-md border border-border hover:border-emerald-500/30 transition-all flex items-center justify-center gap-1 cursor-pointer"
               >
                 {" "}
                 <Eye className="w-3.5 h-3.5" /> Detalhes & Linha do Tempo{" "}
@@ -349,7 +349,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: 5001234-56.2025.8.26.0100"
                     value={cnj}
                     onChange={(e) => handleCnjChange(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Title */}{" "}
@@ -364,7 +364,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: Revisional de Alimentos / Cobrança Indevida"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Client Link Dropdown */}{" "}
@@ -377,7 +377,7 @@ export const ProcessosView: React.FC = () => {
                     required
                     value={clientId}
                     onChange={(e) => setClientId(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   >
                     {" "}
                     <option value="">Selecione do CRM...</option>{" "}
@@ -397,7 +397,7 @@ export const ProcessosView: React.FC = () => {
                   <select
                     value={area}
                     onChange={(e) => setArea(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   >
                     {" "}
                     <option value="Civil">Civil</option>{" "}
@@ -416,7 +416,7 @@ export const ProcessosView: React.FC = () => {
                   <select
                     value={risk}
                     onChange={(e) => setRisk(e.target.value as ProcessRisk)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   >
                     {" "}
                     <option value="low">
@@ -441,7 +441,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: 50000"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Tribunal */}{" "}
@@ -456,7 +456,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: TJSP / TRT2 / TRF3"
                     value={court}
                     onChange={(e) => setCourt(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Vara */}{" "}
@@ -471,7 +471,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: 12ª Vara Cível Federal"
                     value={division}
                     onChange={(e) => setDivision(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Classe */}{" "}
@@ -486,7 +486,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: Monitória / Mandado de Segurança"
                     value={classType}
                     onChange={(e) => setClassType(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Assunto */}{" "}
@@ -501,7 +501,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Ex: Repetição de Indébito / ISS"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Plaintiff */}{" "}
@@ -516,7 +516,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Nome completo do Autor"
                     value={plaintiff}
                     onChange={(e) => setPlaintiff(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Defendant */}{" "}
@@ -531,7 +531,7 @@ export const ProcessosView: React.FC = () => {
                     placeholder="Nome completo do Réu"
                     value={defendant}
                     onChange={(e) => setDefendant(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -546,7 +546,7 @@ export const ProcessosView: React.FC = () => {
                   rows={2}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Submit Buttons */}{" "}
@@ -562,7 +562,7 @@ export const ProcessosView: React.FC = () => {
                 </button>{" "}
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors shadow-md cursor-pointer"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors shadow-md cursor-pointer"
                 >
                   {" "}
                   Registrar Processo{" "}

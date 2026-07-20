@@ -92,7 +92,7 @@ export const IaDocumentosView: React.FC = () => {
       {/* Header */}{" "}
       <div className="text-left">
         {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Redação & Revisão Cognitiva
         </h2>{" "}
         <p className="text-xs text-muted-foreground">
@@ -105,18 +105,18 @@ export const IaDocumentosView: React.FC = () => {
         {" "}
         <button
           onClick={() => setActiveIaTab("generator")}
-          className={`flex items-center gap-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${activeIaTab === "generator" ? "border-cyan-500 text-cyan-600 dark:text-cyan-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
+          className={`flex items-center gap-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${activeIaTab === "generator" ? "border-emerald-500 text-emerald-600 dark:text-emerald-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
         >
           {" "}
-          <Sparkles className="w-4 h-4 text-cyan-500 shrink-0" /> Gerador de
+          <Sparkles className="w-4 h-4 text-emerald-500 shrink-0" /> Gerador de
           Petições e Recursos{" "}
         </button>{" "}
         <button
           onClick={() => setActiveIaTab("reviewer")}
-          className={`flex items-center gap-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${activeIaTab === "reviewer" ? "border-cyan-500 text-cyan-600 dark:text-cyan-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
+          className={`flex items-center gap-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer ${activeIaTab === "reviewer" ? "border-emerald-500 text-emerald-600 dark:text-emerald-400" : "border-transparent text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground"}`}
         >
           {" "}
-          <ListChecks className="w-4 h-4 text-cyan-500 shrink-0" /> Analisador
+          <ListChecks className="w-4 h-4 text-emerald-500 shrink-0" /> Analisador
           de Contratos & Riscos{" "}
         </button>{" "}
       </div>{" "}
@@ -150,7 +150,7 @@ export const IaDocumentosView: React.FC = () => {
                   <select
                     value={docType}
                     onChange={(e) => setDocType(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   >
                     {" "}
                     <option value="Petição Inicial">
@@ -178,7 +178,7 @@ export const IaDocumentosView: React.FC = () => {
                     placeholder="Ex: Ação Rescisória / Restabelecimento de Benefício"
                     value={docTitle}
                     onChange={(e) => setDocTitle(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Client Link drop */}{" "}
@@ -191,7 +191,7 @@ export const IaDocumentosView: React.FC = () => {
                     required
                     value={clientName}
                     onChange={(e) => setClientName(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   >
                     {" "}
                     <option value="">Selecione no CRM...</option>{" "}
@@ -214,7 +214,7 @@ export const IaDocumentosView: React.FC = () => {
                     rows={3}
                     value={facts}
                     onChange={(e) => setFacts(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 {/* Pedidos */}{" "}
@@ -229,14 +229,14 @@ export const IaDocumentosView: React.FC = () => {
                     rows={2}
                     value={requests}
                     onChange={(e) => setRequests(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
               </div>{" "}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-2.5 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-600 hover:to-indigo-700 disabled:opacity-50 text-white font-bold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 shadow-md shadow-cyan-500/10 cursor-pointer"
+                className="w-full py-2.5 bg-gradient-to-r from-emerald-500 to-indigo-600 hover:from-emerald-600 hover:to-indigo-700 disabled:opacity-50 text-white font-bold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/10 cursor-pointer"
               >
                 {" "}
                 {isLoading ? (
@@ -273,7 +273,7 @@ export const IaDocumentosView: React.FC = () => {
                   </button>{" "}
                   <button
                     onClick={() => triggerExport("pdf")}
-                    className="px-2 py-1 bg-cyan-600 hover:bg-cyan-500 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow-sm transition-all cursor-pointer"
+                    className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow-sm transition-all cursor-pointer"
                   >
                     {" "}
                     Exportar PDF{" "}
@@ -287,7 +287,7 @@ export const IaDocumentosView: React.FC = () => {
               {isLoading ? (
                 <div className="h-full flex flex-col items-center justify-center text-center animate-pulse">
                   {" "}
-                  <Sparkles className="w-8 h-8 text-cyan-500 animate-spin mb-3" />{" "}
+                  <Sparkles className="w-8 h-8 text-emerald-500 animate-spin mb-3" />{" "}
                   <p className="text-xs font-bold text-foreground ">
                     Estruturando tese jurídica e preâmbulo constitucional...
                   </p>{" "}
@@ -343,12 +343,12 @@ export const IaDocumentosView: React.FC = () => {
               placeholder="Cole o corpo do documento aqui..."
               value={contractText}
               onChange={(e) => setContractText(e.target.value)}
-              className="flex-1 w-full bg-background border border-border focus:border-cyan-500 rounded-md p-3 text-xs text-card-foreground outline-0 resize-none font-mono"
+              className="flex-1 w-full bg-background border border-border focus:border-emerald-500 rounded-md p-3 text-xs text-card-foreground outline-0 resize-none font-mono"
             />{" "}
             <button
               onClick={handleReviewContract}
               disabled={isLoading || !contractText.trim()}
-              className="w-full mt-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white font-bold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 shadow-md shadow-cyan-600/10 cursor-pointer"
+              className="w-full mt-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/10 cursor-pointer"
             >
               {" "}
               {isLoading ? (
@@ -374,7 +374,7 @@ export const IaDocumentosView: React.FC = () => {
               {isLoading ? (
                 <div className="h-full flex flex-col items-center justify-center text-center animate-pulse">
                   {" "}
-                  <RefreshCw className="w-8 h-8 text-cyan-500 animate-spin mb-3" />{" "}
+                  <RefreshCw className="w-8 h-8 text-emerald-500 animate-spin mb-3" />{" "}
                   <p className="text-xs font-bold text-foreground ">
                     Auditando cláusula por cláusula...
                   </p>{" "}
@@ -394,7 +394,7 @@ export const IaDocumentosView: React.FC = () => {
                       <span className="text-muted-foreground block font-semibold text-[9px] uppercase">
                         Score de Conformidade
                       </span>{" "}
-                      <span className="text-sm font-black text-foreground">
+                      <span className="text-sm font-bold text-foreground">
                         8.2 / 10 OAB-Regular
                       </span>{" "}
                     </div>{" "}
@@ -434,7 +434,7 @@ export const IaDocumentosView: React.FC = () => {
                           <p className="text-[11px] text-muted-foreground">
                             {risk.description}
                           </p>{" "}
-                          <div className="p-2 bg-card rounded border border-border text-[10px] text-cyan-600 dark:text-cyan-400 leading-relaxed font-medium">
+                          <div className="p-2 bg-card rounded border border-border text-[10px] text-emerald-600 dark:text-emerald-400 leading-relaxed font-medium">
                             {" "}
                             <strong>Recomendação de ajuste:</strong>{" "}
                             {risk.suggestion}{" "}

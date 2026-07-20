@@ -145,7 +145,7 @@ export const TarefasView: React.FC = () => {
                 {" "}
                 <div className="flex items-center gap-1 text-[9px] text-muted-foreground truncate max-w-[120px]">
                   {" "}
-                  <div className="w-4 h-4 rounded-full bg-cyan-600 text-white font-bold flex items-center justify-center text-[8px] shrink-0">
+                  <div className="w-4 h-4 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-[8px] shrink-0">
                     {" "}
                     {task.assigneeName ? task.assigneeName.charAt(0) : "S"}{" "}
                   </div>{" "}
@@ -194,7 +194,7 @@ export const TarefasView: React.FC = () => {
         {" "}
         <div className="text-left">
           {" "}
-          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
             Fluxo de Trabalho
           </h2>{" "}
           <p className="text-xs text-muted-foreground">
@@ -204,7 +204,7 @@ export const TarefasView: React.FC = () => {
         </div>{" "}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-cyan-600/10 cursor-pointer"
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-emerald-600/10 cursor-pointer"
         >
           {" "}
           <Plus className="w-4 h-4" /> Criar Nova Tarefa{" "}
@@ -257,7 +257,7 @@ export const TarefasView: React.FC = () => {
                   placeholder="Ex: Minutar Memorial de Sustentação Oral"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Description */}{" "}
@@ -271,7 +271,7 @@ export const TarefasView: React.FC = () => {
                   rows={2}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Priority & Column */}{" "}
@@ -285,7 +285,7 @@ export const TarefasView: React.FC = () => {
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value as any)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   >
                     {" "}
                     <option value="low">Baixa</option>{" "}
@@ -302,7 +302,7 @@ export const TarefasView: React.FC = () => {
                   <select
                     value={column}
                     onChange={(e) => setColumn(e.target.value as any)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   >
                     {" "}
                     <option value="backlog">Backlog</option>{" "}
@@ -322,7 +322,7 @@ export const TarefasView: React.FC = () => {
                 <select
                   value={assigneeId}
                   onChange={(e) => setAssigneeId(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 >
                   {" "}
                   <option value="">
@@ -344,7 +344,7 @@ export const TarefasView: React.FC = () => {
                 <select
                   value={processId}
                   onChange={(e) => setProcessId(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 >
                   {" "}
                   <option value="">Nenhum</option>{" "}
@@ -368,7 +368,7 @@ export const TarefasView: React.FC = () => {
                 </button>{" "}
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
                 >
                   {" "}
                   Confirmar Tarefa{" "}

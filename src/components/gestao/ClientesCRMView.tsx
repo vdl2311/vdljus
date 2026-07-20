@@ -56,7 +56,7 @@ export const ClientesCRMView: React.FC = () => {
         {" "}
         <div className="text-left">
           {" "}
-          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
             CRM Jurídico
           </h2>{" "}
           <p className="text-xs text-muted-foreground">
@@ -66,7 +66,7 @@ export const ClientesCRMView: React.FC = () => {
         </div>{" "}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-cyan-600/10 cursor-pointer"
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-emerald-600/10 cursor-pointer"
         >
           {" "}
           <Plus className="w-4 h-4" /> Cadastrar Cliente{" "}
@@ -84,7 +84,7 @@ export const ClientesCRMView: React.FC = () => {
             placeholder="Pesquisar por nome, CPF/CNPJ, e-mail..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border focus:border-cyan-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
+            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
           />{" "}
         </div>{" "}
         {/* Filters */}{" "}
@@ -128,7 +128,7 @@ export const ClientesCRMView: React.FC = () => {
           return (
             <div
               key={c.id}
-              className="bg-card border border-border rounded-xl p-5 shadow-sm flex flex-col justify-between hover:border-cyan-500/30 transition-all group relative animate-fade-in"
+              className="bg-card border border-border rounded-xl p-5 shadow-sm flex flex-col justify-between hover:border-emerald-500/30 transition-all group relative animate-fade-in"
             >
               {" "}
               <div className="space-y-4">
@@ -160,7 +160,7 @@ export const ClientesCRMView: React.FC = () => {
                 {/* Name */}{" "}
                 <div className="space-y-0.5">
                   {" "}
-                  <h3 className="text-sm font-extrabold text-foreground truncate">
+                  <h3 className="text-sm font-bold text-foreground truncate">
                     {c.name}
                   </h3>{" "}
                   <span className="text-[10px] font-mono text-muted-foreground block">
@@ -195,7 +195,7 @@ export const ClientesCRMView: React.FC = () => {
                   {" "}
                   <span className="text-[10px] text-muted-foreground font-bold block uppercase mb-1.5 flex items-center gap-1">
                     {" "}
-                    <Scale className="w-3.5 h-3.5 text-cyan-500" /> Processos
+                    <Scale className="w-3.5 h-3.5 text-emerald-500" /> Processos
                     Patrocinados ({clientProcesses.length}){" "}
                   </span>{" "}
                   <div className="space-y-1">
@@ -266,7 +266,7 @@ export const ClientesCRMView: React.FC = () => {
                   placeholder="Nome do cliente PF ou PJ por extenso"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Email & Phone */}{" "}
@@ -283,7 +283,7 @@ export const ClientesCRMView: React.FC = () => {
                     placeholder="email@cliente.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 <div className="space-y-1.5">
@@ -296,7 +296,7 @@ export const ClientesCRMView: React.FC = () => {
                     placeholder="(11) 99999-9999"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
               </div>{" "}
@@ -316,7 +316,7 @@ export const ClientesCRMView: React.FC = () => {
                     onChange={(e) =>
                       setDocument(e.target.value.replace(/\D/g, ""))
                     }
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   />{" "}
                 </div>{" "}
                 <div className="space-y-1.5">
@@ -327,7 +327,7 @@ export const ClientesCRMView: React.FC = () => {
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as any)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                   >
                     {" "}
                     <option value="pf">Pessoa Física (PF)</option>{" "}
@@ -344,7 +344,7 @@ export const ClientesCRMView: React.FC = () => {
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as any)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 >
                   {" "}
                   <option value="prospect">
@@ -367,7 +367,7 @@ export const ClientesCRMView: React.FC = () => {
                   placeholder="Rua, número, complemento, bairro, cidade/UF"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Buttons */}{" "}
@@ -383,7 +383,7 @@ export const ClientesCRMView: React.FC = () => {
                 </button>{" "}
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
                 >
                   {" "}
                   Confirmar Cadastro{" "}

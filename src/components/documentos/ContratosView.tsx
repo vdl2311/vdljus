@@ -80,7 +80,7 @@ export const ContratosView: React.FC = () => {
       {/* Header */}{" "}
       <div className="text-left">
         {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Modelos & Contratos
         </h2>{" "}
         <p className="text-xs text-muted-foreground">
@@ -97,7 +97,7 @@ export const ContratosView: React.FC = () => {
             {" "}
             <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
               {" "}
-              <FileText className="w-4.5 h-4.5 text-cyan-500" /> Escolha o
+              <FileText className="w-4.5 h-4.5 text-emerald-500" /> Escolha o
               Modelo{" "}
             </h3>{" "}
             <div className="space-y-2">
@@ -109,11 +109,11 @@ export const ContratosView: React.FC = () => {
                     setSelectedTemplate(t.id);
                     setShowSignatureAudit(false);
                   }}
-                  className={`w-full text-left p-3 border rounded-xl transition-all cursor-pointer ${selectedTemplate === t.id ? "bg-cyan-50 border-cyan-500 dark:bg-cyan-950/40 dark:border-cyan-500/80" : "bg-background/10 border-border hover:border-border dark:hover:border-border"}`}
+                  className={`w-full text-left p-3 border rounded-xl transition-all cursor-pointer ${selectedTemplate === t.id ? "bg-emerald-50 border-emerald-500 dark:bg-emerald-950/40 dark:border-emerald-500/80" : "bg-background/10 border-border hover:border-border dark:hover:border-border"}`}
                 >
                   {" "}
                   <span
-                    className={`text-xs font-bold block ${selectedTemplate === t.id ? "text-cyan-600 dark:text-cyan-400" : "text-foreground "}`}
+                    className={`text-xs font-bold block ${selectedTemplate === t.id ? "text-emerald-600 dark:text-emerald-400" : "text-foreground "}`}
                   >
                     {" "}
                     {t.title}{" "}
@@ -126,7 +126,7 @@ export const ContratosView: React.FC = () => {
             {" "}
             <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
               {" "}
-              <User className="w-4.5 h-4.5 text-cyan-500" /> Vincular
+              <User className="w-4.5 h-4.5 text-emerald-500" /> Vincular
               Cliente{" "}
             </h3>{" "}
             <div className="space-y-1.5">
@@ -140,7 +140,7 @@ export const ContratosView: React.FC = () => {
                   setSelectedClientId(e.target.value);
                   setShowSignatureAudit(false);
                 }}
-                className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
               >
                 {" "}
                 <option value="">Selecione no CRM...</option>{" "}
@@ -203,7 +203,7 @@ export const ContratosView: React.FC = () => {
               <div className="flex items-center gap-2">
                 {" "}
                 <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />{" "}
-                <h4 className="text-xs font-extrabold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
                   {" "}
                   Carimbo de Assinatura Registrado{" "}
                 </h4>{" "}

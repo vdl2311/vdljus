@@ -103,7 +103,7 @@ export const AutomacoesView: React.FC = () => {
         {" "}
         <div className="text-left">
           {" "}
-          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
             Gatilhos & Automação
           </h2>{" "}
           <p className="text-xs text-muted-foreground">
@@ -113,7 +113,7 @@ export const AutomacoesView: React.FC = () => {
         </div>{" "}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-cyan-600/10 cursor-pointer"
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-emerald-600/10 cursor-pointer"
         >
           {" "}
           <Plus className="w-4 h-4" /> Nova Regra{" "}
@@ -127,20 +127,20 @@ export const AutomacoesView: React.FC = () => {
           {rules.map((rule) => (
             <div
               key={rule.id}
-              className="p-5 bg-card border border-border rounded-xl shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-cyan-500/20 transition-all"
+              className="p-5 bg-card border border-border rounded-xl shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-emerald-500/20 transition-all"
             >
               {" "}
               <div className="space-y-1.5 flex-1">
                 {" "}
                 <div className="flex items-center gap-2">
                   {" "}
-                  <span className="p-1 rounded bg-cyan-50 dark:bg-cyan-950 text-cyan-600 dark:text-cyan-400 shrink-0">
+                  <span className="p-1 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 shrink-0">
                     <Zap className="w-4 h-4 fill-current" />
                   </span>{" "}
-                  <h4 className="text-xs font-extrabold text-card-foreground leading-snug">
+                  <h4 className="text-xs font-bold text-card-foreground leading-snug">
                     {" "}
                     Se:{" "}
-                    <span className="text-cyan-600 dark:text-cyan-400">
+                    <span className="text-emerald-600 dark:text-emerald-400">
                       {rule.trigger}
                     </span>{" "}
                     → Então:{" "}
@@ -170,7 +170,7 @@ export const AutomacoesView: React.FC = () => {
                 >
                   {" "}
                   {rule.active ? (
-                    <ToggleRight className="w-8 h-8 text-cyan-600 dark:text-cyan-400" />
+                    <ToggleRight className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
                   ) : (
                     <ToggleLeft className="w-8 h-8 text-muted-foreground " />
                   )}{" "}
@@ -187,7 +187,7 @@ export const AutomacoesView: React.FC = () => {
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1">
               {" "}
               <RefreshCw
-                className={`w-3.5 h-3.5 ${testingRuleId !== null ? "animate-spin text-cyan-500" : ""}`}
+                className={`w-3.5 h-3.5 ${testingRuleId !== null ? "animate-spin text-emerald-500" : ""}`}
               />{" "}
               Automations Sandbox Console{" "}
             </span>{" "}
@@ -201,7 +201,7 @@ export const AutomacoesView: React.FC = () => {
                   log.includes("[SUCESSO]")
                     ? "text-emerald-400"
                     : log.includes("[EXEC]")
-                      ? "text-cyan-400 font-bold"
+                      ? "text-emerald-400 font-bold"
                       : ""
                 }
               >
@@ -255,7 +255,7 @@ export const AutomacoesView: React.FC = () => {
                 <select
                   value={triggerInput}
                   onChange={(e) => setTriggerInput(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 >
                   {" "}
                   <option value="Alteração de Status para Sentença">
@@ -281,7 +281,7 @@ export const AutomacoesView: React.FC = () => {
                 <select
                   value={actionInput}
                   onChange={(e) => setActionInput(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 >
                   {" "}
                   <option value="Enviar Notificação por E-mail ao Cliente">
@@ -310,7 +310,7 @@ export const AutomacoesView: React.FC = () => {
                   value={descInput}
                   onChange={(e) => setDescInput(e.target.value)}
                   rows={2}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Buttons */}{" "}
@@ -326,7 +326,7 @@ export const AutomacoesView: React.FC = () => {
                 </button>{" "}
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
                 >
                   {" "}
                   Criar Fluxo{" "}

@@ -33,48 +33,48 @@
 }
 
 :root {
-  --background: oklch(0.99 0.002 145); /* Quase branco com tom verde sutil */
-  --foreground: oklch(0.18 0.01 145); /* Quase preto com tom verde */
-  --card: oklch(1 0 0); /* Branco puro */
-  --card-foreground: oklch(0.18 0.01 145);
+  --background: oklch(0.98 0.005 150); /* Soft elegant background */
+  --foreground: oklch(0.15 0.015 150); /* Professional slate-emerald charcoal */
+  --card: oklch(1 0 0); /* White card */
+  --card-foreground: oklch(0.15 0.015 150);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.01 145);
-  --primary: oklch(0.55 0.13 155); /* Verde-jurídico (teal/esmeralda) */
-  --primary-foreground: oklch(0.99 0 0); /* Branco sobre primária */
-  --secondary: oklch(0.96 0.01 145); /* Cinza muito claro */
-  --secondary-foreground: oklch(0.18 0.01 145);
-  --muted: oklch(0.96 0.005 145); /* Cinza neutro */
-  --muted-foreground: oklch(0.5 0.01 145); /* Cinza neutro escuro */
-  --accent: oklch(0.94 0.04 155); /* Verde mais claro */
-  --accent-foreground: oklch(0.18 0.01 145); 
-  --destructive: oklch(0.6 0.24 27); /* Vermelho-alaranjado */
+  --popover-foreground: oklch(0.15 0.015 150);
+  --primary: oklch(0.42 0.12 150); /* Polished, deep legal emerald-green */
+  --primary-foreground: oklch(0.99 0 0); /* Pure white text */
+  --secondary: oklch(0.95 0.01 150); /* Subtle light gray-green backdrop */
+  --secondary-foreground: oklch(0.15 0.015 150);
+  --muted: oklch(0.94 0.008 150);
+  --muted-foreground: oklch(0.42 0.015 150);
+  --accent: oklch(0.92 0.03 150); /* Soft minty-emerald accent backdrop */
+  --accent-foreground: oklch(0.35 0.1 150); /* Sleek legal-emerald text */
+  --destructive: oklch(0.6 0.24 27);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.91 0.005 145); /* Cinza claro */
-  --input: oklch(0.91 0.005 145);
-  --ring: oklch(0.55 0.13 155);
-  --radius: 0.625rem; /* 10px base radius */
+  --border: oklch(0.89 0.01 150); /* Clean subtle border */
+  --input: oklch(0.89 0.01 150);
+  --ring: oklch(0.42 0.12 150);
+  --radius: 0.5rem; /* Precise and sharp modern Vercel-like rounded borders (8px) */
 }
 
 .dark {
-  --background: oklch(0.18 0.01 145);
-  --foreground: oklch(0.99 0.002 145);
-  --card: oklch(0.2 0.01 145);
-  --card-foreground: oklch(0.99 0.002 145);
-  --popover: oklch(0.2 0.01 145);
-  --popover-foreground: oklch(0.99 0.002 145);
-  --primary: oklch(0.65 0.13 155);
-  --primary-foreground: oklch(0.18 0.01 145);
-  --secondary: oklch(0.25 0.01 145);
-  --secondary-foreground: oklch(0.99 0.002 145);
-  --muted: oklch(0.25 0.005 145);
-  --muted-foreground: oklch(0.7 0.01 145);
-  --accent: oklch(0.3 0.04 155);
-  --accent-foreground: oklch(0.99 0.002 145);
-  --destructive: oklch(0.6 0.24 27);
+  --background: oklch(0.13 0.012 150); /* Dark slate-emerald background */
+  --foreground: oklch(0.93 0.01 150); /* High contrast light text */
+  --card: oklch(0.16 0.012 150); /* Dark elegant cards */
+  --card-foreground: oklch(0.93 0.01 150);
+  --popover: oklch(0.16 0.012 150);
+  --popover-foreground: oklch(0.93 0.01 150);
+  --primary: oklch(0.65 0.13 150); /* Vibrant deep mint-green in dark mode */
+  --primary-foreground: oklch(0.1 0.01 150);
+  --secondary: oklch(0.2 0.012 150);
+  --secondary-foreground: oklch(0.93 0.01 150);
+  --muted: oklch(0.2 0.008 150);
+  --muted-foreground: oklch(0.65 0.01 150);
+  --accent: oklch(0.22 0.04 150); /* Dark mint accent */
+  --accent-foreground: oklch(0.75 0.08 150);
+  --destructive: oklch(0.55 0.22 27);
   --destructive-foreground: oklch(0.99 0 0);
-  --border: rgba(255, 255, 255, 0.08); /* 8% white */
-  --input: rgba(255, 255, 255, 0.3); /* 30% white */
-  --ring: oklch(0.65 0.13 155);
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: oklch(0.65 0.13 150);
 }
 
 body {

@@ -25,7 +25,7 @@ export const RelatoriosAnalyticsView: React.FC = () => {
       {/* Header */}{" "}
       <div className="text-left">
         {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Relatórios & Analytics
         </h2>{" "}
         <p className="text-xs text-muted-foreground">
@@ -46,7 +46,7 @@ export const RelatoriosAnalyticsView: React.FC = () => {
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                 Taxa de Êxito Judicial
               </span>{" "}
-              <p className="text-2xl font-black text-emerald-600 mt-1">
+              <p className="text-2xl font-bold text-emerald-600 mt-1">
                 {winRatio}% de Vitórias
               </p>{" "}
             </div>{" "}
@@ -77,11 +77,11 @@ export const RelatoriosAnalyticsView: React.FC = () => {
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                 Tempo Médio de Sentença
               </span>{" "}
-              <p className="text-2xl font-black text-foreground mt-1">
+              <p className="text-2xl font-bold text-foreground mt-1">
                 14.2 Meses
               </p>{" "}
             </div>{" "}
-            <span className="p-2 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-500 rounded-md shrink-0">
+            <span className="p-2 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 rounded-md shrink-0">
               <Clock className="w-5 h-5" />
             </span>{" "}
           </div>{" "}
@@ -92,7 +92,7 @@ export const RelatoriosAnalyticsView: React.FC = () => {
           <div className="w-full bg-muted h-1.5 rounded-full overflow-hidden">
             {" "}
             <div
-              className="bg-cyan-500 h-full rounded-full"
+              className="bg-emerald-500 h-full rounded-full"
               style={{ width: "65%" }}
             />{" "}
           </div>{" "}
@@ -107,7 +107,7 @@ export const RelatoriosAnalyticsView: React.FC = () => {
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
                 Produtividade de Prazos
               </span>{" "}
-              <p className="text-2xl font-black text-indigo-600 mt-1">
+              <p className="text-2xl font-bold text-indigo-600 mt-1">
                 100% de Entrega
               </p>{" "}
             </div>{" "}
@@ -136,7 +136,7 @@ export const RelatoriosAnalyticsView: React.FC = () => {
           {" "}
           <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
             {" "}
-            <Map className="w-4.5 h-4.5 text-cyan-500" /> Demanda Média de
+            <Map className="w-4.5 h-4.5 text-emerald-500" /> Demanda Média de
             Resolução por Tribunal (TJ){" "}
           </h3>{" "}
           <div className="space-y-3.5 pt-1.5">
@@ -179,7 +179,7 @@ export const RelatoriosAnalyticsView: React.FC = () => {
                 <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
                   {" "}
                   <div
-                    className="bg-cyan-500 h-full rounded-full"
+                    className="bg-emerald-500 h-full rounded-full"
                     style={{ width: `${item.percentage}%` }}
                   />{" "}
                 </div>{" "}
@@ -192,7 +192,7 @@ export const RelatoriosAnalyticsView: React.FC = () => {
           {" "}
           <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
             {" "}
-            <User2 className="w-4.5 h-4.5 text-cyan-500" /> Carga Processual por
+            <User2 className="w-4.5 h-4.5 text-emerald-500" /> Carga Processual por
             Advogado Sócio{" "}
           </h3>{" "}
           <div className="space-y-3.5 pt-1.5">
@@ -233,7 +233,7 @@ export const RelatoriosAnalyticsView: React.FC = () => {
                 </div>{" "}
                 <div className="text-right">
                   {" "}
-                  <span className="font-bold text-cyan-600 dark:text-cyan-400 block">
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400 block">
                     {lawyer.cases} causas
                   </span>{" "}
                   <span className="text-[10px] text-amber-500 flex items-center gap-0.5 justify-end">

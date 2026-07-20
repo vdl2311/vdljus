@@ -26,7 +26,7 @@ export const ConhecimentoView: React.FC = () => {
       {/* Header */}{" "}
       <div className="text-left">
         {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Base de Conhecimento
         </h2>{" "}
         <p className="text-xs text-muted-foreground">
@@ -46,7 +46,7 @@ export const ConhecimentoView: React.FC = () => {
             placeholder="Pesquisar súmulas, acórdãos, jurisprudência..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background border border-border focus:border-cyan-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
+            className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground outline-0 focus:ring-0"
           />{" "}
         </div>{" "}
         {/* Quick categories */}{" "}
@@ -75,7 +75,7 @@ export const ConhecimentoView: React.FC = () => {
         {filtered.map((art) => (
           <div
             key={art.id}
-            className="p-5 bg-card border border-border rounded-xl shadow-sm flex flex-col justify-between hover:border-cyan-500/30 transition-all group relative"
+            className="p-5 bg-card border border-border rounded-xl shadow-sm flex flex-col justify-between hover:border-emerald-500/30 transition-all group relative"
           >
             {" "}
             <div className="space-y-3">
@@ -83,16 +83,16 @@ export const ConhecimentoView: React.FC = () => {
               {/* Card top bar */}{" "}
               <div className="flex justify-between items-center">
                 {" "}
-                <span className="text-[9px] font-bold uppercase tracking-widest bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 px-2 py-0.5 rounded">
+                <span className="text-[9px] font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded">
                   {" "}
                   {art.category}{" "}
                 </span>{" "}
-                <Bookmark className="w-4 h-4 text-muted-foreground hover:text-cyan-500 transition-colors cursor-pointer shrink-0" />{" "}
+                <Bookmark className="w-4 h-4 text-muted-foreground hover:text-emerald-500 transition-colors cursor-pointer shrink-0" />{" "}
               </div>{" "}
               {/* Title & reference code */}{" "}
               <div className="space-y-1">
                 {" "}
-                <h3 className="text-xs font-extrabold text-card-foreground line-clamp-1 group-hover:text-cyan-500 transition-colors">
+                <h3 className="text-xs font-bold text-card-foreground line-clamp-1 group-hover:text-emerald-500 transition-colors">
                   {" "}
                   {art.title}{" "}
                 </h3>{" "}
@@ -123,7 +123,7 @@ export const ConhecimentoView: React.FC = () => {
                   </span>
                 ))}{" "}
               </div>{" "}
-              <button className="text-[10px] font-bold text-cyan-600 dark:text-cyan-400 flex items-center gap-0.5 hover:underline cursor-pointer">
+              <button className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 hover:underline cursor-pointer">
                 {" "}
                 Ver Completo <ArrowUpRight className="w-3.5 h-3.5" />{" "}
               </button>{" "}

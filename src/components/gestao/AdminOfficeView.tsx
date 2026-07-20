@@ -44,7 +44,7 @@ export const AdminOfficeView: React.FC = () => {
       {/* Header */}{" "}
       <div className="text-left">
         {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Painel Administrativo
         </h2>{" "}
         <p className="text-xs text-muted-foreground">
@@ -61,7 +61,7 @@ export const AdminOfficeView: React.FC = () => {
             {" "}
             <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
               {" "}
-              <Building2 className="w-4.5 h-4.5 text-cyan-500" /> Parâmetros da
+              <Building2 className="w-4.5 h-4.5 text-emerald-500" /> Parâmetros da
               Sociedade{" "}
             </h3>{" "}
             <div className="space-y-4 text-xs">
@@ -75,7 +75,7 @@ export const AdminOfficeView: React.FC = () => {
                   type="text"
                   value={officeName}
                   onChange={(e) => setOfficeName(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-1.5 text-card-foreground outline-0 font-medium"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-1.5 text-card-foreground outline-0 font-medium"
                 />{" "}
               </div>{" "}
               <div className="space-y-1">
@@ -87,7 +87,7 @@ export const AdminOfficeView: React.FC = () => {
                   type="text"
                   value={cnpj}
                   onChange={(e) => setCnpj(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-1.5 text-card-foreground outline-0 font-medium"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-1.5 text-card-foreground outline-0 font-medium"
                 />{" "}
               </div>{" "}
               <div className="space-y-1">
@@ -99,7 +99,7 @@ export const AdminOfficeView: React.FC = () => {
                   type="text"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-1.5 text-card-foreground outline-0 font-medium"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-1.5 text-card-foreground outline-0 font-medium"
                 />{" "}
               </div>{" "}
               <div className="space-y-1">
@@ -111,7 +111,7 @@ export const AdminOfficeView: React.FC = () => {
                   type="text"
                   value={primaryBranch}
                   onChange={(e) => setPrimaryBranch(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-1.5 text-card-foreground outline-0 font-medium"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-1.5 text-card-foreground outline-0 font-medium"
                 />{" "}
               </div>{" "}
             </div>{" "}
@@ -136,7 +136,7 @@ export const AdminOfficeView: React.FC = () => {
                   <span className="text-muted-foreground block">
                     {b.address}
                   </span>{" "}
-                  <div className="flex justify-between text-[10px] text-cyan-600 dark:text-cyan-400 pt-1 border-t border-border/40 mt-1 font-semibold">
+                  <div className="flex justify-between text-[10px] text-emerald-600 dark:text-emerald-400 pt-1 border-t border-border/40 mt-1 font-semibold">
                     {" "}
                     <span>{b.phone}</span>{" "}
                     <span>{b.casesCount} causas vinculadas</span>{" "}

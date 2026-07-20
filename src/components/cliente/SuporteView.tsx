@@ -102,7 +102,7 @@ export const SuporteView: React.FC = () => {
         {" "}
         <div className="text-left">
           {" "}
-          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
             Suporte & FAQ
           </h2>{" "}
           <p className="text-xs text-muted-foreground">
@@ -112,7 +112,7 @@ export const SuporteView: React.FC = () => {
         </div>{" "}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-cyan-600/10 cursor-pointer"
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-emerald-600/10 cursor-pointer"
         >
           {" "}
           <Plus className="w-4 h-4" /> Abrir Chamado de Dúvida{" "}
@@ -125,7 +125,7 @@ export const SuporteView: React.FC = () => {
           {" "}
           <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
             {" "}
-            <HelpCircle className="w-4.5 h-4.5 text-cyan-500" /> Dúvidas
+            <HelpCircle className="w-4.5 h-4.5 text-emerald-500" /> Dúvidas
             Frequentes (FAQ){" "}
           </h3>{" "}
           <div className="space-y-2 pt-1">
@@ -161,7 +161,7 @@ export const SuporteView: React.FC = () => {
           {" "}
           <h3 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5 shrink-0">
             {" "}
-            <MessageSquare className="w-4.5 h-4.5 text-cyan-500" /> Histórico de
+            <MessageSquare className="w-4.5 h-4.5 text-emerald-500" /> Histórico de
             Chamados Ativos{" "}
           </h3>{" "}
           <div className="flex-1 overflow-y-auto space-y-3 pr-1 pt-1.5 no-scrollbar text-xs">
@@ -246,7 +246,7 @@ export const SuporteView: React.FC = () => {
                 <select
                   value={categoryInput}
                   onChange={(e) => setCategoryInput(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 >
                   {" "}
                   <option value="Processual">
@@ -272,7 +272,7 @@ export const SuporteView: React.FC = () => {
                   placeholder="Ex: Não consigo abrir o PDF assinado da Procuração"
                   value={subjectInput}
                   onChange={(e) => setSubjectInput(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
                 />{" "}
               </div>{" "}
               {/* Details */}{" "}
@@ -287,7 +287,7 @@ export const SuporteView: React.FC = () => {
                   value={detailsInput}
                   onChange={(e) => setDetailsInput(e.target.value)}
                   rows={4}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0 resize-none font-sans"
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0 resize-none font-sans"
                 />{" "}
               </div>{" "}
               {/* Buttons */}{" "}
@@ -303,7 +303,7 @@ export const SuporteView: React.FC = () => {
                 </button>{" "}
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
                 >
                   {" "}
                   Enviar Chamado{" "}

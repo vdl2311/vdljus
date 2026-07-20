@@ -8,6 +8,7 @@ import {
   Award,
   Lock,
   Trash2,
+  X,
 } from "lucide-react";
 export const EquipeView: React.FC = () => {
   const { teamMembers, addTeamMember, deleteTeamMember } = useJusFlow();
@@ -37,7 +38,7 @@ export const EquipeView: React.FC = () => {
       case "admin":
         return "bg-rose-950 text-rose-300";
       case "partner":
-        return "bg-cyan-950 text-cyan-300";
+        return "bg-emerald-950 text-emerald-300";
       case "associate":
         return "bg-indigo-950 text-indigo-300";
       default:
@@ -64,7 +65,7 @@ export const EquipeView: React.FC = () => {
         {" "}
         <div className="text-left">
           {" "}
-          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
             Controle de Equipe
           </h2>{" "}
           <p className="text-xs text-muted-foreground">
@@ -74,7 +75,7 @@ export const EquipeView: React.FC = () => {
         </div>{" "}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-cyan-600/10 cursor-pointer"
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-emerald-600/10 cursor-pointer"
         >
           {" "}
           <Plus className="w-4 h-4" /> Convidar Membro{" "}
@@ -86,7 +87,7 @@ export const EquipeView: React.FC = () => {
         {teamMembers.map((member) => (
           <div
             key={member.id}
-            className="p-5 bg-card border border-border rounded-xl shadow-sm flex flex-col justify-between hover:border-cyan-500/20 transition-all group relative animate-fade-in"
+            className="p-5 bg-card border border-border rounded-xl shadow-sm flex flex-col justify-between hover:border-emerald-500/20 transition-all group relative animate-fade-in"
           >
             {" "}
             <div className="space-y-4">
@@ -113,13 +114,13 @@ export const EquipeView: React.FC = () => {
               {/* Name and avatar node */}{" "}
               <div className="flex items-center gap-3">
                 {" "}
-                <div className="w-10 h-10 bg-gradient-to-tr from-cyan-600 to-indigo-600 rounded-full text-white font-bold flex items-center justify-center text-sm shadow-inner shrink-0">
+                <div className="w-10 h-10 bg-gradient-to-tr from-emerald-600 to-indigo-600 rounded-full text-white font-bold flex items-center justify-center text-sm shadow-inner shrink-0">
                   {" "}
                   {member.name.charAt(0)}{" "}
                 </div>{" "}
                 <div>
                   {" "}
-                  <h3 className="text-xs font-extrabold text-foreground">
+                  <h3 className="text-xs font-bold text-foreground">
                     {member.name}
                   </h3>{" "}
                   <span className="text-[10px] text-muted-foreground font-normal flex items-center gap-1 mt-0.5">
@@ -134,7 +135,7 @@ export const EquipeView: React.FC = () => {
                 <div className="p-2.5 bg-background rounded-md border border-border/80 text-[10px] flex items-center justify-between">
                   {" "}
                   <span className="text-muted-foreground font-bold uppercase flex items-center gap-1">
-                    <Award className="w-3.5 h-3.5 text-cyan-500" /> Registro
+                    <Award className="w-3.5 h-3.5 text-emerald-500" /> Registro
                     Profissional
                   </span>{" "}
                   <span className="font-mono font-bold text-card-foreground">
@@ -146,7 +147,7 @@ export const EquipeView: React.FC = () => {
               <div className="border-t border-slate-50 pt-3 flex justify-between items-center text-[10px]">
                 {" "}
                 <span className="text-muted-foreground font-bold uppercase flex items-center gap-1">
-                  <Lock className="w-3.5 h-3.5 text-cyan-500" /> Autenticação
+                  <Lock className="w-3.5 h-3.5 text-emerald-500" /> Autenticação
                   2FA
                 </span>{" "}
                 {member.twoFactorEnabled ? (
@@ -168,122 +169,156 @@ export const EquipeView: React.FC = () => {
       {/* Creation Modal */}{" "}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          {" "}
           <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
-            {" "}
-            <div className="flex justify-between items-center mb-4 text-left">
-              {" "}
-              <div>
-                {" "}
-                <h3 className="text-sm font-bold text-foreground">
-                  Convidar Novo Advogado
-                </h3>{" "}
-                <p className="text-[11px] text-muted-foreground">
-                  Insira credenciais profissionais e atribua permissões de
-                  acesso.
-                </p>{" "}
-              </div>{" "}
+            <div className="flex justify-between items-start mb-6 text-center relative">
+              <div className="w-full">
+                <h3 className="text-lg font-bold text-foreground">
+                  Convidar membro da equipe
+                </h3>
+                <p className="text-sm text-muted-foreground mt-2 max-w-[280px] mx-auto leading-relaxed">
+                  Um convite será enviado por e-mail. A senha padrão é "demo123".
+                </p>
+              </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-xs text-muted-foreground hover:text-muted-foreground dark:hover:text-card-foreground font-bold"
+                className="absolute right-0 top-0 text-muted-foreground hover:text-foreground"
               >
-                {" "}
-                Fechar{" "}
-              </button>{" "}
-            </div>{" "}
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
             <form onSubmit={handleAddMember} className="space-y-4 text-left">
-              {" "}
-              {/* Name */}{" "}
-              <div className="space-y-1.5">
-                {" "}
-                <label className="text-[10px] text-muted-foreground font-semibold block uppercase">
-                  Nome Completo
-                </label>{" "}
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-foreground block">
+                  Nome completo *
+                </label>
                 <input
                   type="text"
                   required
-                  placeholder="Nome do profissional por extenso"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
-                />{" "}
-              </div>{" "}
-              {/* Email */}{" "}
-              <div className="space-y-1.5">
-                {" "}
-                <label className="text-[10px] text-muted-foreground font-semibold block uppercase">
-                  E-mail Corporativo
-                </label>{" "}
-                <input
-                  type="email"
-                  required
-                  placeholder="advogado@jusflow.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
-                />{" "}
-              </div>{" "}
-              {/* Role & OAB Registration */}{" "}
-              <div className="grid grid-cols-2 gap-3">
-                {" "}
-                <div className="space-y-1.5">
-                  {" "}
-                  <label className="text-[10px] text-muted-foreground font-semibold block uppercase">
-                    Cargo / Hierarquia
-                  </label>{" "}
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground outline-0"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-foreground block">
+                    E-mail *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground outline-0"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-foreground block">
+                    Cargo
+                  </label>
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
+                    className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground outline-0 appearance-none"
+                    style={{ backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")', backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.5em 1.5em', paddingRight: '2.5rem' }}
                   >
-                    {" "}
-                    <option value="partner">Sócio de Capital</option>{" "}
-                    <option value="associate">Advogado Associado</option>{" "}
-                    <option value="intern">Estagiário / Paralegal</option>{" "}
-                  </select>{" "}
-                </div>{" "}
-                <div className="space-y-1.5">
-                  {" "}
-                  <label className="text-[10px] text-muted-foreground font-semibold block uppercase">
-                    Registro OAB (Opcional)
-                  </label>{" "}
-                  <input
-                    type="text"
-                    placeholder="Ex: OAB/SP 431982"
-                    value={oab}
-                    onChange={(e) => setOab(e.target.value)}
-                    className="w-full bg-background border border-border focus:border-cyan-500 rounded-md px-3 py-2 text-xs text-card-foreground outline-0"
-                  />{" "}
-                </div>{" "}
-              </div>{" "}
-              {/* 2FA reminder banner */}{" "}
-              <div className="p-3 bg-background/40 rounded-md border border-border/80 text-[10px] text-muted-foreground leading-relaxed">
-                {" "}
-                Por padrão de conformidade e integridade de dados OAB-SaaS,
-                todos os convidados receberão um e-mail com QR-Code para ativar
-                a autenticação multifator (2FA) no primeiro login.{" "}
-              </div>{" "}
-              {/* Buttons */}{" "}
-              <div className="pt-3 border-t border-border flex justify-end gap-2">
-                {" "}
+                    <option value="associate">Advogado</option>
+                    <option value="partner">Sócio</option>
+                    <option value="intern">Estagiário</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-foreground block">
+                  OAB (se aplicável)
+                </label>
+                <input
+                  type="text"
+                  placeholder="OAB/SP 123.456"
+                  value={oab}
+                  onChange={(e) => setOab(e.target.value)}
+                  className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2.5 text-sm text-foreground outline-0"
+                />
+              </div>
+
+              <div className="space-y-3 pt-1">
+                <label className="text-sm font-medium text-foreground block">
+                  Permissões de acesso
+                </label>
+                <div className="grid grid-cols-2 gap-y-3 gap-x-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Processos</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Clientes</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Prazos</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Tarefas</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Financeiro</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Documentos</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Contratos</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Administração</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Relatórios</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded text-emerald-500 bg-background border-border focus:ring-emerald-500 focus:ring-offset-background" />
+                    <span className="text-sm text-foreground">Equipe</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="pt-3 pb-1">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <div className="relative">
+                    <input type="checkbox" className="sr-only peer" />
+                    <div className="w-11 h-6 bg-muted peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                  </div>
+                  <span className="text-sm text-foreground">Exigir autenticação 2FA</span>
+                </label>
+              </div>
+
+              <div className="pt-2 flex flex-col gap-3">
+                <button
+                  type="submit"
+                  className="w-full py-2.5 bg-[#8fcbaf] hover:bg-[#7dbd9f] text-white text-sm font-semibold rounded-md shadow-sm transition-colors flex items-center justify-center gap-2"
+                >
+                  <Plus className="w-4 h-4" /> Convidar
+                </button>
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 hover:bg-accent hover:text-accent-foreground text-xs font-bold text-muted-foreground rounded-md cursor-pointer"
+                  className="w-full py-2.5 bg-background hover:bg-accent border border-border text-foreground text-sm font-semibold rounded-md transition-colors"
                 >
-                  {" "}
-                  Cancelar{" "}
-                </button>{" "}
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-md shadow-md cursor-pointer"
-                >
-                  {" "}
-                  Convidar Profissional{" "}
-                </button>{" "}
-              </div>{" "}
-            </form>{" "}
-          </div>{" "}
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}{" "}
     </div>

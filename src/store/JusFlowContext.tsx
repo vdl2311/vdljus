@@ -258,7 +258,7 @@ const INITIAL_DEADLINES: Deadline[] = [
 
 const INITIAL_TASKS: Task[] = [
   { id: "t1", title: "Redigir Petição Inicial de Divórcio", description: "Minutar peça inicial consensual para Mariana Costa Neves, conferindo partilha de bens móveis.", column: "todo", priority: "medium", clientId: "c3", clientName: "Mariana Costa Neves", assigneeId: "u2", assigneeName: "Dra. Letícia Antunes" },
-  { id: "t2", title: "Elaborar quesitos contábeis de ICMS", description: "Contatar assistente de contabilidade para validar as memórias de cálculo de frete de exportação.", column: "in_progress", priority: "high", processId: "p3", processTitle: "Anulatória de Débito Fiscal - ICMS", assigneeId: "u1", assigneeName: "Administrador (Vidal)" },
+  { id: "t2", title: "Elaborar quesitos contábeis de ICMS", description: "Contatar assistente de contabilidade para validar as memórias de cálculo de frete de exportação.", column: "in_progress", priority: "high", processId: "p3", processTitle: "Anulatória de Débito Fiscal - ICMS", assigneeId: "u1", assigneeName: "Dr. André JusFlow" },
   { id: "t3", title: "Revisar contestação da Telecom", description: "Analisar preliminares de legitimidade passiva invocadas pela ré para subsidiar a réplica.", column: "review", priority: "critical", processId: "p1", processTitle: "Cobrança Indevida c/c Danos Morais", assigneeId: "u3", assigneeName: "Dr. Roberto Mendes" },
   { id: "t4", title: "Emitir guia de custas iniciais", description: "Preparar custas de distribuição de ação civil para aprovação no financeiro.", column: "done", priority: "low", assigneeId: "u4", assigneeName: "Bruna Estagiária" }
 ];
@@ -279,7 +279,7 @@ const INITIAL_EVENTS: CalendarEvent[] = [
 ];
 
 const INITIAL_TEAM: TeamMember[] = [
-  { id: "u1", name: "Administrador (Vidal)", role: "admin", oab: "SP123456", email: "vidal2311usa@gmail.com", permissions: ["dashboard", "copiloto", "processos", "prazos", "agenda", "tarefas", "ia_juridica", "agentes", "contratos", "conhecimento", "clientes", "financeiro", "automacoes", "compliance", "conflitos", "relatorios", "equipe", "admin", "notificações"], twoFAEnabled: true, status: "active" },
+  { id: "u1", name: "Dr. André JusFlow", role: "admin", oab: "SP123456", email: "andre@jusflow.adv.br", permissions: ["dashboard", "copiloto", "processos", "prazos", "agenda", "tarefas", "ia_juridica", "agentes", "contratos", "conhecimento", "clientes", "financeiro", "automacoes", "compliance", "conflitos", "relatorios", "equipe", "admin", "notificações"], twoFAEnabled: true, status: "active" },
   { id: "u2", name: "Dra. Letícia Antunes", role: "partner", oab: "MG345678", email: "leticia@jusflow.adv.br", permissions: ["dashboard", "copiloto", "processos", "prazos", "agenda", "tarefas", "ia_juridica", "contratos", "conhecimento", "clientes", "financeiro", "relatorios", "notificações"], twoFAEnabled: true, status: "active" },
   { id: "u3", name: "Dr. Roberto Mendes", role: "lawyer", oab: "RJ987654", email: "roberto@jusflow.adv.br", permissions: ["dashboard", "copiloto", "processos", "prazos", "agenda", "tarefas", "ia_juridica", "conhecimento", "notificações"], twoFAEnabled: false, status: "active" },
   { id: "u4", name: "Bruna Estagiária", role: "intern", oab: "SP999999-E", email: "bruna@jusflow.adv.br", permissions: ["dashboard", "processos", "prazos", "agenda", "tarefas", "conhecimento", "notificações"], twoFAEnabled: false, status: "active" },
@@ -344,7 +344,7 @@ const INITIAL_TEMPLATES: ModelTemplate[] = [
 
 const INITIAL_DOCUMENTS: Document[] = [
   { id: "doc1", title: "Minuta - Procuração - Carlos Eduardo", content: "OUTORGANTE: Carlos Eduardo da Silva, brasileiro, casado, portador do CPF nº 123.456.789-00...\nPODERES: Ad Judicia para representação perante o TRT2.", status: "draft", signers: ["Carlos Eduardo da Silva"], createdAt: "2026-07-14T10:00:00Z" },
-  { id: "doc2", title: "Contrato de Honorários - Aliança S.A.", content: "Prestação de serviços contínuos tributários. Mensalidade de R$ 4.500,00.\nAssinado por outorgante e outorgado eletronicamente.", status: "signed", signers: ["Aliança Representante", "Administrador (Vidal)"], signedAt: "2026-07-10T12:00:00Z", createdAt: "2026-07-09T15:30:00Z" }
+  { id: "doc2", title: "Contrato de Honorários - Aliança S.A.", content: "Prestação de serviços contínuos tributários. Mensalidade de R$ 4.500,00.\nAssinado por outorgante e outorgado eletronicamente.", status: "signed", signers: ["Aliança Representante", "Dr. André JusFlow"], signedAt: "2026-07-10T12:00:00Z", createdAt: "2026-07-09T15:30:00Z" }
 ];
 
 const INITIAL_NOTIFICATIONS: AppNotification[] = [
@@ -668,7 +668,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return localStorage.getItem("jusflow_selected_proc");
   });
   const [currentUser, setCurrentUser] = useState<TeamMember | null>(() => {
-    return INITIAL_TEAM[0]; // Admin Vidal logado por padrão
+    return INITIAL_TEAM[0]; // Admin André logado por padrão
   });
   const [theme, setThemeState] = useState<"light" | "dark">("light");
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
