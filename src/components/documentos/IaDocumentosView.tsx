@@ -11,7 +11,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 export const IaDocumentosView: React.FC = () => {
-  const { clients, addDocument } = useJusFlow();
+  const { clients, addDocument, logAction } = useJusFlow();
   const [activeIaTab, setActiveIaTab] = useState<"generator" | "reviewer">(
     "generator",
   );
@@ -82,6 +82,7 @@ export const IaDocumentosView: React.FC = () => {
     }
   };
   const triggerExport = (format: "pdf" | "docx") => {
+    logAction(`Exportação de documento: "${docTitle}" (${docType}) em formato ${format.toUpperCase()}`);
     setFeedbackMsg(
       `Exportação para ${format.toUpperCase()} iniciada! O download começará automaticamente.`,
     );

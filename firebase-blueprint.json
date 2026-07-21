@@ -84,6 +84,16 @@
         "description": "string"
       },
       "rules": "allow read, write: if true;"
+    },
+    "auditLogs": {
+      "schema": {
+        "id": "string",
+        "action": "string",
+        "user": "string",
+        "ipAddress": "string",
+        "timestamp": "string"
+      },
+      "rules": "allow read, write: if true;"
     }
   }
 }

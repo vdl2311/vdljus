@@ -109,6 +109,7 @@ interface JusFlowState {
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
   addSyncLog: (log: Omit<SyncLog, "id" | "date">) => void;
+  logAction: (action: string, userOverride?: string) => Promise<void>;
 }
 
 const JusFlowContext = createContext<JusFlowState | undefined>(undefined);
@@ -647,6 +648,24 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
       }
     });
 
+    // 10. Audit Logs
+    const unsubAudit = onSnapshot(collection(db, "auditLogs"), (snapshot) => {
+      if (!active) return;
+      if (snapshot.empty) {
+        INITIAL_AUDIT_LOGS.forEach(item => {
+          setDoc(doc(db, "auditLogs", item.id), item).catch(console.error);
+        });
+      } else {
+        const list: AuditLog[] = [];
+        snapshot.forEach(d => {
+          list.push(d.data() as AuditLog);
+        });
+        setAuditLogs(list);
+      }
+    }, (error) => {
+      console.error("Firebase auditLogs sync error:", error);
+    });
+
     return () => {
       active = false;
       unsubClients();
@@ -658,6 +677,7 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
       unsubEvents();
       unsubDocuments();
       unsubTeam();
+      unsubAudit();
     };
   }, []);
 
@@ -671,6 +691,34 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [currentUser, setCurrentUser] = useState<TeamMember | null>(() => {
     return INITIAL_TEAM[0]; // Admin André logado por padrão
   });
+
+  const logAction = async (action: string, userOverride?: string) => {
+    try {
+      const activeUser = userOverride !== undefined ? userOverride : (currentUser ? `${currentUser.name} (${currentUser.oab || "Sem OAB"})` : "Sistema / Deslogado");
+      const logEntry: AuditLog = {
+        id: `aud-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        action,
+        user: activeUser,
+        ipAddress: "191.185.12.94",
+        timestamp: new Date().toISOString()
+      };
+      
+      // Save directly to Firestore collection "auditLogs"
+      const docRef = doc(db, "auditLogs", logEntry.id);
+      await setDoc(docRef, logEntry);
+    } catch (e) {
+      console.error("Erro ao registrar log de auditoria no Firestore:", e);
+    }
+  };
+
+  const handleSetCurrentUser = (user: TeamMember | null) => {
+    if (user) {
+      logAction(`Login efetuado com sucesso para o usuário: ${user.name} (${user.oab || "Sem OAB"})`, `${user.name} (${user.oab || "Sem OAB"})`);
+    } else if (currentUser) {
+      logAction(`Logout efetuado para o usuário: ${currentUser.name} (${currentUser.oab || "Sem OAB"})`, `${currentUser.name} (${currentUser.oab || "Sem OAB"})`);
+    }
+    setCurrentUser(user);
+  };
   const [theme, setThemeState] = useState<"light" | "dark">("light");
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
@@ -800,6 +848,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteClient = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = clients.find(c => c.id === id);
+    const clientName = target ? target.name : id;
+    logAction(`Exclusão de cliente: ${clientName} (ID: ${id})`);
     setClients(prev => prev.filter(c => c.id !== id));
     deleteDoc(doc(db, "clients", id)).then(() => toast.success("Cliente excluído")).catch(e => { console.error(e); toast.error("Erro ao excluir cliente") });
   };
@@ -829,12 +880,19 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const updateProcess = (id: string, updates: Partial<Process>) => {
+    const target = processes.find(p => p.id === id);
+    const processTitle = target ? `${target.title} - ${target.cnj}` : id;
+    const fields = Object.keys(updates).join(", ");
+    logAction(`Edição de processo: ${processTitle} (Campos alterados: ${fields})`);
     setProcesses(prev => prev.map(p => (p.id === id ? { ...p, ...updates } : p)));
     updateDoc(doc(db, "processes", id), updates as any).catch(console.error);
   };
 
   const deleteProcess = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = processes.find(p => p.id === id);
+    const processTitle = target ? `${target.title} - ${target.cnj}` : id;
+    logAction(`Exclusão de processo: ${processTitle} (ID: ${id})`);
     setProcesses(prev => prev.filter(p => p.id !== id));
     deleteDoc(doc(db, "processes", id)).then(() => toast.success("Processo excluído")).catch(e => { console.error(e); toast.error("Erro ao excluir processo") });
   };
@@ -873,6 +931,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteDeadline = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = deadlines.find(d => d.id === id);
+    const deadlineTitle = target ? target.title : id;
+    logAction(`Exclusão de prazo: ${deadlineTitle} (ID: ${id})`);
     setDeadlines(prev => prev.filter(d => d.id !== id));
     deleteDoc(doc(db, "deadlines", id)).catch(console.error);
   };
@@ -907,6 +968,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteTask = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = tasks.find(t => t.id === id);
+    const taskTitle = target ? target.title : id;
+    logAction(`Exclusão de tarefa: ${taskTitle} (ID: ${id})`);
     setTasks(prev => prev.filter(t => t.id !== id));
     deleteDoc(doc(db, "tasks", id)).then(() => toast.success("Tarefa excluída")).catch(e => { console.error(e); toast.error("Erro ao excluir") });
   };
@@ -931,6 +995,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteFinancial = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = financials.find(f => f.id === id);
+    const financialTitle = target ? target.title : id;
+    logAction(`Exclusão de lançamento financeiro: ${financialTitle} (ID: ${id})`);
     setFinancials(prev => prev.filter(f => f.id !== id));
     deleteDoc(doc(db, "financials", id)).catch(console.error);
   };
@@ -943,6 +1010,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteEvent = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = events.find(e => e.id === id);
+    const eventTitle = target ? target.title : id;
+    logAction(`Exclusão de evento: ${eventTitle} (ID: ${id})`);
     setEvents(prev => prev.filter(e => e.id !== id));
     deleteDoc(doc(db, "events", id)).catch(console.error);
   };
@@ -958,6 +1028,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteWorkflow = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = workflows.find(w => w.id === id);
+    const workflowTitle = target ? target.title : id;
+    logAction(`Exclusão de fluxo de trabalho: ${workflowTitle} (ID: ${id})`);
     setWorkflows(prev => prev.filter(w => w.id !== id));
   };
 
@@ -992,6 +1065,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteTeamMember = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = teamMembers.find(m => m.id === id);
+    const memberName = target ? target.name : id;
+    logAction(`Exclusão de membro da equipe: ${memberName} (ID: ${id})`);
     setTeamMembers(prev => prev.filter(m => m.id !== id));
     deleteDoc(doc(db, "teamMembers", id)).catch(console.error);
   };
@@ -1035,6 +1111,9 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteDocument = (id: string) => {
     if (!window.confirm("Tem certeza que deseja excluir este item?")) return;
+    const target = documents.find(d => d.id === id);
+    const docTitle = target ? target.title : id;
+    logAction(`Exclusão de documento: ${docTitle} (ID: ${id})`);
     setDocuments(prev => prev.filter(d => d.id !== id));
     deleteDoc(doc(db, "documents", id)).catch(console.error);
   };
@@ -1108,7 +1187,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setActiveTab,
         setSelectedProcessId,
         setIsCommandPaletteOpen,
-        setCurrentUser,
+        setCurrentUser: handleSetCurrentUser,
+        logAction,
         
         addClient,
         updateClient,
