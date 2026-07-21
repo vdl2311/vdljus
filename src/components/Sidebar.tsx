@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useJusFlow } from "../store/JusFlowContext";
+import { hasPermission } from "../lib/permissions";
 import {
   LayoutDashboard,
   MessageSquare,
@@ -41,7 +42,7 @@ export const Sidebar: React.FC<{
   isOpenOnMobile?: boolean;
   onCloseMobile?: () => void;
 }> = ({ isOpenOnMobile, onCloseMobile }) => {
-  const { activeTab, setActiveTab, theme } = useJusFlow();
+  const { activeTab, setActiveTab, theme, currentUser } = useJusFlow();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     principal: true,
@@ -186,8 +187,13 @@ export const Sidebar: React.FC<{
         {/* Navigation List */}
         <div className="flex-1 overflow-y-auto py-4 px-2 space-y-4 no-scrollbar">
           {groups.map((group) => {
+            const allowedItems = group.items.filter((item) =>
+              hasPermission(item.id, currentUser)
+            );
+            if (allowedItems.length === 0) return null;
+
             const isOpen = openGroups[group.id];
-            const hasActiveChild = group.items.some((item) =>
+            const hasActiveChild = allowedItems.some((item) =>
               activeTab === item.id || (item.id === "documentos.ia_alternativo" && activeTab === "documentos.ia")
             );
             if (isCollapsed) {
@@ -196,7 +202,7 @@ export const Sidebar: React.FC<{
                   key={group.id}
                   className="flex flex-col gap-1 items-center"
                 >
-                  {group.items.map((item) => {
+                  {allowedItems.map((item) => {
                     const isActive =
                       activeTab === item.id ||
                       (item.id === "documentos.ia_alternativo" && activeTab === "documentos.ia") ||
@@ -234,7 +240,7 @@ export const Sidebar: React.FC<{
                 </button>
                 {isOpen && (
                   <div className="flex flex-col gap-0.5 pl-1.5 mt-1">
-                    {group.items.map((item) => {
+                    {allowedItems.map((item) => {
                       const isActive =
                         activeTab === item.id ||
                         (item.id === "documentos.ia_alternativo" && activeTab === "documentos.ia") ||

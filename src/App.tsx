@@ -5,6 +5,8 @@ import { Sidebar } from "./components/Sidebar";
 import { Topbar } from "./components/Topbar";
 import { LoginScreen } from "./components/LoginScreen";
 import { CommandPalette } from "./components/CommandPalette";
+import { AccessDenied } from "./components/AccessDenied";
+import { hasPermission } from "./lib/permissions";
 
 // Import all 22 modules
 import { DashboardView } from "./components/dashboard/DashboardView";
@@ -41,6 +43,35 @@ const AppContent: React.FC = () => {
 
   // Render the matching module based on activeTab
   const renderActiveView = () => {
+    if (!hasPermission(activeTab, currentUser)) {
+      const tabNames: Record<string, string> = {
+        "principal.dashboard": "Dashboard",
+        "principal.copiloto": "Copiloto IA",
+        "operacao.processos": "Processos",
+        "operacao.processo_detalhe": "Detalhes do Processo",
+        "operacao.datajud": "DataJud (CNJ)",
+        "operacao.prazos": "Prazos",
+        "operacao.agenda": "Agenda",
+        "operacao.tarefas": "Tarefas",
+        "documentos.ia": "IA Jurídica",
+        "documentos.agentes": "Agentes IA",
+        "documentos.contratos": "Contratos",
+        "documentos.conhecimento": "Base de Conhecimento",
+        "gestao.clientes": "Clientes & CRM",
+        "gestao.financeiro": "Financeiro",
+        "gestao.automacoes": "Automações",
+        "gestao.compliance": "Conformidade",
+        "gestao.conflitos": "Conflitos de Interesse",
+        "gestao.relatorios": "Relatórios & Analytics",
+        "gestao.equipe": "Equipe",
+        "gestao.admin": "Administração",
+        "gestao.notificacoes": "Notificações",
+        "cliente.portal": "Portal do Cliente",
+        "cliente.suporte": "Suporte"
+      };
+      return <AccessDenied moduleName={tabNames[activeTab] || activeTab} />;
+    }
+
     switch (activeTab) {
       case "principal.dashboard":
         return <DashboardView />;
