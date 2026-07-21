@@ -645,6 +645,21 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
           list.push(d.data() as TeamMember);
         });
         setTeamMembers(list);
+
+        // Keep current user updated in real-time if their details change
+        const storedUserJson = localStorage.getItem("jusflow_current_user");
+        if (storedUserJson) {
+          try {
+            const parsedStored = JSON.parse(storedUserJson) as TeamMember;
+            const updatedUser = list.find(u => u.id === parsedStored.id);
+            if (updatedUser) {
+              setCurrentUser(updatedUser);
+              localStorage.setItem("jusflow_current_user", JSON.stringify(updatedUser));
+            }
+          } catch (e) {
+            console.error("Error syncing current user from Firestore update:", e);
+          }
+        }
       }
     });
 
@@ -689,7 +704,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return localStorage.getItem("jusflow_selected_proc");
   });
   const [currentUser, setCurrentUser] = useState<TeamMember | null>(() => {
-    return INITIAL_TEAM[0]; // Admin André logado por padrão
+    const local = localStorage.getItem("jusflow_current_user");
+    return local ? JSON.parse(local) : INITIAL_TEAM[0]; // Admin André logado por padrão se não houver no localStorage
   });
 
   const logAction = async (action: string, userOverride?: string) => {
@@ -714,8 +730,12 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const handleSetCurrentUser = (user: TeamMember | null) => {
     if (user) {
       logAction(`Login efetuado com sucesso para o usuário: ${user.name} (${user.oab || "Sem OAB"})`, `${user.name} (${user.oab || "Sem OAB"})`);
-    } else if (currentUser) {
-      logAction(`Logout efetuado para o usuário: ${currentUser.name} (${currentUser.oab || "Sem OAB"})`, `${currentUser.name} (${currentUser.oab || "Sem OAB"})`);
+      localStorage.setItem("jusflow_current_user", JSON.stringify(user));
+    } else {
+      if (currentUser) {
+        logAction(`Logout efetuado para o usuário: ${currentUser.name} (${currentUser.oab || "Sem OAB"})`, `${currentUser.name} (${currentUser.oab || "Sem OAB"})`);
+      }
+      localStorage.removeItem("jusflow_current_user");
     }
     setCurrentUser(user);
   };
