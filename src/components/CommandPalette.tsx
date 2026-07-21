@@ -183,7 +183,7 @@ export const CommandPalette: React.FC = () => {
               {filteredProcesses.length > 0 && (
                 <div>
                   {" "}
-                  <h3 className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">
+                  <h3 className="px-3 text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Processos
                   </h3>{" "}
                   {filteredProcesses.map((p) => (
@@ -200,15 +200,15 @@ export const CommandPalette: React.FC = () => {
                         <Scale className="w-4 h-4 text-emerald-500 shrink-0" />{" "}
                         <div className="truncate">
                           {" "}
-                          <p className="font-bold truncate text-foreground">
+                          <p className="font-bold truncate text-foreground text-xs sm:text-sm">
                             {p.title}
                           </p>{" "}
-                          <p className="text-[10px] text-muted-foreground truncate">
+                          <p className="text-xs text-muted-foreground truncate">
                             CNJ: {p.cnj} • {p.clientName}
                           </p>{" "}
                         </div>{" "}
                       </div>{" "}
-                      <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 rounded font-semibold shrink-0">
+                      <span className="text-xs bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.5 rounded font-semibold shrink-0">
                         {" "}
                         Abrir Processo{" "}
                       </span>{" "}
@@ -220,7 +220,7 @@ export const CommandPalette: React.FC = () => {
               {filteredClients.length > 0 && (
                 <div>
                   {" "}
-                  <h3 className="px-3 text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">
+                  <h3 className="px-3 text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">
                     Clientes
                   </h3>{" "}
                   {filteredClients.map((c) => (

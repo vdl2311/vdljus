@@ -83,7 +83,7 @@ export const ConhecimentoView: React.FC = () => {
               {/* Card top bar */}{" "}
               <div className="flex justify-between items-center">
                 {" "}
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded">
+                <span className="text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded">
                   {" "}
                   {art.category}{" "}
                 </span>{" "}
@@ -92,38 +92,38 @@ export const ConhecimentoView: React.FC = () => {
               {/* Title & reference code */}{" "}
               <div className="space-y-1">
                 {" "}
-                <h3 className="text-xs font-bold text-card-foreground line-clamp-1 group-hover:text-emerald-500 transition-colors">
+                <h3 className="text-xs sm:text-sm font-bold text-card-foreground line-clamp-1 group-hover:text-emerald-500 transition-colors">
                   {" "}
                   {art.title}{" "}
                 </h3>{" "}
                 {art.referenceCode && (
-                  <span className="text-[10px] font-mono font-bold text-muted-foreground block">
+                  <span className="text-xs font-mono font-bold text-muted-foreground block">
                     {art.referenceCode}
                   </span>
                 )}{" "}
               </div>{" "}
               {/* Summary */}{" "}
-              <p className="text-[11px] text-muted-foreground leading-relaxed font-normal">
+              <p className="text-xs text-muted-foreground leading-relaxed font-normal">
                 {" "}
                 {art.summary}{" "}
               </p>{" "}
             </div>{" "}
             {/* Tags and read link */}{" "}
-            <div className="mt-5 border-t border-slate-50 /80 pt-3 flex flex-wrap gap-1.5 items-center justify-between">
+            <div className="mt-5 border-t border-border pt-3 flex flex-wrap gap-1.5 items-center justify-between">
               {" "}
               <div className="flex flex-wrap gap-1">
                 {" "}
                 {art.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-[10px] font-semibold bg-muted text-muted-foreground px-1.5 py-0.5 rounded-sm"
+                    className="text-xs font-semibold bg-muted text-muted-foreground px-1.5 py-0.5 rounded-sm"
                   >
                     {" "}
                     #{tag}{" "}
                   </span>
                 ))}{" "}
               </div>{" "}
-              <button className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 hover:underline cursor-pointer">
+              <button className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5 hover:underline cursor-pointer">
                 {" "}
                 Ver Completo <ArrowUpRight className="w-3.5 h-3.5" />{" "}
               </button>{" "}

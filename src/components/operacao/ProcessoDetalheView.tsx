@@ -196,7 +196,7 @@ export const ProcessoDetalheView: React.FC = () => {
     setNewDeadlineDate("");
   };
   return (
-    <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
       {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/20 px-3 py-1.5 rounded-lg border border-border text-left" aria-label="Breadcrumb">
@@ -357,7 +357,7 @@ export const ProcessoDetalheView: React.FC = () => {
               Resumo Gerado por IA
             </h4>{" "}
           </div>{" "}
-          <div className="mt-3 text-xs text-slate-200 leading-relaxed font-normal whitespace-pre-wrap max-h-48 overflow-y-auto no-scrollbar">
+          <div className="mt-3 text-xs text-card-foreground/90 leading-relaxed font-normal whitespace-pre-wrap max-h-48 overflow-y-auto no-scrollbar">
             {" "}
             {process.aiSummary}{" "}
           </div>{" "}

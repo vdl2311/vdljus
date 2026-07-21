@@ -231,10 +231,10 @@ export const Sidebar: React.FC<{
               <div key={group.id} className="space-y-1">
                 <button
                   onClick={() => toggleGroup(group.id)}
-                  className={`flex items-center justify-between w-full px-2 py-1 text-[10px] font-bold tracking-wider uppercase transition-colors rounded-md ${hasActiveChild ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground hover:text-muted-foreground"}`}
+                  className={`flex items-center justify-between w-full px-2 py-1.5 text-xs font-bold tracking-wider uppercase transition-colors rounded-md ${hasActiveChild ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground hover:text-muted-foreground"}`}
                 >
                   <span>{group.label}</span>
-                  <span className="text-[10px] opacity-75">
+                  <span className="text-xs opacity-75">
                     {isOpen ? "▼" : "▶"}
                   </span>
                 </button>
@@ -276,7 +276,7 @@ export const Sidebar: React.FC<{
                 <div className="font-bold text-xs text-emerald-800 dark:text-emerald-300">
                   Plano Pro • Trial
                 </div>
-                <div className="text-[10px] text-emerald-600 dark:text-emerald-400 mt-1">
+                <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">
                   14 dias restantes • SaaS multi-escritório
                 </div>
               </div>

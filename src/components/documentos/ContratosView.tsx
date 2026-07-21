@@ -132,7 +132,7 @@ export const ContratosView: React.FC = () => {
             </h3>{" "}
             <div className="space-y-1.5">
               {" "}
-              <label className="text-[10px] text-muted-foreground font-bold uppercase block">
+              <label className="text-xs text-muted-foreground font-bold uppercase block">
                 Selecionar Parte Outorgante
               </label>{" "}
               <select
@@ -153,7 +153,7 @@ export const ContratosView: React.FC = () => {
               </select>{" "}
             </div>{" "}
             {client && (
-              <div className="p-3 bg-background rounded-md border border-border text-[11px] space-y-1">
+              <div className="p-3 bg-background rounded-md border border-border text-xs space-y-1">
                 {" "}
                 <span className="font-bold text-foreground block">
                   {client.name}
@@ -179,7 +179,7 @@ export const ContratosView: React.FC = () => {
               <FileText className="w-4.5 h-4.5 text-muted-foreground" />{" "}
               Visualizador do Instrumento{" "}
             </h3>{" "}
-            <div className="flex-1 border border-border bg-muted/40 /20 rounded-md p-4 font-serif text-xs text-foreground overflow-y-auto leading-relaxed whitespace-pre-wrap no-scrollbar">
+            <div className="flex-1 border border-border bg-muted/40 rounded-md p-4 font-serif text-xs text-foreground overflow-y-auto leading-relaxed whitespace-pre-wrap no-scrollbar">
               {" "}
               {getPrefilledContent()}{" "}
             </div>{" "}
@@ -209,17 +209,17 @@ export const ContratosView: React.FC = () => {
                   Carimbo de Assinatura Registrado{" "}
                 </h4>{" "}
               </div>{" "}
-              <p className="text-[11px] text-emerald-700 dark:text-emerald-400 leading-snug">
+              <p className="text-xs text-emerald-700 dark:text-emerald-400 leading-snug">
                 {" "}
                 Este instrumento foi assinado e certificado eletronicamente. O
                 log de conformidade jurídica foi atrelado aos metadados do
                 documento:{" "}
               </p>{" "}
-              <div className="grid grid-cols-2 gap-3 text-[10px] font-mono text-emerald-800 dark:text-emerald-400 bg-card p-3 rounded-md border border-emerald-100 dark:border-emerald-950">
+              <div className="grid grid-cols-2 gap-3 text-xs font-mono text-emerald-800 dark:text-emerald-400 bg-card p-3 rounded-md border border-emerald-100 dark:border-emerald-950">
                 {" "}
                 <div>
                   {" "}
-                  <span className="block text-[10px] text-muted-foreground uppercase font-sans">
+                  <span className="block text-xs text-muted-foreground uppercase font-sans">
                     Endereço de IP
                   </span>{" "}
                   <span className="font-bold">
@@ -228,7 +228,7 @@ export const ContratosView: React.FC = () => {
                 </div>{" "}
                 <div>
                   {" "}
-                  <span className="block text-[10px] text-muted-foreground uppercase font-sans">
+                  <span className="block text-xs text-muted-foreground uppercase font-sans">
                     Certificado Criptográfico
                   </span>{" "}
                   <span className="font-bold truncate block">
@@ -237,7 +237,7 @@ export const ContratosView: React.FC = () => {
                 </div>{" "}
                 <div>
                   {" "}
-                  <span className="block text-[10px] text-muted-foreground uppercase font-sans">
+                  <span className="block text-xs text-muted-foreground uppercase font-sans">
                     Carimbo de Data/Hora
                   </span>{" "}
                   <span className="font-bold">
@@ -246,7 +246,7 @@ export const ContratosView: React.FC = () => {
                 </div>{" "}
                 <div>
                   {" "}
-                  <span className="block text-[10px] text-muted-foreground uppercase font-sans">
+                  <span className="block text-xs text-muted-foreground uppercase font-sans">
                     Validade Legal
                   </span>{" "}
                   <span className="font-bold text-emerald-500 uppercase">

@@ -100,11 +100,11 @@ export const Topbar: React.FC<{
           </button>
         )}{" "}
         <div className="flex flex-col text-left">
-          <h1 className="text-xs sm:text-base font-bold text-foreground font-sans tracking-tight truncate max-w-[110px] xxs:max-w-[140px] xs:max-w-[180px] sm:max-w-none leading-tight">
+          <h1 className="text-sm sm:text-base font-bold text-foreground font-sans tracking-tight truncate max-w-[150px] xs:max-w-[200px] sm:max-w-none leading-tight">
             {getTabTitle().title}
           </h1>
           {getTabTitle().subtitle && (
-            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium leading-none mt-0.5">
+            <span className="text-xs text-muted-foreground font-medium leading-none mt-0.5 truncate max-w-[150px] xs:max-w-[200px] sm:max-w-none">
               {getTabTitle().subtitle}
             </span>
           )}

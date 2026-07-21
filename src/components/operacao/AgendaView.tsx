@@ -89,7 +89,7 @@ export const AgendaView: React.FC = () => {
   const firstDayOfMonth = new Date(currentYear, today.getMonth(), 1).getDay();
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   return (
-    <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
       {/* Header and Add button */}{" "}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -227,9 +227,11 @@ export const AgendaView: React.FC = () => {
           )}{" "}
         </div>
       ) : (
-        /* Calendar View Monthly Grid */ <div className="bg-card border border-border rounded-xl p-5 shadow-sm max-w-4xl mx-auto">
+        /* Calendar View Monthly Grid */ <div className="bg-card border border-border rounded-xl p-4 sm:p-5 shadow-sm max-w-4xl mx-auto overflow-x-auto">
           {" "}
-          <div className="flex justify-between items-center mb-4">
+          <div className="min-w-[500px] sm:min-w-0">
+            {" "}
+            <div className="flex justify-between items-center mb-4">
             {" "}
             <h3 className="text-xs font-bold text-foreground uppercase tracking-wider capitalize">
               {currentMonthName} de {currentYear}
@@ -285,7 +287,8 @@ export const AgendaView: React.FC = () => {
               );
             })}{" "}
           </div>{" "}
-        </div>
+        </div>{" "}
+      </div>
       )}{" "}
       {/* Appointment Booking Modal */}{" "}
       {isModalOpen && (

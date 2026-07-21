@@ -89,7 +89,7 @@ export const IaDocumentosView: React.FC = () => {
     setTimeout(() => setFeedbackMsg(""), 4000);
   };
   return (
-    <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
       {/* Header */}{" "}
       <div className="text-left">
@@ -146,7 +146,7 @@ export const IaDocumentosView: React.FC = () => {
                 {/* Document Type */}{" "}
                 <div className="space-y-1.5">
                   {" "}
-                  <label className="text-[10px] text-muted-foreground font-bold uppercase block">
+                  <label className="text-xs text-muted-foreground font-bold uppercase block">
                     Tipo de Documento
                   </label>{" "}
                   <select
@@ -171,7 +171,7 @@ export const IaDocumentosView: React.FC = () => {
                 {/* Title */}{" "}
                 <div className="space-y-1.5">
                   {" "}
-                  <label className="text-[10px] text-muted-foreground font-bold uppercase block">
+                  <label className="text-xs text-muted-foreground font-bold uppercase block">
                     Título da Peça / Objeto
                   </label>{" "}
                   <input
@@ -186,7 +186,7 @@ export const IaDocumentosView: React.FC = () => {
                 {/* Client Link drop */}{" "}
                 <div className="space-y-1.5">
                   {" "}
-                  <label className="text-[10px] text-muted-foreground font-bold uppercase block">
+                  <label className="text-xs text-muted-foreground font-bold uppercase block">
                     Cliente Autor / Beneficiário
                   </label>{" "}
                   <select
@@ -207,7 +207,7 @@ export const IaDocumentosView: React.FC = () => {
                 {/* Facts summary */}{" "}
                 <div className="space-y-1.5">
                   {" "}
-                  <label className="text-[10px] text-muted-foreground font-bold uppercase block">
+                  <label className="text-xs text-muted-foreground font-bold uppercase block">
                     Fatos do Caso
                   </label>{" "}
                   <textarea
@@ -222,7 +222,7 @@ export const IaDocumentosView: React.FC = () => {
                 {/* Pedidos */}{" "}
                 <div className="space-y-1.5">
                   {" "}
-                  <label className="text-[10px] text-muted-foreground font-bold uppercase block">
+                  <label className="text-xs text-muted-foreground font-bold uppercase block">
                     Fundamentos / Pedidos Principais
                   </label>{" "}
                   <textarea
@@ -275,7 +275,7 @@ export const IaDocumentosView: React.FC = () => {
                   </button>{" "}
                   <button
                     onClick={() => triggerExport("pdf")}
-                    className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold rounded flex items-center gap-1 shadow-sm transition-all cursor-pointer"
+                    className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded flex items-center gap-1 shadow-sm transition-all cursor-pointer"
                   >
                     {" "}
                     Exportar PDF{" "}
@@ -284,7 +284,7 @@ export const IaDocumentosView: React.FC = () => {
               )}{" "}
             </div>{" "}
             {/* Document body viewport */}{" "}
-            <div className="flex-1 border border-border/80 bg-muted/40 /20 rounded-md p-5 overflow-y-auto no-scrollbar font-serif text-sm">
+            <div className="flex-1 border border-border/80 bg-muted/40 rounded-md p-5 overflow-y-auto no-scrollbar font-serif text-sm">
               {" "}
               {isLoading ? (
                 <div className="h-full flex flex-col items-center justify-center text-center animate-pulse">
@@ -293,7 +293,7 @@ export const IaDocumentosView: React.FC = () => {
                   <p className="text-xs font-bold text-foreground ">
                     Estruturando tese jurídica e preâmbulo constitucional...
                   </p>{" "}
-                  <p className="text-[10px] text-muted-foreground mt-1 max-w-xs">
+                  <p className="text-xs text-muted-foreground mt-1 max-w-xs">
                     Aguarde, compilando os fatos e conectando jurisprudências do
                     STJ/STF em tempo real.
                   </p>{" "}
@@ -302,7 +302,7 @@ export const IaDocumentosView: React.FC = () => {
                 <textarea
                   value={generatedText}
                   onChange={(e) => setGeneratedText(e.target.value)}
-                  className="w-full h-full bg-transparent border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 resize-none font-serif text-xs text-card-foreground select-all leading-relaxed"
+                  className="w-full h-full bg-transparent border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 resize-none font-serif text-xs sm:text-sm text-card-foreground select-all leading-relaxed"
                 />
               ) : (
                 <div className="h-full flex flex-col items-center justify-center text-center text-muted-foreground">
@@ -311,14 +311,14 @@ export const IaDocumentosView: React.FC = () => {
                   <p className="text-xs font-bold">
                     Nenhum documento na área de transferência
                   </p>{" "}
-                  <p className="text-[10px] text-muted-foreground mt-1 max-w-xs">
+                  <p className="text-xs text-muted-foreground mt-1 max-w-xs">
                     Preencha os dados do formulário ao lado e clique em redigir
                     para iniciar a minuterização automatizada.
                   </p>{" "}
                 </div>
               )}{" "}
             </div>{" "}
-            <div className="mt-3 shrink-0 text-[10px] text-muted-foreground bg-background/40 p-2 rounded-md border border-border flex items-center gap-1.5">
+            <div className="mt-3 shrink-0 text-xs text-muted-foreground bg-background/40 p-2 rounded-md border border-border flex items-center gap-1.5">
               {" "}
               <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />{" "}
               <span>

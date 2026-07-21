@@ -240,21 +240,21 @@ export const TarefasView: React.FC = () => {
         key={colId}
         onDragOver={(e) => handleDragOver(e, colId)}
         onDrop={(e) => handleDrop(e, colId)}
-        className={`flex flex-col w-full rounded-2xl border transition-all duration-200 h-full select-none ${
+        className={`flex flex-col w-full md:min-w-[250px] md:max-w-[320px] lg:min-w-[200px] lg:max-w-none lg:flex-1 rounded-2xl border transition-all duration-200 h-full select-none ${
           isOver 
             ? "border-emerald-500 bg-emerald-50/10 dark:bg-emerald-950/10 ring-2 ring-emerald-500/20 shadow-lg shadow-emerald-500/5" 
             : "border-border/80 bg-slate-50/40 dark:bg-zinc-900/30 hover:border-border"
         }`}
       >
         {/* Column Header */}
-        <div className={`p-4 border-b border-border/60 flex justify-between items-center shrink-0 border-t-4 rounded-t-2xl ${colConfig?.borderClass}`}>
-          <div className="flex items-center gap-2">
+        <div className={`p-3 md:p-4 border-b border-border/60 flex justify-between items-center shrink-0 border-t-4 rounded-t-2xl ${colConfig?.borderClass}`}>
+          <div className="flex items-center gap-1.5 md:gap-2">
             <span className={`w-2 h-2 rounded-full ${colConfig?.accentColor ? 'bg-current ' + colConfig.accentColor : 'bg-muted-foreground'}`} />
             <span className="text-xs font-bold text-foreground/95 uppercase tracking-wide">
               {title}
             </span>
           </div>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+          <span className={`text-[10px] font-bold px-1.5 md:px-2 py-0.5 rounded-full ${
             colTasks.length > 0 
               ? "bg-slate-200 dark:bg-zinc-800 text-foreground" 
               : "bg-slate-100 dark:bg-zinc-900 text-muted-foreground/75"
@@ -264,7 +264,7 @@ export const TarefasView: React.FC = () => {
         </div>
 
         {/* Task Cards Container */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-3 scrollbar-thin scrollbar-thumb-border">
+        <div className="flex-1 overflow-y-auto p-2 md:p-3 space-y-2 md:space-y-3 scrollbar-thin scrollbar-thumb-border">
           <AnimatePresence initial={false}>
             {colTasks.map((task) => {
               const isCurrentlyDragging = draggingTaskId === task.id;
@@ -284,12 +284,12 @@ export const TarefasView: React.FC = () => {
                     onDragEnd={handleDragEnd}
                     tabIndex={0}
                     role="article"
-                    className={`p-3.5 bg-card border rounded-xl shadow-xs text-left space-y-2.5 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 cursor-grab active:cursor-grabbing transition-shadow hover:shadow-md hover:border-border-hover ${
+                    className={`p-2.5 md:p-3.5 bg-card border rounded-xl shadow-xs text-left space-y-2 md:space-y-2.5 relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 cursor-grab active:cursor-grabbing transition-shadow hover:shadow-md hover:border-border-hover ${
                       isCurrentlyDragging ? "border-dashed border-emerald-500" : "border-border/85"
                     }`}
                   >
                   {/* Card Meta */}
-                  <div className="flex justify-between items-start gap-2">
+                  <div className="flex justify-between items-start gap-1.5 md:gap-2">
                     <span
                       className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${getPriorityStyle(
                         task.priority
@@ -337,7 +337,7 @@ export const TarefasView: React.FC = () => {
                   )}
 
                   {/* Assignee & Shift Actions */}
-                  <div className="flex justify-between items-center pt-2.5 border-t border-border/50">
+                  <div className="flex justify-between items-center pt-2 md:pt-2.5 border-t border-border/50">
                     <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground truncate max-w-[140px]">
                       <div className="w-5 h-5 rounded-full bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 font-bold flex items-center justify-center text-[10px] shrink-0">
                         {task.assigneeName ? task.assigneeName.charAt(0) : "S"}
@@ -394,9 +394,9 @@ export const TarefasView: React.FC = () => {
   const activeCount = tasks.filter((t) => t.column !== "done").length;
 
   return (
-    <div className="p-6 bg-background transition-colors text-left flex flex-col h-full overflow-hidden">
+    <div className="p-4 md:p-6 bg-background transition-colors text-left flex flex-col h-full overflow-hidden">
       {/* Board Controls row matching example exactly */}
-      <div className="flex items-center justify-between gap-4 shrink-0 mb-6">
+      <div className="flex items-center justify-between gap-4 shrink-0 mb-4 md:mb-6">
         <div className="text-left">
           <p className="text-xs sm:text-sm font-semibold text-muted-foreground/90">
             {activeCount} {activeCount === 1 ? "tarefa ativa" : "tarefas ativas"} &bull; Arraste entre colunas
@@ -416,7 +416,7 @@ export const TarefasView: React.FC = () => {
       {/* Board Scroll wrapper */}
       <div 
         ref={scrollRef}
-        className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-5 overflow-y-auto lg:overflow-y-hidden"
+        className="flex-1 min-h-0 grid grid-cols-1 md:flex md:flex-row gap-3 pb-5 overflow-y-auto md:overflow-y-hidden overflow-x-auto"
       >
         {renderColumn("todo", "A Fazer")}
         {renderColumn("doing", "Em Andamento")}

@@ -49,7 +49,7 @@ export const ClientesCRMView: React.FC = () => {
     return matchesSearch && matchesType && matchesStatus;
   });
   return (
-    <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
       {/* Header */}{" "}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

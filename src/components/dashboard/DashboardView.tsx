@@ -82,7 +82,7 @@ export const DashboardView: React.FC = () => {
     Família: "bg-emerald-500",
   };
   return (
-    <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
       {/* Alert Section */}{" "}
       {(deadlinesToday > 0 || criticalTasks > 0) && (
@@ -544,7 +544,7 @@ export const DashboardView: React.FC = () => {
                     <h4 className="text-xs font-bold text-foreground leading-tight">
                       {d.title}
                     </h4>{" "}
-                    <p className="text-[10px] text-muted-foreground truncate mt-0.5 max-w-[240px]">
+                    <p className="text-xs text-muted-foreground truncate mt-0.5 max-w-[240px]">
                       {" "}
                       {d.processTitle
                         ? `Proc: ${d.processTitle}`
@@ -552,7 +552,7 @@ export const DashboardView: React.FC = () => {
                     </p>{" "}
                   </div>{" "}
                   <span
-                    className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded shrink-0 ${d.priority === "critical" ? "bg-rose-950 text-rose-400" : "bg-amber-950 text-amber-400"}`}
+                    className={`text-xs font-bold uppercase px-1.5 py-0.5 rounded shrink-0 ${d.priority === "critical" ? "bg-rose-950 text-rose-400" : "bg-amber-950 text-amber-400"}`}
                   >
                     {" "}
                     {d.priority}{" "}
@@ -572,14 +572,14 @@ export const DashboardView: React.FC = () => {
           {" "}
           <div className="flex justify-between items-center mb-3">
             {" "}
-            <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+            <h3 className="text-xs sm:text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
               {" "}
               <Scale className="w-4 h-4 text-amber-500 animate-spin" />{" "}
               Processos Parados (&gt;90 dias){" "}
             </h3>{" "}
             <button
               onClick={() => setActiveTab("operacao.processos")}
-              className="text-[10px] text-emerald-600 dark:text-emerald-400 hover:underline font-bold flex items-center gap-1"
+              className="text-xs text-emerald-600 dark:text-emerald-400 hover:underline font-bold flex items-center gap-1"
             >
               {" "}
               Ver todos <ArrowRight className="w-3 h-3" />{" "}
@@ -599,19 +599,19 @@ export const DashboardView: React.FC = () => {
                 {" "}
                 <div className="min-w-0">
                   {" "}
-                  <h4 className="text-xs font-bold text-foreground truncate">
+                  <h4 className="text-xs sm:text-sm font-bold text-foreground truncate">
                     {p.title}
                   </h4>{" "}
-                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     CNJ: {p.cnj}
                   </p>{" "}
                 </div>{" "}
                 <div className="text-right shrink-0">
                   {" "}
-                  <span className="text-[10px] font-bold text-amber-500 block">
+                  <span className="text-xs font-bold text-amber-500 block">
                     Sem Movimento
                   </span>{" "}
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     Último: {p.lastMovementDate || "Início"}
                   </span>{" "}
                 </div>{" "}
