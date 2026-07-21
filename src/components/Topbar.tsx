@@ -32,52 +32,54 @@ export const Topbar: React.FC<{
   } = useJusFlow();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Derive title from activeTab
-  const getTabTitle = () => {
+  const getTabTitle = (): { title: string; subtitle?: string } => {
     switch (activeTab) {
       case "principal.dashboard":
-        return "Painel de Controle Inteligente";
+        return { title: "Painel de Controle Inteligente", subtitle: "Visão geral e métricas" };
       case "principal.copiloto":
-        return "Copiloto Jurídico IA";
+        return { title: "Copiloto Jurídico IA", subtitle: "Assistência em tempo real" };
       case "operacao.processos":
-        return "Gestão de Processos Judiciais";
+        return { title: "Gestão de Processos Judiciais", subtitle: "Processos ativos e históricos" };
       case "operacao.processo_detalhe":
-        return "Detalhes do Processo & Timeline";
+        return { title: "Detalhes do Processo & Timeline", subtitle: "Histórico completo" };
       case "operacao.datajud":
-        return "Consulta DataJud (CNJ)";
+        return { title: "Consulta DataJud (CNJ)", subtitle: "Integração e busca" };
       case "operacao.prazos":
-        return "Central de Prazos e Vencimentos";
+        return { title: "Central de Prazos e Vencimentos", subtitle: "Controle de prazos" };
       case "operacao.agenda":
-        return "Agenda de Compromissos e Audiências";
+        return { title: "Agenda de Compromissos e Audiências", subtitle: "Audiências e reuniões" };
       case "operacao.tarefas":
-        return "Fluxos de Trabalho e Kanban";
+        return { title: "Tarefas", subtitle: "Kanban da equipe" };
       case "documentos.ia":
-        return "IA Jurídica: Redação e Revisão";
+        return { title: "IA Jurídica: Redação e Revisão", subtitle: "Redação e revisão" };
       case "documentos.agentes":
-        return "Agentes Autônomos IA";
+        return { title: "Agentes Autônomos IA", subtitle: "Automação cognitiva" };
       case "documentos.contratos":
-        return "Contratos & Modelos Dinâmicos";
+        return { title: "Contratos & Modelos Dinâmicos", subtitle: "Gestão de minutas" };
       case "documentos.conhecimento":
-        return "Base de Conhecimento Compartilhada";
+        return { title: "Base de Conhecimento Compartilhada", subtitle: "Artigos e jurisprudência" };
       case "gestao.clientes":
-        return "CRM Jurídico - Clientes PF e PJ";
+        return { title: "CRM Jurídico - Clientes PF e PJ", subtitle: "Clientes PF e PJ" };
       case "gestao.financeiro":
-        return "Gestão Financeira & Honorários";
+        return { title: "Gestão Financeira & Honorários", subtitle: "Honorários e faturamento" };
       case "gestao.automacoes":
-        return "Automações e Gatilhos de Workflows";
+        return { title: "Automações e Gatilhos de Workflows", subtitle: "Gatilhos de Workflows" };
       case "gestao.compliance":
-        return "Compliance & Auditoria OAB/LGPD";
+        return { title: "Compliance & Auditoria OAB/LGPD", subtitle: "Auditoria OAB/LGPD" };
       case "gestao.conflitos":
-        return "Pesquisa de Conflito de Interesse";
+        return { title: "Pesquisa de Conflito de Interesse", subtitle: "Pesquisa preventiva" };
       case "gestao.relatorios":
-        return "Relatórios de Performance & Analytics";
+        return { title: "Relatórios de Performance & Analytics", subtitle: "Métricas e analytics" };
       case "gestao.equipe":
-        return "Membros da Equipe & Permissões";
+        return { title: "Equipe", subtitle: "Usuários, cargos e permissões" };
       case "gestao.admin":
-        return "Painel Administrativo do Escritório";
+        return { title: "Painel Administrativo do Escritório", subtitle: "Configurações do escritório" };
+      case "gestao.notificacoes":
+        return { title: "Notificações", subtitle: "Alertas do sistema" };
       case "cliente.portal":
-        return "Portal Externo do Cliente";
+        return { title: "Portal Externo do Cliente", subtitle: "Área do cliente" };
       default:
-        return "JusFlow";
+        return { title: "JusFlow" };
     }
   };
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -97,10 +99,16 @@ export const Topbar: React.FC<{
             <Menu className="w-5 h-5" />{" "}
           </button>
         )}{" "}
-        <h1 className="text-xs sm:text-lg font-bold text-foreground font-sans tracking-tight truncate max-w-[110px] xxs:max-w-[140px] xs:max-w-[180px] sm:max-w-none">
-          {" "}
-          {getTabTitle()}{" "}
-        </h1>{" "}
+        <div className="flex flex-col text-left">
+          <h1 className="text-xs sm:text-base font-bold text-foreground font-sans tracking-tight truncate max-w-[110px] xxs:max-w-[140px] xs:max-w-[180px] sm:max-w-none leading-tight">
+            {getTabTitle().title}
+          </h1>
+          {getTabTitle().subtitle && (
+            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium leading-none mt-0.5">
+              {getTabTitle().subtitle}
+            </span>
+          )}
+        </div>{" "}
         <div className="hidden sm:inline-flex items-center bg-accent text-accent-foreground text-[10px] font-semibold px-2 py-0.5 rounded-md">
           {" "}
           v2.4.0 Live{" "}

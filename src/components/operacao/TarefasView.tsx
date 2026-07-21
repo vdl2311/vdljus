@@ -68,18 +68,11 @@ export const TarefasView: React.FC = () => {
   // Column config
   const columnsList: { id: TaskColumn; label: string; bgClass: string; borderClass: string; accentColor: string }[] = [
     { 
-      id: "backlog", 
-      label: "Backlog", 
-      bgClass: "bg-slate-500/10", 
-      borderClass: "border-t-slate-400 dark:border-t-slate-500",
-      accentColor: "text-slate-500 dark:text-slate-400"
-    },
-    { 
       id: "todo", 
       label: "A Fazer", 
-      bgClass: "bg-sky-500/10", 
-      borderClass: "border-t-sky-400 dark:border-t-sky-500",
-      accentColor: "text-sky-500 dark:text-sky-400"
+      bgClass: "bg-zinc-500/10", 
+      borderClass: "border-t-zinc-400 dark:border-t-zinc-500",
+      accentColor: "text-zinc-500 dark:text-zinc-400"
     },
     { 
       id: "doing", 
@@ -90,14 +83,14 @@ export const TarefasView: React.FC = () => {
     },
     { 
       id: "review", 
-      label: "Revisão Sócia", 
-      bgClass: "bg-indigo-500/10", 
-      borderClass: "border-t-indigo-400 dark:border-t-indigo-500",
-      accentColor: "text-indigo-500 dark:text-indigo-400"
+      label: "Em Revisão", 
+      bgClass: "bg-purple-500/10", 
+      borderClass: "border-t-purple-400 dark:border-t-purple-500",
+      accentColor: "text-purple-500 dark:text-purple-400"
     },
     { 
       id: "done", 
-      label: "Concluído", 
+      label: "Concluída", 
       bgClass: "bg-emerald-500/10", 
       borderClass: "border-t-emerald-400 dark:border-t-emerald-500",
       accentColor: "text-emerald-500 dark:text-emerald-400"
@@ -153,9 +146,11 @@ export const TarefasView: React.FC = () => {
   };
 
   const shiftTask = (task: Task, direction: "left" | "right") => {
-    const columns: TaskColumn[] = ["backlog", "todo", "doing", "review", "done"];
-    // Map "in_progress" to "doing" for index calculation
-    const currentColumn = task.column === "in_progress" ? "doing" : task.column;
+    const columns: TaskColumn[] = ["todo", "doing", "review", "done"];
+    // Map "in_progress" to "doing" for index calculation, and "backlog" to "todo"
+    let currentColumn = task.column === "in_progress" ? "doing" : task.column;
+    if (currentColumn === "backlog") currentColumn = "todo";
+    
     const currIdx = columns.indexOf(currentColumn as TaskColumn);
     let targetIdx = currIdx;
 
@@ -356,7 +351,7 @@ export const TarefasView: React.FC = () => {
                     <div className="flex gap-0.5 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => shiftTask(task, "left")}
-                        disabled={colId === "backlog"}
+                        disabled={colId === "todo"}
                         className="p-1 hover:bg-slate-100 dark:hover:bg-zinc-800 disabled:opacity-20 rounded text-muted-foreground hover:text-foreground cursor-pointer"
                         title="Mover para esquerda"
                       >
@@ -382,17 +377,13 @@ export const TarefasView: React.FC = () => {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className={`py-12 px-4 text-center rounded-xl border border-dashed flex flex-col items-center justify-center gap-2 transition-all duration-200 ${
+              className={`py-16 px-4 text-center rounded-xl border border-dashed flex flex-col items-center justify-center gap-2 transition-all duration-200 h-[380px] bg-slate-50/10 dark:bg-zinc-900/10 ${
                 isOver 
                   ? "border-emerald-400 bg-emerald-500/5 text-emerald-600 dark:text-emerald-400" 
-                  : "border-border/60 text-muted-foreground/60 hover:border-border/80"
+                  : "border-border/50 text-muted-foreground/60"
               }`}
             >
-              <Move className="w-5 h-5 stroke-1 opacity-70 animate-pulse text-muted-foreground/75" />
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-semibold">Solte a tarefa aqui</p>
-                <p className="text-[9px] opacity-80">ou arraste cards para mover</p>
-              </div>
+              <p className="text-xs text-muted-foreground/70">Arraste tarefas para esta coluna</p>
             </motion.div>
           )}
         </div>
@@ -400,114 +391,42 @@ export const TarefasView: React.FC = () => {
     );
   };
 
+  const activeCount = tasks.filter((t) => t.column !== "done").length;
+
   return (
     <div className="p-6 bg-background transition-colors text-left flex flex-col h-full overflow-hidden">
-      {/* Header Panel */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5 shrink-0">
-        <div className="text-left space-y-1">
-          <div className="flex items-center gap-2">
-            <Layers className="w-5 h-5 text-emerald-600" />
-            <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
-              Fluxos de Trabalho e Kanban
-            </h2>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Monitore, delegue e movimente tarefas do seu escritório no padrão OAB-SaaS.
+      {/* Board Controls row matching example exactly */}
+      <div className="flex items-center justify-between gap-4 shrink-0 mb-6">
+        <div className="text-left">
+          <p className="text-xs sm:text-sm font-semibold text-muted-foreground/90">
+            {activeCount} {activeCount === 1 ? "tarefa ativa" : "tarefas ativas"} &bull; Arraste entre colunas
           </p>
         </div>
-        
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 self-start shadow-md shadow-emerald-600/15 hover:shadow-lg hover:shadow-emerald-600/20 active:scale-[0.98] cursor-pointer"
-        >
-          <Plus className="w-4 h-4 stroke-[2.5]" /> Criar Nova Tarefa
-        </button>
-      </div>
 
-      {/* Filters Row */}
-      <div className="bg-slate-50/50 dark:bg-zinc-900/40 p-4 rounded-xl border border-border/70 flex flex-col sm:flex-row gap-3 items-center justify-between shrink-0 mb-6 mt-6">
-        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-          {/* Search Box */}
-          <div className="relative w-full sm:w-64">
-            <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground/70" />
-            <input
-              type="text"
-              placeholder="Buscar por título ou descrição..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-background border border-border focus:border-emerald-500 rounded-lg pl-9 pr-3 py-2 text-xs text-card-foreground focus:outline-none focus:ring-1 focus:ring-emerald-500/30"
-            />
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            )}
-          </div>
-
-          {/* Priority filter */}
-          <div className="flex items-center gap-1.5 w-full sm:w-auto">
-            <span className="text-[10px] font-bold uppercase text-muted-foreground/80 shrink-0 hidden md:inline">Prioridade:</span>
-            <select
-              value={selectedPriority}
-              onChange={(e) => setSelectedPriority(e.target.value)}
-              className="w-full sm:w-36 bg-background border border-border focus:border-emerald-500 rounded-lg px-3 py-2 text-xs text-card-foreground focus:outline-none focus:ring-1 focus:ring-emerald-500/30"
-            >
-              <option value="all">Todas as Prioridades</option>
-              <option value="critical">Crítica</option>
-              <option value="high">Alta</option>
-              <option value="medium">Média</option>
-              <option value="low">Baixa</option>
-            </select>
-          </div>
-
-          {/* Assignee filter */}
-          <div className="flex items-center gap-1.5 w-full sm:w-auto">
-            <span className="text-[10px] font-bold uppercase text-muted-foreground/80 shrink-0 hidden md:inline">Responsável:</span>
-            <select
-              value={selectedAssignee}
-              onChange={(e) => setSelectedAssignee(e.target.value)}
-              className="w-full sm:w-44 bg-background border border-border focus:border-emerald-500 rounded-lg px-3 py-2 text-xs text-card-foreground focus:outline-none focus:ring-1 focus:ring-emerald-500/30"
-            >
-              <option value="all">Todos os Responsáveis</option>
-              {teamMembers.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Navigation & Clean Filters controls */}
-        <div className="flex items-center gap-2 shrink-0 ml-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40 w-full sm:w-auto justify-end">
-          {hasActiveFilters && (
-            <button
-              onClick={clearFilters}
-              className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 shrink-0 mr-3 cursor-pointer"
-            >
-              <X className="w-3.5 h-3.5" /> Limpar Filtros
-            </button>
-          )}
-          
-          <div className="flex items-center gap-1 border-l border-border/60 pl-3">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
             <button
               onClick={() => scrollContainer("left")}
-              className="p-1.5 border border-border/75 hover:border-border rounded-lg bg-card text-muted-foreground hover:text-foreground transition-all cursor-pointer active:scale-95 shadow-xs flex items-center justify-center hover:bg-slate-50 dark:hover:bg-zinc-800"
+              className="p-1.5 border border-border/70 hover:border-border rounded-lg bg-card text-muted-foreground hover:text-foreground transition-all cursor-pointer active:scale-95 shadow-2xs hover:bg-slate-50 dark:hover:bg-zinc-800"
               title="Rolar para esquerda"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => scrollContainer("right")}
-              className="p-1.5 border border-border/75 hover:border-border rounded-lg bg-card text-muted-foreground hover:text-foreground transition-all cursor-pointer active:scale-95 shadow-xs flex items-center justify-center hover:bg-slate-50 dark:hover:bg-zinc-800"
+              className="p-1.5 border border-border/70 hover:border-border rounded-lg bg-card text-muted-foreground hover:text-foreground transition-all cursor-pointer active:scale-95 shadow-2xs hover:bg-slate-50 dark:hover:bg-zinc-800"
               title="Rolar para direita"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
+
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 shadow-sm active:scale-[0.98] cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5 stroke-[2.5]" /> Nova tarefa
+          </button>
         </div>
       </div>
 
@@ -516,11 +435,10 @@ export const TarefasView: React.FC = () => {
         ref={scrollRef}
         className="flex-1 min-h-0 flex gap-4 overflow-x-auto px-6 pb-5 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-border scroll-smooth -mx-6"
       >
-        {renderColumn("backlog", "Backlog")} 
         {renderColumn("todo", "A Fazer")}
         {renderColumn("doing", "Em Andamento")}
-        {renderColumn("review", "Revisão Sócia")}
-        {renderColumn("done", "Concluído")}
+        {renderColumn("review", "Em Revisão")}
+        {renderColumn("done", "Concluída")}
       </div>
 
       {/* Task Creation Modal */}
@@ -608,11 +526,10 @@ export const TarefasView: React.FC = () => {
                       onChange={(e) => setColumn(e.target.value as any)}
                       className="w-full bg-background border border-border focus:border-emerald-500 rounded-md px-3 py-2 text-xs text-card-foreground focus:outline-none focus:ring-1 focus:ring-emerald-500/30"
                     >
-                      <option value="backlog">Backlog</option>
                       <option value="todo">A Fazer</option>
                       <option value="doing">Em Andamento</option>
-                      <option value="review">Revisão Sócia</option>
-                      <option value="done">Concluído</option>
+                      <option value="review">Em Revisão</option>
+                      <option value="done">Concluída</option>
                     </select>
                   </div>
                 </div>
