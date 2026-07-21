@@ -240,7 +240,7 @@ export const TarefasView: React.FC = () => {
         key={colId}
         onDragOver={(e) => handleDragOver(e, colId)}
         onDrop={(e) => handleDrop(e, colId)}
-        className={`flex flex-col flex-1 min-w-[285px] md:min-w-[310px] max-w-[325px] rounded-2xl border transition-all duration-200 snap-center h-full select-none ${
+        className={`flex flex-col w-full rounded-2xl border transition-all duration-200 h-full select-none ${
           isOver 
             ? "border-emerald-500 bg-emerald-50/10 dark:bg-emerald-950/10 ring-2 ring-emerald-500/20 shadow-lg shadow-emerald-500/5" 
             : "border-border/80 bg-slate-50/40 dark:bg-zinc-900/30 hover:border-border"
@@ -404,23 +404,6 @@ export const TarefasView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => scrollContainer("left")}
-              className="p-1.5 border border-border/70 hover:border-border rounded-lg bg-card text-muted-foreground hover:text-foreground transition-all cursor-pointer active:scale-95 shadow-2xs hover:bg-slate-50 dark:hover:bg-zinc-800"
-              title="Rolar para esquerda"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => scrollContainer("right")}
-              className="p-1.5 border border-border/70 hover:border-border rounded-lg bg-card text-muted-foreground hover:text-foreground transition-all cursor-pointer active:scale-95 shadow-2xs hover:bg-slate-50 dark:hover:bg-zinc-800"
-              title="Rolar para direita"
-            >
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 shadow-sm active:scale-[0.98] cursor-pointer"
@@ -433,7 +416,7 @@ export const TarefasView: React.FC = () => {
       {/* Board Scroll wrapper */}
       <div 
         ref={scrollRef}
-        className="flex-1 min-h-0 flex gap-4 overflow-x-auto px-6 pb-5 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-border scroll-smooth -mx-6"
+        className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-5 overflow-y-auto lg:overflow-y-hidden"
       >
         {renderColumn("todo", "A Fazer")}
         {renderColumn("doing", "Em Andamento")}
