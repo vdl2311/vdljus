@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { useJusFlow } from "../../store/JusFlowContext";
 import { Task } from "../../types";
 import { motion, AnimatePresence } from "motion/react";
@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   X,
   Layers,
+  ChevronLeft,
   ChevronRight,
   Move,
   AlertCircle
@@ -38,6 +39,18 @@ export const TarefasView: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPriority, setSelectedPriority] = useState<string>("all");
   const [selectedAssignee, setSelectedAssignee] = useState<string>("all");
+
+  // Kanban board scrolling
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollContainer = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 330; // Approx column width + gap
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth"
+      });
+    }
+  };
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -232,7 +245,7 @@ export const TarefasView: React.FC = () => {
         key={colId}
         onDragOver={(e) => handleDragOver(e, colId)}
         onDrop={(e) => handleDrop(e, colId)}
-        className={`flex flex-col flex-1 min-w-[285px] md:min-w-[310px] max-w-[325px] rounded-2xl border transition-all duration-200 snap-center h-[580px] select-none ${
+        className={`flex flex-col flex-1 min-w-[285px] md:min-w-[310px] max-w-[325px] rounded-2xl border transition-all duration-200 snap-center h-full select-none ${
           isOver 
             ? "border-emerald-500 bg-emerald-50/10 dark:bg-emerald-950/10 ring-2 ring-emerald-500/20 shadow-lg shadow-emerald-500/5" 
             : "border-border/80 bg-slate-50/40 dark:bg-zinc-900/30 hover:border-border"
@@ -388,9 +401,9 @@ export const TarefasView: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors text-left">
+    <div className="p-6 bg-background transition-colors text-left flex flex-col h-full overflow-hidden">
       {/* Header Panel */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/40 pb-5 shrink-0">
         <div className="text-left space-y-1">
           <div className="flex items-center gap-2">
             <Layers className="w-5 h-5 text-emerald-600" />
@@ -412,7 +425,7 @@ export const TarefasView: React.FC = () => {
       </div>
 
       {/* Filters Row */}
-      <div className="bg-slate-50/50 dark:bg-zinc-900/40 p-4 rounded-xl border border-border/70 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div className="bg-slate-50/50 dark:bg-zinc-900/40 p-4 rounded-xl border border-border/70 flex flex-col sm:flex-row gap-3 items-center justify-between shrink-0 mb-6 mt-6">
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
           {/* Search Box */}
           <div className="relative w-full sm:w-64">
@@ -468,19 +481,41 @@ export const TarefasView: React.FC = () => {
           </div>
         </div>
 
-        {/* Clear filter indicator */}
-        {hasActiveFilters && (
-          <button
-            onClick={clearFilters}
-            className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 shrink-0 self-end sm:self-center cursor-pointer"
-          >
-            <X className="w-3.5 h-3.5" /> Limpar Filtros
-          </button>
-        )}
+        {/* Navigation & Clean Filters controls */}
+        <div className="flex items-center gap-2 shrink-0 ml-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40 w-full sm:w-auto justify-end">
+          {hasActiveFilters && (
+            <button
+              onClick={clearFilters}
+              className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 shrink-0 mr-3 cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" /> Limpar Filtros
+            </button>
+          )}
+          
+          <div className="flex items-center gap-1 border-l border-border/60 pl-3">
+            <button
+              onClick={() => scrollContainer("left")}
+              className="p-1.5 border border-border/75 hover:border-border rounded-lg bg-card text-muted-foreground hover:text-foreground transition-all cursor-pointer active:scale-95 shadow-xs flex items-center justify-center hover:bg-slate-50 dark:hover:bg-zinc-800"
+              title="Rolar para esquerda"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => scrollContainer("right")}
+              className="p-1.5 border border-border/75 hover:border-border rounded-lg bg-card text-muted-foreground hover:text-foreground transition-all cursor-pointer active:scale-95 shadow-xs flex items-center justify-center hover:bg-slate-50 dark:hover:bg-zinc-800"
+              title="Rolar para direita"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Board Scroll wrapper */}
-      <div className="flex gap-4 overflow-x-auto px-6 pb-5 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-border scroll-smooth -mx-6">
+      <div 
+        ref={scrollRef}
+        className="flex-1 min-h-0 flex gap-4 overflow-x-auto px-6 pb-5 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-border scroll-smooth -mx-6"
+      >
         {renderColumn("backlog", "Backlog")} 
         {renderColumn("todo", "A Fazer")}
         {renderColumn("doing", "Em Andamento")}
