@@ -268,6 +268,7 @@ export const TarefasView: React.FC = () => {
                   animate={{ opacity: isCurrentlyDragging ? 0.4 : 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  className="w-full"
                 >
                   <div
                     draggable
@@ -479,7 +480,7 @@ export const TarefasView: React.FC = () => {
       </div>
 
       {/* Board Scroll wrapper */}
-      <div className="flex gap-4 overflow-x-auto pb-5 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-border scroll-smooth">
+      <div className="flex gap-4 overflow-x-auto px-6 pb-5 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-border scroll-smooth -mx-6">
         {renderColumn("backlog", "Backlog")} 
         {renderColumn("todo", "A Fazer")}
         {renderColumn("doing", "Em Andamento")}
