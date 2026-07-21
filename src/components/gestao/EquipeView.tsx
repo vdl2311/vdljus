@@ -166,9 +166,11 @@ export const EquipeView: React.FC = () => {
                   {member.role !== "admin" && (
                     <button
                       onClick={() => deleteTeamMember(member.id)}
-                      className="opacity-0 group-hover:opacity-100 p-1 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-muted-foreground hover:text-rose-500 rounded transition-all cursor-pointer shrink-0"
+                      className="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-muted-foreground hover:text-rose-500 rounded transition-all cursor-pointer shrink-0"
+                      title="Excluir membro da equipe"
+                      aria-label="Excluir membro da equipe"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   )}
                 </div>
