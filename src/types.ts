@@ -141,6 +141,8 @@ export interface TeamMember {
   permissions: string[]; // Modules they can access
   twoFAEnabled: boolean;
   status: 'active' | 'invited';
+  password?: string;
+  isTemporaryPassword?: boolean;
 }
 
 export interface Article {

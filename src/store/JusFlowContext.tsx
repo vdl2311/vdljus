@@ -1052,10 +1052,19 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const newM: TeamMember = {
       ...m,
       id: "u_" + Date.now(),
-      status: m.email.endsWith("@jusflow.adv.br") ? "active" : "invited"
+      status: m.email.endsWith("@jusflow.adv.br") ? "active" : "invited",
+      password: "demo123",
+      isTemporaryPassword: true
     };
     setTeamMembers(prev => [...prev, newM]);
-    setDoc(doc(db, "teamMembers", newM.id), newM).catch(console.error);
+    setDoc(doc(db, "teamMembers", newM.id), newM)
+      .then(() => {
+        toast.success(`Membro convidado! Ele pode acessar com a senha padrão "demo123".`);
+      })
+      .catch(e => {
+        console.error(e);
+        toast.error("Erro ao convidar membro da equipe");
+      });
   };
 
   const updateTeamMember = (id: string, updates: Partial<TeamMember>) => {

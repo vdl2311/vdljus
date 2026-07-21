@@ -16,11 +16,14 @@ import { Input } from "./ui/input";
 export const LoginScreen: React.FC<{
   onLoginSuccess: (user: TeamMember) => void;
 }> = ({ onLoginSuccess }) => {
-  const { teamMembers } = useJusFlow();
+  const { teamMembers, updateTeamMember } = useJusFlow();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show2fa, setShow2fa] = useState(false);
   const [showRecovery, setShowRecovery] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [twoFaCode, setTwoFaCode] = useState("");
   const [selectedUser, setSelectedUser] = useState<TeamMember | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -38,12 +41,62 @@ export const LoginScreen: React.FC<{
       return;
     }
 
-    if (password.length < 4) {
-      setErrorMessage("Senha incorreta ou muito curta.");
+    const correctPassword = user.password || "demo123";
+    if (password !== correctPassword) {
+      setErrorMessage("Senha incorreta.");
+      return;
+    }
+
+    // If password is still 'demo123' and has not been changed
+    const isTemp = user.isTemporaryPassword !== false && correctPassword === "demo123";
+    if (isTemp) {
+      setSelectedUser(user);
+      setShowChangePassword(true);
       return;
     }
 
     triggerUserLogin(user);
+  };
+
+  const handleChangePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage("");
+
+    if (newPassword.length < 4) {
+      setErrorMessage("A nova senha deve ter pelo menos 4 caracteres.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setErrorMessage("As senhas digitadas não coincidem.");
+      return;
+    }
+
+    if (newPassword === "demo123") {
+      setErrorMessage("Por segurança, escolha uma senha diferente da provisória 'demo123'.");
+      return;
+    }
+
+    if (selectedUser) {
+      const updatedFields: Partial<TeamMember> = {
+        password: newPassword,
+        isTemporaryPassword: false,
+        status: "active"
+      };
+
+      updateTeamMember(selectedUser.id, updatedFields);
+
+      const userWithUpdatedFields = {
+        ...selectedUser,
+        ...updatedFields
+      } as TeamMember;
+
+      setShowChangePassword(false);
+      setNewPassword("");
+      setConfirmPassword("");
+
+      triggerUserLogin(userWithUpdatedFields);
+    }
   };
 
   const triggerUserLogin = (user: TeamMember) => {
@@ -68,13 +121,14 @@ export const LoginScreen: React.FC<{
 
   const handleRecoverySubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Since there's no SMTP active, we clarify this as well
     setSuccessRecovery(
-      "Instruções de redefinição de senha enviadas para seu e-mail.",
+      "Como o ambiente de homologação está ativo, a redefinição foi simulada com sucesso! Você pode acessar usando a senha padrão 'demo123' provisoriamente.",
     );
     setTimeout(() => {
       setShowRecovery(false);
       setSuccessRecovery("");
-    }, 3000);
+    }, 6000);
   };
 
   return (
@@ -107,16 +161,20 @@ export const LoginScreen: React.FC<{
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">
               {show2fa
                 ? "Autenticação em 2 Fatores"
-                : showRecovery
-                  ? "Recuperar Senha"
-                  : "Entrar na plataforma"}
+                : showChangePassword
+                  ? "Definir Senha Definitiva"
+                  : showRecovery
+                    ? "Recuperar Senha"
+                    : "Entrar na plataforma"}
             </h2>
             <p className="text-sm text-muted-foreground">
               {show2fa
                 ? "Insira o token do seu aplicativo autenticador."
-                : showRecovery
-                  ? "Enviaremos um link de recuperação para seu e-mail."
-                  : "Insira suas credenciais para acessar sua conta."}
+                : showChangePassword
+                  ? "Sua conta foi criada com uma senha provisória. Por favor, defina uma nova senha de sua escolha."
+                  : showRecovery
+                    ? "Enviaremos um link de recuperação para seu e-mail."
+                    : "Insira suas credenciais para acessar sua conta."}
             </p>
           </div>
 
@@ -170,6 +228,63 @@ export const LoginScreen: React.FC<{
                 onClick={() => setShow2fa(false)}
               >
                 Voltar ao login
+              </Button>
+            </form>
+          ) : showChangePassword ? (
+            <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium leading-none">
+                  Nova Senha Definitiva
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Nova senha (mínimo 4 caracteres)"
+                    className="pl-9"
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium leading-none">
+                  Confirmar Nova Senha
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirme sua nova senha"
+                    className="pl-9"
+                    required
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-10 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white"
+              >
+                Salvar Senha e Entrar <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full text-xs"
+                onClick={() => {
+                  setShowChangePassword(false);
+                  setNewPassword("");
+                  setConfirmPassword("");
+                }}
+              >
+                Cancelar e voltar
               </Button>
             </form>
           ) : showRecovery ? (
