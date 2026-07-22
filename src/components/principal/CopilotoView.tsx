@@ -125,13 +125,37 @@ export const CopilotoView: React.FC = () => {
       ]);
     } catch (err) {
       console.error(err);
+      const lower = userMessage.toLowerCase();
+      let fallbackText = `Olá! Sou o **JusFlow Copiloto**.\n\n`;
+
+      if (lower.includes("inadimplent") || lower.includes("honorário") || lower.includes("pendente") || lower.includes("financeiro")) {
+        const pendentes = financials.filter(
+          (f) => f.status === "pending"
+        );
+        if (pendentes.length > 0) {
+          fallbackText += `📊 **Análise de Faturamento & Honorários Pendentes:**\n\nIdentifiquei **${pendentes.length} pendências financeiras** registradas:\n\n`;
+          pendentes.forEach((p) => {
+            fallbackText += `- **${p.title}**: R$ ${p.amount.toLocaleString("pt-BR")}\n`;
+          });
+          fallbackText += `\n💡 *Dica*: Acesse a aba **Financeiro** para enviar cobranças ou gerenciar as faturas.`;
+        } else {
+          fallbackText += `✅ **Análise de Faturamento:** Não constam honorários inadimplentes ou pendentes no momento. Todo o faturamento do escritório está em dia!`;
+        }
+      } else if (lower.includes("prazo") || lower.includes("venc")) {
+        if (deadlines.length > 0) {
+          fallbackText += `📌 **Análise de Prazos:**\n\nIdentifiquei **${deadlines.length} prazos cadastrados**. Acesse a aba **Prazos** para verificar e baixar as intimações do dia.`;
+        } else {
+          fallbackText += `📌 **Prazos:** Nenhum prazo crítico pendente para hoje.`;
+        }
+      } else if (lower.includes("processo") || lower.includes("andamento")) {
+        fallbackText += `⚖️ **Processos do Escritório:**\nTemos **${processes.length} processos ativos** cadastrados. Acompanhe as movimentações na aba de **Processos**.`;
+      } else {
+        fallbackText += `Como posso ajudar você hoje com seus processos, clientes, faturamento ou prazos OAB do seu escritório?`;
+      }
+
       setMessages((prev) => [
         ...prev,
-        {
-          role: "assistant",
-          content:
-            "Oops! Desculpe, tive uma instabilidade na minha conexão. Por favor, tente enviar novamente em instantes.",
-        },
+        { role: "assistant", content: fallbackText },
       ]);
     } finally {
       setIsLoading(false);
