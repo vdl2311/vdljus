@@ -555,7 +555,13 @@ export const DashboardView: React.FC = () => {
                     className={`text-xs font-bold uppercase px-1.5 py-0.5 rounded shrink-0 ${d.priority === "critical" ? "bg-rose-950 text-rose-400" : "bg-amber-950 text-amber-400"}`}
                   >
                     {" "}
-                    {d.priority}{" "}
+                    {d.priority === "critical"
+                      ? "CRÍTICO"
+                      : d.priority === "high"
+                      ? "ALTA"
+                      : d.priority === "medium"
+                      ? "MÉDIA"
+                      : "BAIXA"}{" "}
                   </span>{" "}
                 </div>
               ))}{" "}

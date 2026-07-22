@@ -48,6 +48,42 @@ function getGenAI(): GoogleGenAI | null {
   }
 }
 
+// Helper to attempt content generation with model fallbacks (2.5-flash -> 2.0-flash -> 1.5-flash)
+async function generateContentWithFallback(
+  ai: GoogleGenAI,
+  params: {
+    contents: any;
+    systemInstruction?: string;
+    temperature?: number;
+    responseMimeType?: string;
+  }
+): Promise<string> {
+  const modelsToTry = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
+  let lastError: any = null;
+
+  for (const model of modelsToTry) {
+    try {
+      const response = await ai.models.generateContent({
+        model,
+        contents: params.contents,
+        config: {
+          systemInstruction: params.systemInstruction,
+          temperature: params.temperature,
+          responseMimeType: params.responseMimeType,
+        },
+      });
+      if (response && response.text) {
+        return response.text;
+      }
+    } catch (err: any) {
+      console.warn(`Gemini generation attempt failed with model ${model}:`, err?.message || err);
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error("All Gemini models failed to respond.");
+}
+
 // Router for API endpoints
 const router = express.Router();
 
@@ -121,17 +157,14 @@ Instruções:
   if (ai) {
     try {
       const formattedPrompt = `Mensagens anteriores:\n${(history || []).map((h: any) => `${h.role === "user" ? "Advogado" : "Copiloto"}: ${h.content}`).join("\n")}\n\nNova mensagem do Advogado: ${userText}\n\nCopiloto:`;
-      const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+      const text = await generateContentWithFallback(ai, {
         contents: formattedPrompt,
-        config: {
-          systemInstruction,
-          temperature: 0.7,
-        },
+        systemInstruction,
+        temperature: 0.7,
       });
 
-      if (response.text) {
-        res.json({ text: response.text });
+      if (text) {
+        res.json({ text });
         return;
       }
     } catch (err: any) {
@@ -207,13 +240,13 @@ Pedidos principais: ${requests || "Procedência dos pedidos e condenação em cu
 
   if (ai) {
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+      const text = await generateContentWithFallback(ai, {
         contents: prompt,
-        config: { systemInstruction, temperature: 0.7 },
+        systemInstruction,
+        temperature: 0.7,
       });
-      if (response.text) {
-        res.json({ text: response.text, content: response.text });
+      if (text) {
+        res.json({ text, content: text });
         return;
       }
     } catch (err: any) {
@@ -280,13 +313,13 @@ Analise o texto e responda exclusivamente em formato JSON com o schema:
 
   if (ai) {
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+      const responseText = await generateContentWithFallback(ai, {
         contents: `Analise a seguinte peça jurídica:\n\n${inputText}`,
-        config: { systemInstruction, responseMimeType: "application/json" },
+        systemInstruction,
+        responseMimeType: "application/json",
       });
-      if (response.text) {
-        const parsed = JSON.parse(response.text);
+      if (responseText) {
+        const parsed = JSON.parse(responseText);
         res.json(parsed);
         return;
       }
@@ -327,23 +360,15 @@ const handleAgentes = async (req: Request, res: Response) => {
 
   if (ai) {
     try {
-      const agentSystem = `Você é o Agente IA Especialista "${name}". Execute a tarefa técnica jurídica solicitada.`;
-      const agentOutput = await (
-        await ai.models.generateContent({
-          model: "gemini-3.5-flash",
-          contents: desc,
-          config: { systemInstruction: agentSystem },
-        })
-      ).text;
+      const agentOutput = await generateContentWithFallback(ai, {
+        contents: desc,
+        systemInstruction: `Você é o Agente IA Especialista "${name}". Execute a tarefa técnica jurídica solicitada.`,
+      });
 
-      const supervisorSystem = `Você é a Inteligência Supervisora (Supervisory AI) de segunda camada da OAB. Avalie o trabalho gerado pelo agente. Responda se aprova e dê seu parecer.`;
-      const supervisorComment = await (
-        await ai.models.generateContent({
-          model: "gemini-3.5-flash",
-          contents: `Avalie:\n\n${agentOutput}`,
-          config: { systemInstruction: supervisorSystem },
-        })
-      ).text;
+      const supervisorComment = await generateContentWithFallback(ai, {
+        contents: `Avalie:\n\n${agentOutput}`,
+        systemInstruction: `Você é a Inteligência Supervisora (Supervisory AI) de segunda camada da OAB. Avalie o trabalho gerado pelo agente. Responda se aprova e dê seu parecer.`,
+      });
 
       res.json({
         text: `${agentOutput}\n\n---\n\n### Parecer do Supervisor:\n${supervisorComment}`,
@@ -391,14 +416,13 @@ const handleCompliance = async (req: Request, res: Response) => {
 
   if (ai) {
     try {
-      const systemInstruction = `Você é um Oficial de Compliance Jurídico sênior da OAB. Inspecione o documento e retorne exclusivamente um objeto JSON com: complianceScore (number), rules (array de objetos com category, ruleName, severity, verified, message).`;
-      const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+      const responseText = await generateContentWithFallback(ai, {
         contents: `Audite:\n\n${contentToAudit}`,
-        config: { systemInstruction, responseMimeType: "application/json" },
+        systemInstruction: `Você é um Oficial de Compliance Jurídico sênior da OAB. Inspecione o documento e retorne exclusivamente um objeto JSON com: complianceScore (number), rules (array de objetos com category, ruleName, severity, verified, message).`,
+        responseMimeType: "application/json",
       });
-      if (response.text) {
-        res.json(JSON.parse(response.text));
+      if (responseText) {
+        res.json(JSON.parse(responseText));
         return;
       }
     } catch (err) {

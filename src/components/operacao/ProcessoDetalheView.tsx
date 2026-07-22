@@ -703,7 +703,13 @@ export const ProcessoDetalheView: React.FC = () => {
                       className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${doc.status === "signed" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
                     >
                       {" "}
-                      {doc.status}{" "}
+                      {doc.status === "signed"
+                        ? "Assinado"
+                        : doc.status === "draft"
+                        ? "Rascunho"
+                        : doc.status === "sent"
+                        ? "Enviado"
+                        : doc.status}{" "}
                     </span>{" "}
                   </div>
                 ))}{" "}

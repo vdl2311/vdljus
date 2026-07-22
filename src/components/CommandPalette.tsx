@@ -346,7 +346,7 @@ export const CommandPalette: React.FC = () => {
                             {doc.title}
                           </p>{" "}
                           <p className="text-[10px] text-muted-foreground truncate">
-                            Status: {doc.status.toUpperCase()}
+                            Status: {doc.status === "signed" ? "ASSINADO" : doc.status === "draft" ? "RASCUNHO" : doc.status === "sent" ? "ENVIADO" : String(doc.status).toUpperCase()}
                           </p>{" "}
                         </div>{" "}
                       </div>{" "}

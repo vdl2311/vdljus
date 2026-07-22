@@ -253,7 +253,15 @@ export const Topbar: React.FC<{
                             className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase shrink-0 mt-0.5 ${color}`}
                           >
                             {" "}
-                            {n.type}{" "}
+                            {n.type === "deadline"
+                              ? "Prazo"
+                              : n.type === "financial"
+                              ? "Financeiro"
+                              : n.type === "hearing"
+                              ? "Audiência"
+                              : n.type === "task"
+                              ? "Tarefa"
+                              : n.type}{" "}
                           </span>{" "}
                           <div className="flex-1 min-w-0">
                             {" "}
@@ -316,7 +324,17 @@ export const Topbar: React.FC<{
                 </span>{" "}
                 <span className="text-[10px] block mt-1 px-1.5 py-0.5 rounded font-bold uppercase bg-muted text-muted-foreground w-max">
                   {" "}
-                  {currentUser?.role.toUpperCase()}{" "}
+                  {currentUser?.role === "admin"
+                    ? "SÓCIO ADMINISTRADOR"
+                    : currentUser?.role === "lawyer"
+                    ? "ADVOGADO"
+                    : currentUser?.role === "partner"
+                    ? "SÓCIO"
+                    : currentUser?.role === "secretary"
+                    ? "SECRETÁRIO(A)"
+                    : currentUser?.role === "intern"
+                    ? "ESTAGIÁRIO(A)"
+                    : String(currentUser?.role || "").toUpperCase()}{" "}
                 </span>{" "}
               </div>{" "}
               <div className="py-1">
@@ -339,7 +357,7 @@ export const Topbar: React.FC<{
                   className="w-full text-left px-3 py-2 text-xs text-muted-foreground hover:bg-muted dark:hover:bg-accent hover:text-accent-foreground/50 flex items-center gap-2"
                 >
                   {" "}
-                  <ShieldCheck className="w-4 h-4" /> Security Rules{" "}
+                  <ShieldCheck className="w-4 h-4" /> Regras de Conformidade{" "}
                 </button>{" "}
               </div>{" "}
               <div className="py-1">

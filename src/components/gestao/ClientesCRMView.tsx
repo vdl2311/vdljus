@@ -140,13 +140,19 @@ export const ClientesCRMView: React.FC = () => {
                     {" "}
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-muted text-muted-foreground px-2 py-0.5 rounded mr-2">
                       {" "}
-                      {c.type.toUpperCase()}{" "}
+                      {c.type === "pf" ? "Pessoa Física" : "Pessoa Jurídica"}{" "}
                     </span>{" "}
                     <span
                       className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${c.status === "active" ? "bg-emerald-950 text-emerald-400" : "bg-amber-950 text-amber-400"}`}
                     >
                       {" "}
-                      {c.status}{" "}
+                      {c.status === "active"
+                        ? "Ativo"
+                        : c.status === "prospect"
+                        ? "Prospect"
+                        : c.status === "inactive"
+                        ? "Inativo"
+                        : c.status}{" "}
                     </span>{" "}
                   </div>{" "}
                   <button
