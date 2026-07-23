@@ -12,6 +12,7 @@ import {
   Scale,
   Trash2,
   ShieldCheck,
+  AlertTriangle,
 } from "lucide-react";
 export const ClientesCRMView: React.FC = () => {
   const { clients, processes, addClient, deleteClient } = useJusFlow();
@@ -19,6 +20,7 @@ export const ClientesCRMView: React.FC = () => {
   const [filterType, setFilterType] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false); // Form states
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -156,7 +158,7 @@ export const ClientesCRMView: React.FC = () => {
                     </span>{" "}
                   </div>{" "}
                   <button
-                    onClick={() => deleteClient(c.id)}
+                    onClick={() => setDeleteConfirmId(c.id)}
                     className="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-muted-foreground hover:text-rose-500 rounded transition-all cursor-pointer shrink-0"
                     title="Excluir cliente"
                     aria-label="Excluir cliente"
@@ -402,6 +404,41 @@ export const ClientesCRMView: React.FC = () => {
           </div>{" "}
         </div>
       )}{" "}
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-xl shadow-xl max-w-sm w-full p-5 text-left space-y-4 animate-in fade-in zoom-in-95">
+            <div className="flex items-center gap-3 text-rose-600 dark:text-rose-400">
+              <div className="p-2 bg-rose-100 dark:bg-rose-950/50 rounded-lg">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-sm text-foreground">Confirmar Exclusão do Cliente</h3>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Tem certeza que deseja remover este cliente do cadastro? Todos os dados vinculados e o histórico serão removidos de forma permanente.
+            </p>
+            <div className="flex justify-end gap-2 pt-2 border-t border-border">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirmId(null)}
+                className="px-3.5 py-2 text-xs font-semibold hover:bg-muted text-muted-foreground rounded-md cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  deleteClient(deleteConfirmId);
+                  setDeleteConfirmId(null);
+                }}
+                className="px-3.5 py-2 text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white rounded-md shadow cursor-pointer"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import {
   FileSpreadsheet,
   Bot,
   HelpCircle,
+  Download,
 } from "lucide-react";
 export const ComplianceView: React.FC = () => {
   const [auditMode, setAuditMode] = useState<"oab" | "lgpd">("oab");
@@ -59,15 +60,24 @@ export const ComplianceView: React.FC = () => {
     <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
       {/* Header */}{" "}
-      <div className="text-left">
-        {" "}
-        <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
-          Compliance & Ética
-        </h2>{" "}
-        <p className="text-xs text-muted-foreground">
-          Audite copys publicitárias, posts ou políticas contratuais sob a
-          vigência do Código de Ética da OAB e da LGPD.
-        </p>{" "}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-left">
+        <div>
+          <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
+            Compliance & Ética
+          </h2>
+          <p className="text-xs text-muted-foreground">
+            Audite copys publicitárias, posts ou políticas contratuais sob a
+            vigência do Código de Ética da OAB e da LGPD.
+          </p>
+        </div>
+        <a
+          href="/api/auditoria/pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer shrink-0"
+        >
+          <Download className="w-4 h-4" /> Relatório UX & Segurança (PDF)
+        </a>
       </div>{" "}
       <div className="border-b border-border flex gap-1 shrink-0">
         {" "}

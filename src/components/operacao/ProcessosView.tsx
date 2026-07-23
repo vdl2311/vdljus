@@ -10,6 +10,7 @@ import {
   Landmark,
   AlertCircle,
   Trash2,
+  AlertTriangle,
 } from "lucide-react";
 export const ProcessosView: React.FC = () => {
   const {
@@ -24,6 +25,7 @@ export const ProcessosView: React.FC = () => {
   const [filterArea, setFilterArea] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false); // New Process Form States
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [cnj, setCnj] = useState("");
   const [clientId, setClientId] = useState("");
@@ -282,18 +284,18 @@ export const ProcessosView: React.FC = () => {
                   setActiveTab("operacao.datajud");
                 }}
                 title="Consultar DataJud"
+                aria-label="Consultar processo no DataJud"
                 className="p-1.5 bg-muted hover:bg-amber-50 dark:hover:bg-amber-950/20 text-muted-foreground hover:text-amber-500 dark:hover:text-amber-400 border border-border rounded-md hover:border-amber-500/30 transition-all cursor-pointer shrink-0"
               >
-                {" "}
-                <Landmark className="w-3.5 h-3.5" />{" "}
-              </button>{" "}
+                <Landmark className="w-3.5 h-3.5" />
+              </button>
               <button
-                onClick={() => deleteProcess(p.id)}
+                onClick={() => setDeleteConfirmId(p.id)}
                 title="Excluir Processo"
+                aria-label="Excluir processo judicial"
                 className="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-muted-foreground hover:text-rose-500 border border-transparent hover:border-rose-500/20 rounded-md transition-all cursor-pointer shrink-0"
               >
-                {" "}
-                <Trash2 className="w-3.5 h-3.5" />{" "}
+                <Trash2 className="w-3.5 h-3.5" />
               </button>{" "}
             </div>{" "}
           </div>
@@ -574,6 +576,41 @@ export const ProcessosView: React.FC = () => {
           </div>{" "}
         </div>
       )}{" "}
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-xl shadow-xl max-w-sm w-full p-5 text-left space-y-4 animate-in fade-in zoom-in-95">
+            <div className="flex items-center gap-3 text-rose-600 dark:text-rose-400">
+              <div className="p-2 bg-rose-100 dark:bg-rose-950/50 rounded-lg">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-sm text-foreground">Confirmar Exclusão do Processo</h3>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Tem certeza que deseja remover este processo judicial do cadastro do escritório? Esta ação removerá o processo e seus vínculos permanentes.
+            </p>
+            <div className="flex justify-end gap-2 pt-2 border-t border-border">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirmId(null)}
+                className="px-3.5 py-2 text-xs font-semibold hover:bg-muted text-muted-foreground rounded-md cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  deleteProcess(deleteConfirmId);
+                  setDeleteConfirmId(null);
+                }}
+                className="px-3.5 py-2 text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white rounded-md shadow cursor-pointer"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

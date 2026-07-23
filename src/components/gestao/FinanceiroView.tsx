@@ -10,14 +10,17 @@ import {
   ArrowDownRight,
   TrendingUp,
   ShieldCheck,
+  Trash2,
+  AlertTriangle,
 } from "lucide-react";
 export const FinanceiroView: React.FC = () => {
-  const { financials, clients, addFinancial, toggleFinancialPaid } =
+  const { financials, clients, addFinancial, toggleFinancialPaid, deleteFinancial } =
     useJusFlow();
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false); // Form states
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<"income" | "expense">("income");
@@ -231,6 +234,7 @@ export const FinanceiroView: React.FC = () => {
                 <th className="px-5 py-3">Tipo</th>{" "}
                 <th className="px-5 py-3 text-right">Valor</th>{" "}
                 <th className="px-5 py-3 text-center">Status</th>{" "}
+                <th className="px-5 py-3 text-right">Ações</th>{" "}
               </tr>{" "}
             </thead>{" "}
             <tbody className="divide-y divide-border/50 dark:divide-border text-foreground ">
@@ -283,13 +287,23 @@ export const FinanceiroView: React.FC = () => {
                       {f.status === "paid" ? "Pago" : "Pendente"}{" "}
                     </button>{" "}
                   </td>{" "}
+                  <td className="px-5 py-3 text-right">
+                    <button
+                      onClick={() => setDeleteConfirmId(f.id)}
+                      className="p-1 text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded transition-all cursor-pointer"
+                      title="Excluir lançamento"
+                      aria-label="Excluir lançamento"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </td>
                 </tr>
               ))}{" "}
               {filtered.length === 0 && (
                 <tr>
                   {" "}
                   <td
-                    colSpan={5}
+                    colSpan={6}
                     className="px-5 py-12 text-center text-xs text-muted-foreground"
                   >
                     {" "}
@@ -479,6 +493,41 @@ export const FinanceiroView: React.FC = () => {
           </div>{" "}
         </div>
       )}{" "}
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-xl shadow-xl max-w-sm w-full p-5 text-left space-y-4 animate-in fade-in zoom-in-95">
+            <div className="flex items-center gap-3 text-rose-600 dark:text-rose-400">
+              <div className="p-2 bg-rose-100 dark:bg-rose-950/50 rounded-lg">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <h3 className="font-bold text-sm text-foreground">Confirmar Exclusão</h3>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Tem certeza que deseja excluir este lançamento contábil? Esta ação é irreversível e atualizará o fluxo de caixa.
+            </p>
+            <div className="flex justify-end gap-2 pt-2 border-t border-border">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirmId(null)}
+                className="px-3.5 py-2 text-xs font-semibold hover:bg-muted text-muted-foreground rounded-md cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  deleteFinancial(deleteConfirmId);
+                  setDeleteConfirmId(null);
+                }}
+                className="px-3.5 py-2 text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white rounded-md shadow cursor-pointer"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

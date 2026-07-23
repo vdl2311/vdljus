@@ -527,6 +527,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
         });
         setProcesses(list);
       }
+    }, (error) => {
+      console.warn("Firebase processes sync notice:", error?.message || error);
     });
 
     // 3. Movements
@@ -550,6 +552,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
         }
         setMovements(grouped);
       }
+    }, (error) => {
+      console.warn("Firebase movements sync notice:", error?.message || error);
     });
 
     // 4. Deadlines
@@ -566,6 +570,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
         });
         setDeadlines(list);
       }
+    }, (error) => {
+      console.warn("Firebase deadlines sync notice:", error?.message || error);
     });
 
     // 5. Tasks
@@ -582,6 +588,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
         });
         setTasks(list);
       }
+    }, (error) => {
+      console.warn("Firebase tasks sync notice:", error?.message || error);
     });
 
     // 6. Financials
@@ -598,6 +606,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
         });
         setFinancials(list);
       }
+    }, (error) => {
+      console.warn("Firebase financials sync notice:", error?.message || error);
     });
 
     // 7. Events
@@ -614,6 +624,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
         });
         setEvents(list);
       }
+    }, (error) => {
+      console.warn("Firebase events sync notice:", error?.message || error);
     });
 
     // 8. Documents
@@ -630,6 +642,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
         });
         setDocuments(list);
       }
+    }, (error) => {
+      console.warn("Firebase documents sync notice:", error?.message || error);
     });
 
     // 9. Team
@@ -661,6 +675,8 @@ export const JusFlowProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }
         }
       }
+    }, (error) => {
+      console.warn("Firebase teamMembers sync notice:", error?.message || error);
     });
 
     // 10. Audit Logs
