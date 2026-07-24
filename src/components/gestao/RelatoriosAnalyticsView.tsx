@@ -1,5 +1,6 @@
 import React from "react";
 import { useJusFlow } from "../../store/JusFlowContext";
+import { DataPortabilitySection } from "./DataPortabilitySection";
 import {
   BarChart3,
   TrendingUp,
@@ -22,17 +23,19 @@ export const RelatoriosAnalyticsView: React.FC = () => {
   return (
     <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
-      {/* Header */}{" "}
+      {/* Header */}
       <div className="text-left">
-        {" "}
         <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Relatórios & Analytics
-        </h2>{" "}
+        </h2>
         <p className="text-xs text-muted-foreground">
           Avalie métricas consolidadas de contencioso ativo, tempo de êxito e
           rentabilidade processual.
-        </p>{" "}
-      </div>{" "}
+        </p>
+      </div>
+
+      {/* Export & Data Portability */}
+      <DataPortabilitySection />
       {/* Analytics KPIs Row */}{" "}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {" "}

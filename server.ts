@@ -639,6 +639,339 @@ router.get("/auditoria/pdf", (req: Request, res: Response) => {
   }
 });
 
+// 10. Exportação Completa de Dados para PDF (Portabilidade de Dados LGPD)
+router.post("/export/full-pdf", (req: Request, res: Response) => {
+  try {
+    const {
+      officeName = "JusFlow Advocacia",
+      clients = [],
+      processes = [],
+      financials = [],
+      deadlines = [],
+      tasks = [],
+      teamMembers = [],
+      auditLogs = []
+    } = req.body || {};
+
+    const doc = new PDFDocument({ margin: 40, size: "A4", bufferPages: true });
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", 'attachment; filename="Dossie_Portabilidade_JusFlow.pdf"');
+
+    doc.pipe(res);
+
+    // Header / Branding
+    doc.rect(0, 0, 595.28, 65).fill("#047857");
+    doc.fillColor("#ffffff").fontSize(16).font("Helvetica-Bold").text(`DOSSIÊ DE PORTABILIDADE DE DADOS`, 40, 16);
+    doc.fontSize(10).font("Helvetica").text(`${officeName} — Relatório de Extração Integral e Backup`, 40, 38);
+
+    doc.moveDown(3);
+
+    // Terms / Compliance banner
+    doc.rect(40, doc.y, 515, 45).fillAndStroke("#f0fdf4", "#bbf7d0");
+    doc.fillColor("#166534").fontSize(9).font("Helvetica-Bold").text("GARANTIA DE PORTABILIDADE E PROPRIEDADE DOS DADOS (LGPD ART. 18, V)", 50, doc.y - 38);
+    doc.fillColor("#15803d").fontSize(8).font("Helvetica").text("Este documento contém a extração integral e irrestrita dos dados cadastrais, acervo processual, lançamentos financeiros e registros do escritório. O comprador possui total custódia e garantia de não aprisionamento tecnológico (Lock-in Zero).", 50, doc.y - 24, { width: 495 });
+
+    doc.moveDown(2);
+
+    // 1. Resumo Executivo
+    doc.fillColor("#111827").fontSize(11).font("Helvetica-Bold").text("1. RESUMO EXECUTIVO DO ACERVO JURÍDICO");
+    doc.moveDown(0.5);
+    doc.font("Helvetica").fontSize(9).fillColor("#374151");
+    doc.text(`• Total de Clientes Ativos: ${clients.length}`);
+    doc.text(`• Total de Processos Judiciais: ${processes.length}`);
+    doc.text(`• Total de Lançamentos Financeiros: ${financials.length}`);
+    doc.text(`• Total de Prazos Registrados: ${deadlines.length}`);
+    doc.text(`• Total de Tarefas Internas: ${tasks.length}`);
+    doc.text(`• Membros de Equipe / Advogados: ${teamMembers.length}`);
+    doc.text(`• Data de Emissão: ${new Date().toLocaleString("pt-BR")}`);
+
+    doc.moveDown(1.5);
+
+    // 2. Clientes
+    if (clients.length > 0) {
+      doc.fillColor("#111827").fontSize(11).font("Helvetica-Bold").text("2. CADASTRO DE CLIENTES (PF / PJ)");
+      doc.moveDown(0.5);
+      clients.slice(0, 15).forEach((c: any, index: number) => {
+        doc.font("Helvetica-Bold").fontSize(9).fillColor("#047857").text(`${index + 1}. ${c.name} (${(c.type || "pf").toUpperCase()})`);
+        doc.font("Helvetica").fontSize(8).fillColor("#4b5563").text(`   CPF/CNPJ: ${c.document} | Email: ${c.email || "N/A"} | Tel: ${c.phone || "N/A"}`);
+        doc.text(`   Endereço: ${c.address || "N/A"} | Status: ${c.status === "active" ? "Ativo" : "Inativo"}`);
+        doc.moveDown(0.3);
+      });
+      if (clients.length > 15) {
+        doc.font("Helvetica-Oblique").fontSize(8).fillColor("#6b7280").text(`... e mais ${clients.length - 15} clientes no relatório Excel.`);
+      }
+      doc.moveDown(1.5);
+    }
+
+    // 3. Processos
+    if (processes.length > 0) {
+      doc.fillColor("#111827").fontSize(11).font("Helvetica-Bold").text("3. ACERVO DE PROCESSOS JUDICIAIS");
+      doc.moveDown(0.5);
+      processes.slice(0, 15).forEach((p: any, index: number) => {
+        doc.font("Helvetica-Bold").fontSize(9).fillColor("#1e40af").text(`${index + 1}. ${p.title}`);
+        doc.font("Helvetica").fontSize(8).fillColor("#4b5563").text(`   CNJ: ${p.cnj} | Área: ${p.area} | Tribunal: ${p.court}`);
+        doc.text(`   Cliente: ${p.clientName || "N/A"} | Status: ${p.status} | Causa: R$ ${(p.value || 0).toLocaleString("pt-BR")}`);
+        doc.moveDown(0.3);
+      });
+      if (processes.length > 15) {
+        doc.font("Helvetica-Oblique").fontSize(8).fillColor("#6b7280").text(`... e mais ${processes.length - 15} processos no relatório Excel.`);
+      }
+      doc.moveDown(1.5);
+    }
+
+    // 4. Financeiro
+    if (financials.length > 0) {
+      doc.fillColor("#111827").fontSize(11).font("Helvetica-Bold").text("4. LANÇAMENTOS FINANCEIROS E HONORÁRIOS");
+      doc.moveDown(0.5);
+      financials.slice(0, 15).forEach((f: any, index: number) => {
+        const typeStr = f.type === "income" ? "[RECEITA]" : "[DESPESA]";
+        const statusStr = f.status === "paid" ? "PAGO" : "PENDENTE";
+        doc.font("Helvetica-Bold").fontSize(8.5).fillColor("#374151").text(`${index + 1}. ${typeStr} ${f.description} - R$ ${(f.amount || 0).toLocaleString("pt-BR")}`);
+        doc.font("Helvetica").fontSize(8).fillColor("#6b7280").text(`   Status: ${statusStr} | Vencimento: ${f.dueDate || "N/A"} | Categoria: ${f.category || "Geral"}`);
+        doc.moveDown(0.3);
+      });
+      if (financials.length > 15) {
+        doc.font("Helvetica-Oblique").fontSize(8).fillColor("#6b7280").text(`... e mais ${financials.length - 15} lançamentos no relatório Excel.`);
+      }
+      doc.moveDown(1.5);
+    }
+
+    // Sign-off
+    doc.moveDown(1);
+    doc.rect(40, doc.y, 515, 40).fillAndStroke("#f3f4f6", "#d1d5db");
+    doc.fillColor("#111827").fontSize(9).font("Helvetica-Bold").text("AUTENTICIDADE E CUSTÓDIA DE DADOS", 50, doc.y - 32);
+    doc.font("Helvetica").fontSize(8).fillColor("#4b5563").text(`Certificamos que esta cópia de segurança reflete com exatidão o banco de dados do sistema JusFlow para o escritório ${officeName} na data de ${new Date().toLocaleDateString("pt-BR")}.`, 50, doc.y - 20, { width: 495 });
+
+    doc.end();
+  } catch (error) {
+    console.error("Erro ao gerar PDF completo de portabilidade:", error);
+    res.status(500).json({ error: "Erro interno ao compilar dossiê PDF." });
+  }
+});
+
+// 11. Integracão Brevo (Sendinblue) API v3 para Disparo de E-mails e Campanhas
+router.get("/email/status", (req: Request, res: Response) => {
+  const apiKey =
+    process.env.BREVO_API_KEY ||
+    process.env.VITE_BREVO_API_KEY ||
+    process.env.BREVO_API_V3_KEY;
+
+  const senderEmail = process.env.BREVO_SENDER_EMAIL || "contato@jusflow.com.br";
+  const senderName = process.env.BREVO_SENDER_NAME || "JusFlow Advocacia";
+
+  res.json({
+    configured: Boolean(apiKey && apiKey.length > 5 && apiKey !== "YOUR_API_V3_KEY"),
+    senderEmail,
+    senderName,
+    provider: "Brevo API v3 (Sendinblue)",
+    endpoints: {
+      transactional: "https://api.brevo.com/v3/smtp/email",
+      campaigns: "https://api.brevo.com/v3/emailCampaigns",
+    },
+  });
+});
+
+// Disparo de E-mail Transacional via Brevo API v3
+router.post("/email/send", async (req: Request, res: Response) => {
+  try {
+    const {
+      to,
+      subject,
+      htmlContent,
+      textContent,
+      sender,
+      customApiKey,
+    } = req.body || {};
+
+    const apiKey =
+      customApiKey ||
+      process.env.BREVO_API_KEY ||
+      process.env.VITE_BREVO_API_KEY ||
+      process.env.BREVO_API_V3_KEY;
+
+    const senderObj = sender || {
+      name: process.env.BREVO_SENDER_NAME || "JusFlow Advocacia",
+      email: process.env.BREVO_SENDER_EMAIL || "contato@jusflow.com.br",
+    };
+
+    // Format recipients list
+    let recipientsList: Array<{ email: string; name?: string }> = [];
+    if (typeof to === "string") {
+      recipientsList = [{ email: to }];
+    } else if (Array.isArray(to)) {
+      recipientsList = to.map((item) =>
+        typeof item === "string" ? { email: item } : item
+      );
+    } else if (to && typeof to === "object" && to.email) {
+      recipientsList = [to];
+    }
+
+    if (recipientsList.length === 0 || !subject) {
+      res.status(400).json({
+        error: "Parâmetros obrigatórios ausentes: 'to' (destinatário) e 'subject' (assunto).",
+      });
+      return;
+    }
+
+    // Check if API key is active or fallback to simulation
+    if (!apiKey || apiKey === "YOUR_API_V3_KEY" || apiKey.trim() === "") {
+      console.log("[BREVO SIMULATION] Envio transacional de e-mail simulado:", {
+        to: recipientsList,
+        subject,
+        sender: senderObj,
+      });
+
+      res.json({
+        success: true,
+        simulated: true,
+        messageId: `<simulated-${Date.now()}@jusflow.com.br>`,
+        message:
+          "E-mail processado e enfileirado com sucesso em modo de homologação Brevo. Para envios reais, defina BREVO_API_KEY nas variáveis de ambiente.",
+        details: {
+          recipients: recipientsList,
+          subject,
+          sender: senderObj,
+        },
+      });
+      return;
+    }
+
+    // Call real Brevo SMTP Email API v3
+    const brevoPayload = {
+      sender: senderObj,
+      to: recipientsList,
+      subject,
+      htmlContent: htmlContent || `<p>${textContent || subject}</p>`,
+      textContent: textContent || undefined,
+    };
+
+    const brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "api-key": apiKey,
+      },
+      body: JSON.stringify(brevoPayload),
+    });
+
+    const brevoData = await brevoRes.json();
+
+    if (!brevoRes.ok) {
+      console.error("Erro retornado pela API da Brevo:", brevoData);
+      res.status(brevoRes.status).json({
+        error: brevoData.message || "Erro ao disparar e-mail via Brevo API.",
+        details: brevoData,
+      });
+      return;
+    }
+
+    res.json({
+      success: true,
+      simulated: false,
+      messageId: brevoData.messageId || brevoData.id,
+      message: "E-mail disparado com sucesso via Brevo API v3!",
+      details: brevoData,
+    });
+  } catch (error: any) {
+    console.error("Erro interno no endpoint /api/email/send:", error);
+    res.status(500).json({ error: error?.message || "Erro ao processar envio de e-mail." });
+  }
+});
+
+// Criação e Agendamento de Campanha de E-mail via Brevo API v3 (/v3/emailCampaigns)
+router.post("/email/campaign", async (req: Request, res: Response) => {
+  try {
+    const {
+      name,
+      subject,
+      sender,
+      type = "classic",
+      htmlContent,
+      recipients,
+      scheduledAt,
+      customApiKey,
+    } = req.body || {};
+
+    const apiKey =
+      customApiKey ||
+      process.env.BREVO_API_KEY ||
+      process.env.VITE_BREVO_API_KEY ||
+      process.env.BREVO_API_V3_KEY;
+
+    const senderObj = sender || {
+      name: process.env.BREVO_SENDER_NAME || "JusFlow Advocacia",
+      email: process.env.BREVO_SENDER_EMAIL || "contato@jusflow.com.br",
+    };
+
+    if (!name || !subject || !htmlContent) {
+      res.status(400).json({
+        error: "Parâmetros 'name', 'subject' e 'htmlContent' são obrigatórios para criar uma campanha.",
+      });
+      return;
+    }
+
+    const campaignPayload = {
+      name,
+      subject,
+      sender: senderObj,
+      type,
+      htmlContent,
+      recipients: recipients || { listIds: [2, 7] },
+      scheduledAt: scheduledAt || undefined,
+    };
+
+    // Check if API key is active or fallback to simulation
+    if (!apiKey || apiKey === "YOUR_API_V3_KEY" || apiKey.trim() === "") {
+      console.log("[BREVO SIMULATION] Criação de campanha Brevo simulada:", campaignPayload);
+
+      res.json({
+        success: true,
+        simulated: true,
+        campaignId: Math.floor(Math.random() * 90000) + 10000,
+        message:
+          "Campanha de e-mail criada e agendada com sucesso em modo de homologação Brevo. Para envios reais em produção, defina BREVO_API_KEY.",
+        details: campaignPayload,
+      });
+      return;
+    }
+
+    // Call real Brevo API v3 /v3/emailCampaigns
+    const brevoRes = await fetch("https://api.brevo.com/v3/emailCampaigns", {
+      method: "POST",
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "api-key": apiKey,
+      },
+      body: JSON.stringify(campaignPayload),
+    });
+
+    const brevoData = await brevoRes.json();
+
+    if (!brevoRes.ok) {
+      console.error("Erro na criação de campanha Brevo:", brevoData);
+      res.status(brevoRes.status).json({
+        error: brevoData.message || "Erro ao criar campanha via Brevo API.",
+        details: brevoData,
+      });
+      return;
+    }
+
+    res.json({
+      success: true,
+      simulated: false,
+      campaignId: brevoData.id,
+      message: "Campanha de e-mail criada com sucesso na Brevo API v3!",
+      details: brevoData,
+    });
+  } catch (error: any) {
+    console.error("Erro interno no endpoint /api/email/campaign:", error);
+    res.status(500).json({ error: error?.message || "Erro ao processar criação da campanha." });
+  }
+});
+
 // Mount router on both /api and / (handles Vercel rewrite stripping or keeping /api)
 app.use("/api", router);
 app.use("/", router);

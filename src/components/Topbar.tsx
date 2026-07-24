@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useJusFlow } from "../store/JusFlowContext";
+import { DataPortabilitySection } from "./gestao/DataPortabilitySection";
 import {
   Bell,
   Search,
@@ -12,6 +13,9 @@ import {
   ShieldCheck,
   CheckCheck,
   Menu,
+  Download,
+  Database,
+  X,
 } from "lucide-react";
 export const Topbar: React.FC<{
   onLogout: () => void;
@@ -31,7 +35,8 @@ export const Topbar: React.FC<{
     firebaseConnected,
   } = useJusFlow();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Derive title from activeTab
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false); // Derive title from activeTab
   const getTabTitle = (): { title: string; subtitle?: string } => {
     switch (activeTab) {
       case "principal.dashboard":
@@ -136,19 +141,28 @@ export const Topbar: React.FC<{
       {/* Actions */}{" "}
       <div className="flex items-center gap-1.5 sm:gap-4">
         {" "}
-        {/* Global Search trigger */}{" "}
+        {/* Global Search trigger */}
         <button
           onClick={() => setIsCommandPaletteOpen(true)}
           className="flex items-center gap-2 p-2 xs:px-3 xs:py-1.5 text-xs text-muted-foreground hover:text-foreground border border-input rounded-md bg-transparent hover:bg-accent hover:text-accent-foreground transition-all shadow-xs w-9 xs:w-36 sm:w-48 text-left justify-center xs:justify-start shrink-0"
         >
-          {" "}
-          <Search className="w-4 h-4 xs:w-3.5 xs:h-3.5" />{" "}
-          <span className="hidden xs:inline flex-1">Pesquisar...</span>{" "}
+          <Search className="w-4 h-4 xs:w-3.5 xs:h-3.5" />
+          <span className="hidden xs:inline flex-1">Pesquisar...</span>
           <kbd className="hidden sm:inline-block px-1 bg-muted rounded text-[10px] font-mono">
-            {" "}
-            ⌘K{" "}
-          </kbd>{" "}
-        </button>{" "}
+            ⌘K
+          </kbd>
+        </button>
+
+        {/* Quick Export Data Button */}
+        <button
+          onClick={() => setIsExportModalOpen(true)}
+          title="Exportar Todos os Dados (Backup PDF & Excel)"
+          aria-label="Exportar Todos os Dados do Sistema em Excel e PDF"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-md text-xs font-semibold transition-all cursor-pointer shrink-0"
+        >
+          <Download className="w-3.5 h-3.5" />
+          <span className="hidden md:inline">Exportar Dados</span>
+        </button>
         {/* Quick Copiloto Floating Switch */}{" "}
         <button
           onClick={() => setActiveTab("principal.copiloto")}
@@ -375,8 +389,24 @@ export const Topbar: React.FC<{
               </div>{" "}
             </div>
           )}{" "}
-        </div>{" "}
-      </div>{" "}
+        </div>
+      </div>
+
+      {/* Export & Data Portability Modal */}
+      {isExportModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-xl shadow-2xl max-w-2xl w-full p-6 text-left relative space-y-4 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setIsExportModalOpen(false)}
+              className="absolute top-4 right-4 p-1.5 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-all cursor-pointer"
+              title="Fechar"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <DataPortabilitySection />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

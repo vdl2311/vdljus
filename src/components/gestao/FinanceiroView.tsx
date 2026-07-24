@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useJusFlow } from "../../store/JusFlowContext";
 import { FinancialLaunch } from "../../types";
+import { exportAllDataToExcel } from "../../lib/dataExporter";
 import {
   DollarSign,
   Plus,
@@ -12,6 +13,7 @@ import {
   ShieldCheck,
   Trash2,
   AlertTriangle,
+  FileSpreadsheet,
 } from "lucide-react";
 export const FinanceiroView: React.FC = () => {
   const { financials, clients, addFinancial, toggleFinancialPaid, deleteFinancial } =
@@ -83,13 +85,32 @@ export const FinanceiroView: React.FC = () => {
             despesas de custeio.
           </p>{" "}
         </div>{" "}
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 self-start shadow-md shadow-emerald-600/10 cursor-pointer"
-        >
-          {" "}
-          <Plus className="w-4 h-4" /> Novo Lançamento{" "}
-        </button>{" "}
+        <div className="flex items-center gap-2 self-start">
+          <button
+            onClick={() => exportAllDataToExcel({
+              officeName: "JusFlow Advocacia",
+              clients: [],
+              processes: [],
+              financials,
+              deadlines: [],
+              tasks: [],
+              events: [],
+              documents: [],
+              teamMembers: [],
+              auditLogs: []
+            })}
+            title="Exportar Financeiro para Excel"
+            className="px-3 py-2 bg-card border border-border hover:bg-accent text-card-foreground text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> Exportar Excel
+          </button>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-md transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-600/10 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" /> Novo Lançamento
+          </button>
+        </div>
       </div>{" "}
       {/* Financial KPIs widgets */}{" "}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

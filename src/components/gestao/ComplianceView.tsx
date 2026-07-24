@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DataPortabilitySection } from "./DataPortabilitySection";
 import {
   ShieldAlert,
   CheckCircle,
@@ -59,7 +60,7 @@ export const ComplianceView: React.FC = () => {
   return (
     <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
-      {/* Header */}{" "}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-left">
         <div>
           <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
@@ -78,7 +79,10 @@ export const ComplianceView: React.FC = () => {
         >
           <Download className="w-4 h-4" /> Relatório UX & Segurança (PDF)
         </a>
-      </div>{" "}
+      </div>
+
+      {/* Backup and Data Portability Section */}
+      <DataPortabilitySection />
       <div className="border-b border-border flex gap-1 shrink-0">
         {" "}
         <button

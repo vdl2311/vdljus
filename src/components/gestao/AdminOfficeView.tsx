@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useJusFlow } from "../../store/JusFlowContext";
+import { DataPortabilitySection } from "./DataPortabilitySection";
 import {
   Building2,
   ShieldCheck,
@@ -41,17 +42,19 @@ export const AdminOfficeView: React.FC = () => {
   return (
     <div className="p-6 space-y-6 overflow-y-auto h-full bg-background transition-colors">
       {" "}
-      {/* Header */}{" "}
+      {/* Header */}
       <div className="text-left">
-        {" "}
         <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Painel Administrativo
-        </h2>{" "}
+        </h2>
         <p className="text-xs text-muted-foreground">
           Configure os parâmetros societários, filiais corporativas e audite a
           trilha de segurança do escritório.
-        </p>{" "}
-      </div>{" "}
+        </p>
+      </div>
+
+      {/* Full Data Portability & Backup Export for System Ownership Safety */}
+      <DataPortabilitySection />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-left">
         {" "}
         {/* Left: General configuration form (1 column) */}{" "}
