@@ -63,7 +63,7 @@ function getGenAI(): GoogleGenAI | null {
   }
 }
 
-// Helper to attempt content generation with model fallbacks (2.0-flash -> 1.5-flash -> 1.5-pro)
+// Helper to attempt content generation with model fallbacks
 async function generateContentWithFallback(
   ai: GoogleGenAI,
   params: {
@@ -73,7 +73,13 @@ async function generateContentWithFallback(
     responseMimeType?: string;
   }
 ): Promise<string> {
-  const modelsToTry = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"];
+  const modelsToTry = [
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-3.1-pro",
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+  ];
   let lastError: any = null;
 
   for (const model of modelsToTry) {
