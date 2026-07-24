@@ -106,15 +106,20 @@ export const CopilotoView: React.FC = () => {
       })),
     };
     try {
+      const storedKey = localStorage.getItem("openrouter_api_key") || localStorage.getItem("jusflow_api_key") || "";
       const response = await fetch("/api/copiloto", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(storedKey ? { "x-openrouter-key": storedKey } : {}),
+        },
         body: JSON.stringify({
           message: userMessage,
           history: messages
             .slice(-5)
             .map((m) => ({ role: m.role, content: m.content })),
           contextData,
+          openrouterKey: storedKey,
         }),
       });
       if (!response.ok) throw new Error("API call failed");
@@ -393,7 +398,7 @@ A respeito de **"${cleanedQuery}"**, cumpre destacar a fundamentação normativa
                   handleSendMessage(input);
                 }
               }}
-              placeholder="Pergunte sobre as finanças, OAB, processos parados ou peça conselho estratégico..."
+              placeholder="Pergunte qualquer coisa ao Copiloto (IA conectada: processos, legislação, finanças, jurisprudência ou dúvidas gerais)..."
               className="flex-1 bg-transparent border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 resize-none text-xs sm:text-sm text-card-foreground focus:ring-0 placeholder:text-muted-foreground py-1 no-scrollbar min-h-[24px]"
             />{" "}
             <button
