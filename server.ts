@@ -63,7 +63,7 @@ function getGenAI(): GoogleGenAI | null {
   }
 }
 
-// Helper to attempt content generation with model fallbacks (2.5-flash -> 2.0-flash -> 1.5-flash)
+// Helper to attempt content generation with model fallbacks (2.0-flash -> 1.5-flash -> 1.5-pro)
 async function generateContentWithFallback(
   ai: GoogleGenAI,
   params: {
@@ -73,7 +73,7 @@ async function generateContentWithFallback(
     responseMimeType?: string;
   }
 ): Promise<string> {
-  const modelsToTry = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
+  const modelsToTry = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"];
   let lastError: any = null;
 
   for (const model of modelsToTry) {
@@ -106,8 +106,10 @@ async function generateContentUniversal(params: {
   temperature?: number;
   responseMimeType?: string;
   history?: Array<{ role: string; content: string }>;
+  openrouterApiKey?: string;
 }): Promise<string | null> {
   const openrouterKey =
+    params.openrouterApiKey ||
     process.env.OPENROUTER_API_KEY ||
     process.env.VITE_OPENROUTER_API_KEY ||
     process.env.OPENROUTER_KEY;
@@ -115,11 +117,14 @@ async function generateContentUniversal(params: {
   // 1. Try OpenRouter API if key is present
   if (openrouterKey && openrouterKey.trim().length > 5) {
     const modelsToTry = [
+      "openrouter/auto",
       "google/gemini-2.0-flash-001",
-      "meta-llama/llama-3.3-70b-instruct",
+      "google/gemini-2.0-flash-lite-preview-02-05:free",
+      "meta-llama/llama-3.3-70b-instruct:free",
+      "deepseek/deepseek-r1:free",
       "openai/gpt-4o-mini",
       "anthropic/claude-3.5-haiku",
-      "deepseek/deepseek-r1-distill-llama-70b",
+      "meta-llama/llama-3.3-70b-instruct",
     ];
 
     const messages: Array<{ role: string; content: string }> = [];
@@ -201,6 +206,192 @@ async function generateContentUniversal(params: {
   return null;
 }
 
+// Fallback Legal Knowledge Base Resolver for specific statutory queries and legal topics
+function getLegalKnowledgeResponse(userText: string, contextData?: any): string {
+  const lower = userText.toLowerCase().trim();
+
+  // 1. Estelionato / Artigo 171 do Código Penal
+  if (lower.includes("171") || lower.includes("estelionato")) {
+    return `### ⚖️ Artigo 171 do Código Penal (Decreto-Lei nº 2.848/1940) - Estelionato
+
+O **Artigo 171 do Código Penal Brasileiro** tipifica o crime de **Estelionato**, assim definido na legislação pátria:
+
+> *"Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento."*
+
+---
+
+### 📌 Elementos Integrantes do Tipo Penal:
+1. **Conduta Fraudulenta**: Emprego de artifício (fraude material), ardil (fraude intelectual/verbal) ou qualquer outro meio enganoso.
+2. **Induzimento ou Manutenção em Erro**: A vítima é levada ou mantida em uma percepção distorcida da realidade.
+3. **Obtenção de Vantagem Ilícita**: Proveito patrimonial ou econômico indevido para o agente ou terceiros.
+4. **Prejuízo Alheio**: Lesão patrimonial efetiva sofrida pela vítima.
+5. **Dolo**: Vontade livre e consciente de enganar e obter a vantagem indevida.
+
+---
+
+### ⚖️ Penas & Modalidades Especiais:
+- **Pena Base**: Reclusão, de **1 (um) a 5 (cinco) anos**, e multa.
+- **Fraude Eletrônica (§ 2º-A)**: Cometida com informações fornecidas pela vítima por redes sociais, ligações telefônicas ou e-mail fraudulento: **Reclusão, de 4 (quatro) a 8 (oito) anos, e multa**.
+- **Estelionato contra Idoso ou Vulnerável (§ 3º)**: Aumenta-se a pena de um terço ao dobro.
+- **Ação Penal (§ 5º)**: Regra geral de **ação penal pública condicionada à representação do ofendido**, salvo se a vítima for a Administração Pública, criança/adolescente, pessoa com deficiência mental ou idosa maior de 70 anos.`;
+  }
+
+  // 2. Roubo / Artigo 157 CP
+  if (lower.includes("157") || lower.includes("roubo")) {
+    return `### ⚖️ Artigo 157 do Código Penal - Crime de Roubo
+
+O **Artigo 157 do Código Penal** disciplina o crime de **Roubo**:
+
+> *"Subtrair coisa móvel alheia, para si ou para outrem, mediante grave ameaça ou violência a pessoa, ou depois de havê-la, por qualquer meio, reduzido à impossibilidade de resistência."*
+
+---
+
+### ⚖️ Penas & Qualificadoras:
+- **Pena Base**: Reclusão, de **4 (quatro) a 10 (dez) anos**, e multa.
+- **Majorada com Arma de Fogo (§ 2º-A, I)**: Pena aumentada em **2/3 (dois terços)**.
+- **Latrocínio (§ 3º, II)**: Se da violência resulta morte — Reclusão de **20 (vinte) a 30 (trinta) anos**, e multa.`;
+  }
+
+  // 3. Furto / Artigo 155 CP
+  if (lower.includes("155") || lower.includes("furto")) {
+    return `### ⚖️ Artigo 155 do Código Penal - Crime de Furto
+
+O **Artigo 155 do Código Penal** tipifica o crime de **Furto**:
+
+> *"Subtrair, para si ou para outrem, coisa móvel alheia."*
+
+---
+
+### ⚖️ Penas & Qualificadoras:
+- **Pena Base**: Reclusão, de **1 (um) a 4 (quatro) anos**, e multa.
+- **Furto Qualificado (§ 4º)**: Mediante destruição/rompimento de obstáculo, abuso de confiança, fraude, escalada, destreza ou concurso de pessoas — Reclusão de **2 a 8 anos, e multa**.`;
+  }
+
+  // 4. Dano Moral & Responsabilidade Civil / Artigos 186 e 927 CC
+  if (lower.includes("186") || lower.includes("927") || lower.includes("dano moral") || lower.includes("responsabilidade civil")) {
+    return `### ⚖️ Artigos 186 e 927 do Código Civil - Responsabilidade Civil & Dano Moral
+
+O pilar da **Responsabilidade Civil** no Brasil encontra-se positivado nos arts. 186 e 927 do Código Civil:
+
+> **Art. 186, CC**: *"Aquele que, por ação ou omissão voluntária, negligência ou imprudência, violar direito e causar dano a outrem, ainda que exclusivamente moral, comete ato ilícito."*
+> **Art. 927, CC**: *"Aquele que, por ato ilícito (arts. 186 e 187), causar dano a outrem, fica obrigado a repará-lo."*
+
+---
+
+### 📌 Elementos da Responsabilidade Civil Subjetiva:
+1. **Conduta Ilícita**: Ação ou omissão humana eivada de dolo ou culpa (negligência, imprudência ou imperícia).
+2. **Dano Efetivo**: Prejuízo material ou moral experimentado pela vítima.
+3. **Nexo Causal**: Vínculo direto de causa e efeito entre a conduta e o dano.`;
+  }
+
+  // 5. Tutela de Urgência / Artigo 300 CPC
+  if (lower.includes("300") || lower.includes("tutela de urgência") || lower.includes("liminar") || lower.includes("periculum")) {
+    return `### ⚖️ Artigo 300 do Código de Processo Civil (CPC/2015) - Tutela de Urgência
+
+O **Artigo 300 do CPC** disciplina os requisitos legais para deferimento da **Tutela de Urgência** (cautelar ou antecipada):
+
+> *"A tutela de urgência será concedida quando houver elementos que evidenciem a probabilidade do direito e o perigo de dano ou o risco ao resultado útil do processo."*
+
+---
+
+### 📌 Requisitos Legais:
+1. **Probabilidade do Direito (Fumus Boni Iuris)**: Demonstração plausível do direito alegado, amparada em prova documental substancial.
+2. **Perigo de Dano / Risco ao Resultado Útil (Periculum in Mora)**: Urgência e risco irremediável decorrentes da demora da prestação jurisdicional.
+3. **Reversibilidade da Medida (§ 3º)**: A tutela antecipada não será concedida se houver risco de irreversibilidade do provimento.`;
+  }
+
+  // 6. Artigo 5º da CF/88
+  if (lower.includes("artigo 5") || lower.includes("art. 5") || lower.includes("direitos fundamentais")) {
+    return `### ⚖️ Artigo 5º da Constituição Federal de 1988 - Direitos Fundamentais
+
+O **Artigo 5º da CF/88** consagra o rol exemplificativo dos direitos e garantias fundamentais no Brasil:
+
+> *"Todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se aos brasileiros e aos estrangeiros residentes no País a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à propriedade."*
+
+---
+
+### 📌 Garantias & Remédios Constitucionais Principais:
+- **Presunção de Inocência (Inciso LVII)**: Ninguém será considerado culpado até o trânsito em julgado de sentença penal condenatória.
+- **Habeas Corpus (Inciso LXVIII)**: Para tutelar a liberdade de locomoção.
+- **Mandado de Segurança (Inciso LXIX)**: Para proteger direito líquido e certo não amparado por HC ou HD.`;
+  }
+
+  // 7. Rescisão / CLT / Verbas Trabalhistas
+  if (lower.includes("clt") || lower.includes("trabalh") || lower.includes("rescisão") || lower.includes("477") || lower.includes("demissão")) {
+    return `### ⚖️ Direitos Trabalhistas & Verbas Rescisórias (CLT)
+
+Na **Demissão sem Justa Causa**, o empregado dispensado possui direito aos seguintes haveres trabalhistas:
+
+1. **Aviso Prévio Indenizado / Trabalhado**: 30 dias + 3 dias adicionais por ano de serviço prestado (Lei 12.506/2011).
+2. **Saldo de Salário**: Pagamento referente aos dias trabalhados no mês do desligamento.
+3. **13º Salário Proporcional**: Fração de 1/12 por mês trabalhado (ou período superior a 14 dias).
+4. **Férias Vencidas e Proporcionais + 1/3 Constitucional**.
+5. **Multa de 40% sobre o saldo do FGTS** e liberação da Chave de Saque.
+6. **Prazo Quitatório (Art. 477, § 6º da CLT)**: Até **10 (dez) dias corridos** após o encerramento do contrato.`;
+  }
+
+  // 8. CDC / Consumidor
+  if (lower.includes("cdc") || lower.includes("consumidor") || lower.includes("vício") || lower.includes("defeito") || lower.includes("arrependimento")) {
+    return `### ⚖️ Código de Defesa do Consumidor (Lei nº 8.078/1990)
+
+Regras vitais de proteção ao consumidor na legislação brasileira:
+
+1. **Direito de Arrependimento (Art. 49)**: Desistência em até **7 (sete) dias** para compras realizadas fora do estabelecimento físico (e-commerce, telefone), com restituição imediata das quantias pagas.
+2. **Prazos para Reclamar de Vícios (Art. 26)**:
+   - **30 dias** para produtos ou serviços não duráveis.
+   - **90 dias** para produtos ou serviços duráveis (a contar da descoberta em caso de vício oculto).
+3. **Inversão do Ônus da Prova (Art. 6º, VIII)**: Concedida quando verossímil a alegação ou hipossuficiente o consumidor.`;
+  }
+
+  // 9. Office Context Queries (Financeiro, Prazos, Processos)
+  if (lower.includes("inadimplent") || lower.includes("honorário") || lower.includes("pendente") || lower.includes("financeiro")) {
+    const faturamentos = contextData?.faturamento || [];
+    const pendentes = faturamentos.filter(
+      (f: any) => f.status === "pending" || f.status === "overdue" || f.status === "pendente" || f.status === "atrasado"
+    );
+    if (pendentes.length > 0) {
+      let msg = `📊 **Análise de Faturamento & Honorários Pendentes:**\n\nIdentifiquei **${pendentes.length} pendências financeiras** registradas:\n\n`;
+      pendentes.forEach((p: any) => {
+        msg += `- **${p.titulo || p.title || "Fatura"}**: R$ ${(p.valor || p.amount || 0).toLocaleString("pt-BR")}\n`;
+      });
+      msg += `\n💡 *Recomendação*: Acesse a aba **Financeiro** no menu lateral para enviar notificações de cobrança.`;
+      return msg;
+    }
+    return `✅ **Análise de Faturamento:** Não constam honorários inadimplentes ou pendentes registrados este mês. O faturamento está em dia!`;
+  }
+
+  if (lower.includes("prazo") || lower.includes("venc")) {
+    const prazos = contextData?.prazos || [];
+    if (prazos.length > 0) {
+      return `📌 **Análise de Prazos do Escritório:**\n\nIdentifiquei **${prazos.length} prazos ativos** cadastrados. Acesse a aba **Prazos** para verificar e cumprir as intimações.`;
+    }
+    return `📌 **Análise de Prazos:** Nenhum prazo crítico pendente cadastrado para hoje.`;
+  }
+
+  if (lower.includes("processo") || lower.includes("andamento")) {
+    const procs = contextData?.processos || [];
+    return `⚖️ **Status de Processos:**\nTemos **${procs.length} processos ativos** cadastrados. Acesse a aba **Processos** para consultar movimentações e publicar andamentos.`;
+  }
+
+  // General fallback for unknown specific topics
+  const cleanedQuery = userText.replace(/[*#]/g, "").trim();
+  return `### 💡 Parecer & Orientação Jurídica: ${cleanedQuery}
+
+A respeito de **"${cleanedQuery}"**, cumpre destacar a fundamentação normativa e prática aplicável ao tema:
+
+---
+
+### 1. 📚 Fundamentação Legal & Doutrinária
+- **Legislação Pátria**: A questão envolve os princípios gerais do Direito Brasileiro, devendo ser analisada sob a ótica do Código Civil, Código de Processo Civil, Código Penal ou CLT, conjuntamente com os enunciados das Súmulas do STJ e STF.
+- **Princípios de Regência**: Aplicação rigorosa da **boa-fé objetiva**, **segurança jurídica**, **ampla defesa** e **devido processo legal**.
+
+---
+
+### 2. 📝 Aplicação Prática no Escritório
+- **Elaboração de Peças**: Utilize a aba **IA Jurídica** no menu do JusFlow para gerar petições, recursos e pareceres específicos.
+- **Vinculação a Processos**: Para associar esta tese a uma causa existente, acesse a aba **Processos** e insira o número do CNJ.`;
+}
+
 // Router for API endpoints
 const router = express.Router();
 
@@ -254,8 +445,14 @@ router.get("/cep/:cep", async (req: Request, res: Response) => {
 
 // 2. Copiloto Jurídico
 const handleCopiloto = async (req: Request, res: Response) => {
-  const { message, history, contextData } = req.body || {};
+  const { message, history, contextData, openrouterKey: bodyKey } = req.body || {};
   const userText = message || "";
+
+  const headerKey =
+    (req.headers["x-openrouter-key"] as string) ||
+    (req.headers["authorization"]?.startsWith("Bearer ")
+      ? req.headers["authorization"].substring(7)
+      : undefined);
 
   const systemInstruction = `Você é o JusFlow Copiloto, um assistente de inteligência artificial de elite especializado em direito brasileiro para escritórios de advocacia de alta performance.
 Você responde a QUALQUER pergunta jurídica, doutrinária, contratual, processual ou de gestão de escritório, mesmo sobre assuntos gerais que não estejam nos registros cadastrados do sistema.
@@ -275,6 +472,7 @@ Instruções:
     systemInstruction,
     temperature: 0.7,
     history,
+    openrouterApiKey: bodyKey || headerKey,
   });
 
   if (aiResponse) {
@@ -282,54 +480,9 @@ Instruções:
     return;
   }
 
-  // Fallback response using contextData & rich legal knowledge engine
-  const lower = userText.toLowerCase();
-  let responseText = `Olá! Sou o **JusFlow Copiloto**.\n\n`;
-
-  if (lower.includes("inadimplent") || lower.includes("honorário") || lower.includes("pendente") || lower.includes("financeiro")) {
-    const faturamentos = contextData?.faturamento || [];
-    const pendentes = faturamentos.filter(
-      (f: any) => f.status === "pending" || f.status === "overdue" || f.status === "pendente" || f.status === "atrasado"
-    );
-
-    if (pendentes.length > 0) {
-      responseText += `📊 **Análise de Faturamento & Honorários Pendentes:**\n\nIdentifiquei **${pendentes.length} pendências financeiras** registradas no sistema:\n\n`;
-      pendentes.forEach((p: any) => {
-        responseText += `- **${p.titulo || p.title || "Fatura"}**: R$ ${(p.valor || p.amount || 0).toLocaleString("pt-BR")}\n`;
-      });
-      responseText += `\n💡 *Recomendação*: Acesse a aba **Financeiro** para enviar notificações de cobrança ou acione as **Automações de WhatsApp**.`;
-    } else {
-      responseText += `✅ **Análise de Faturamento:** Não constam honorários inadimplentes ou pendentes este mês. Todo o faturamento está rigorosamente em dia!`;
-    }
-  } else if (lower.includes("prazo") || lower.includes("venc")) {
-    const prazos = contextData?.prazos || [];
-    if (prazos.length > 0) {
-      responseText += `📌 **Análise de Prazos do Escritório:**\n\nIdentifiquei **${prazos.length} prazos ativos** agendados no sistema. Recomendo priorizar as petições com urgência crítica. Verifique a aba de **Prazos** para atualizar seus andamentos de hoje!`;
-    } else {
-      responseText += `📌 **Análise de Prazos:** Nenhum prazo crítico pendente para hoje.`;
-    }
-  } else if (lower.includes("processo") || lower.includes("andamento")) {
-    const procs = contextData?.processos || [];
-    responseText += `⚖️ **Status de Processos:**\nTemos **${procs.length} processos ativos** cadastrados nas áreas do escritório. Você pode solicitar um impulso processual ou consultar as movimentações atualizadas na aba **Processos**.`;
-  } else {
-    // Subject outside office context! Provide a rich generic legal advice response
-    const cleanedQuery = userText.replace(/[*#]/g, "").trim();
-    responseText += `### 💡 Análise & Parecer do Copiloto Jurídico
-
-Em resposta à sua consulta sobre **"${cleanedQuery}"**:
-
-1. **Fundamentação Legal & Prática Pátria**:
-   - Sob a perspectiva do ordenamento jurídico brasileiro, a questão formulada exige atenção aos princípios da **boa-fé objetiva, segurança jurídica e devido processo legal**.
-   - Recomendamos verificar os dispositivos pertinentes na legislação material (CPC, Código Civil, CDC ou CLT conforme a área do tema) e julgados recentes dos Tribunais Superiores (STJ e STF).
-
-2. **Diretrizes para Atuação no Escritório**:
-   - **Elaboração de Peças**: Você pode utilizar o módulo de **IA Jurídica** no menu lateral para gerar minutas e petições customizadas sobre este assunto.
-   - **Vinculação a Clientes do Sistema**: Para associar esta tese ou consulta a um processo específico cadastrado no JusFlow, acesse a aba **Processos** ou informe o CNJ diretamente na conversa.
-
-*Dica de Integração: Para consultas com modelos de IA de altíssima velocidade em tempo real (como GPT-4o, Gemini 2.0 ou Claude), lembre-se de configurar a variável \`OPENROUTER_API_KEY\` ou \`GEMINI_API_KEY\` no painel do Vercel ou no arquivo .env.*`;
-  }
-
-  res.json({ text: responseText });
+  // Fallback response using rich legal knowledge engine
+  const fallbackText = getLegalKnowledgeResponse(userText, contextData);
+  res.json({ text: fallbackText });
 };
 
 

@@ -125,43 +125,108 @@ export const CopilotoView: React.FC = () => {
       ]);
     } catch (err) {
       console.error(err);
-      const lower = userMessage.toLowerCase();
-      let fallbackText = `Olá! Sou o **JusFlow Copiloto**.\n\n`;
+      const lower = userMessage.toLowerCase().trim();
+      let fallbackText = "";
 
-      if (lower.includes("inadimplent") || lower.includes("honorário") || lower.includes("pendente") || lower.includes("financeiro")) {
-        const pendentes = financials.filter(
-          (f) => f.status === "pending"
-        );
+      if (lower.includes("171") || lower.includes("estelionato")) {
+        fallbackText = `### ⚖️ Artigo 171 do Código Penal (Decreto-Lei nº 2.848/1940) - Estelionato
+
+O **Artigo 171 do Código Penal Brasileiro** tipifica o crime de **Estelionato**, assim definido na legislação pátria:
+
+> *"Obter, para si ou para outrem, vantagem ilícita, em prejuízo alheio, induzindo ou mantendo alguém em erro, mediante artifício, ardil, ou qualquer outro meio fraudulento."*
+
+---
+
+### 📌 Elementos Integrantes do Tipo Penal:
+1. **Conduta Fraudulenta**: Emprego de artifício (fraude material), ardil (fraude intelectual/verbal) ou qualquer outro meio enganoso.
+2. **Induzimento ou Manutenção em Erro**: A vítima é levada ou mantida em uma percepção distorcida da realidade.
+3. **Obtenção de Vantagem Ilícita**: Proveito patrimonial ou econômico indevido para o agente ou terceiros.
+4. **Prejuízo Alheio**: Lesão patrimonial efetiva sofrida pela vítima.
+5. **Dolo**: Vontade livre e consciente de enganar e obter a vantagem indevida.
+
+---
+
+### ⚖️ Penas & Modalidades Especiais:
+- **Pena Base**: Reclusão, de **1 (um) a 5 (cinco) anos**, e multa.
+- **Fraude Eletrônica (§ 2º-A)**: Cometida com informações fornecidas pela vítima por redes sociais, ligações telefônicas ou e-mail fraudulento: **Reclusão, de 4 (quatro) a 8 (oito) anos, e multa**.
+- **Estelionato contra Idoso ou Vulnerável (§ 3º)**: Aumenta-se a pena de um terço ao dobro.
+- **Ação Penal (§ 5º)**: Regra geral de **ação penal pública condicionada à representação do ofendido**, salvo se a vítima for a Administração Pública, criança/adolescente, pessoa com deficiência mental ou idosa maior de 70 anos.`;
+      } else if (lower.includes("157") || lower.includes("roubo")) {
+        fallbackText = `### ⚖️ Artigo 157 do Código Penal - Crime de Roubo
+
+O **Artigo 157 do Código Penal** disciplina o crime de **Roubo**:
+
+> *"Subtrair coisa móvel alheia, para si ou para outrem, mediante grave ameaça ou violência a pessoa, ou depois de havê-la, por qualquer meio, reduzido à impossibilidade de resistência."*
+
+---
+
+### ⚖️ Penas & Qualificadoras:
+- **Pena Base**: Reclusão, de **4 (quatro) a 10 (dez) anos**, e multa.
+- **Majorada com Arma de Fogo (§ 2º-A, I)**: Pena aumentada em **2/3 (dois terços)**.
+- **Latrocínio (§ 3º, II)**: Se da violência resulta morte — Reclusão de **20 (vinte) a 30 (trinta) anos**, e multa.`;
+      } else if (lower.includes("186") || lower.includes("927") || lower.includes("dano moral")) {
+        fallbackText = `### ⚖️ Artigos 186 e 927 do Código Civil - Responsabilidade Civil & Dano Moral
+
+O pilar da **Responsabilidade Civil** no Brasil encontra-se positivado nos arts. 186 e 927 do Código Civil:
+
+> **Art. 186, CC**: *"Aquele que, por ação ou omissão voluntária, negligência ou imprudência, violar direito e causar dano a outrem, ainda que exclusivamente moral, comete ato ilícito."*
+> **Art. 927, CC**: *"Aquele que, por ato ilícito (arts. 186 e 187), causar dano a outrem, fica obrigado a repará-lo."*
+
+---
+
+### 📌 Elementos da Responsabilidade Civil Subjetiva:
+1. **Conduta Ilícita**: Ação ou omissão humana eivada de dolo ou culpa (negligência, imprudência ou imperícia).
+2. **Dano Efetivo**: Prejuízo material ou moral experimentado pela vítima.
+3. **Nexo Causal**: Vínculo direto de causa e efeito entre a conduta e o dano.`;
+      } else if (lower.includes("300") || lower.includes("tutela de urgência") || lower.includes("liminar")) {
+        fallbackText = `### ⚖️ Artigo 300 do Código de Processo Civil (CPC/2015) - Tutela de Urgência
+
+O **Artigo 300 do CPC** disciplina os requisitos legais para deferimento da **Tutela de Urgência** (cautelar ou antecipada):
+
+> *"A tutela de urgência será concedida quando houver elementos que evidenciem a probabilidade do direito e o perigo de dano ou o risco ao resultado útil do processo."*
+
+---
+
+### 📌 Requisitos Legais:
+1. **Probabilidade do Direito (Fumus Boni Iuris)**: Demonstração plausível do direito alegado, amparada em prova documental substancial.
+2. **Perigo de Dano / Risco ao Resultado Útil (Periculum in Mora)**: Urgência e risco irremediável decorrentes da demora da prestação jurisdicional.
+3. **Reversibilidade da Medida (§ 3º)**: A tutela antecipada não será concedida se houver risco de irreversibilidade do provimento.`;
+      } else if (lower.includes("inadimplent") || lower.includes("honorário") || lower.includes("pendente") || lower.includes("financeiro")) {
+        const pendentes = financials.filter((f) => f.status === "pending");
         if (pendentes.length > 0) {
-          fallbackText += `📊 **Análise de Faturamento & Honorários Pendentes:**\n\nIdentifiquei **${pendentes.length} pendências financeiras** registradas:\n\n`;
+          fallbackText = `📊 **Análise de Faturamento & Honorários Pendentes:**\n\nIdentifiquei **${pendentes.length} pendências financeiras** registradas:\n\n`;
           pendentes.forEach((p) => {
             fallbackText += `- **${p.title}**: R$ ${p.amount.toLocaleString("pt-BR")}\n`;
           });
           fallbackText += `\n💡 *Dica*: Acesse a aba **Financeiro** para enviar cobranças ou gerenciar as faturas.`;
         } else {
-          fallbackText += `✅ **Análise de Faturamento:** Não constam honorários inadimplentes ou pendentes no momento. Todo o faturamento do escritório está em dia!`;
+          fallbackText = `✅ **Análise de Faturamento:** Não constam honorários inadimplentes ou pendentes no momento. Todo o faturamento do escritório está em dia!`;
         }
       } else if (lower.includes("prazo") || lower.includes("venc")) {
         if (deadlines.length > 0) {
-          fallbackText += `📌 **Análise de Prazos:**\n\nIdentifiquei **${deadlines.length} prazos cadastrados**. Acesse a aba **Prazos** para verificar e baixar as intimações do dia.`;
+          fallbackText = `📌 **Análise de Prazos:**\n\nIdentifiquei **${deadlines.length} prazos cadastrados**. Acesse a aba **Prazos** para verificar e baixar as intimações do day.`;
         } else {
-          fallbackText += `📌 **Prazos:** Nenhum prazo crítico pendente para hoje.`;
+          fallbackText = `📌 **Prazos:** Nenhum prazo crítico pendente para hoje.`;
         }
       } else if (lower.includes("processo") || lower.includes("andamento")) {
-        fallbackText += `⚖️ **Processos do Escritório:**\nTemos **${processes.length} processos ativos** cadastrados. Acompanhe as movimentações na aba de **Processos**.`;
+        fallbackText = `⚖️ **Processos do Escritório:**\nTemos **${processes.length} processos ativos** cadastrados. Acompanhe as movimentações na aba de **Processos**.`;
       } else {
         const cleanedQuery = userMessage.replace(/[*#]/g, "").trim();
-        fallbackText += `### 💡 Análise & Parecer do Copiloto Jurídico
+        fallbackText = `### 💡 Parecer & Orientação Jurídica: ${cleanedQuery}
 
-Em resposta à sua consulta sobre **"${cleanedQuery}"**:
+A respeito de **"${cleanedQuery}"**, cumpre destacar a fundamentação normativa e prática aplicável ao tema:
 
-1. **Fundamentação Legal & Doutrinária**:
-   - Pela legislação brasileira vigente, a questão requer atenção aos princípios de **boa-fé objetiva, devido processo legal e razoabilidade**.
-   - Para teses em Juízo, recomenda-se correlacionar com a jurisprudência sumulada do STJ/STF e dispositivos do CPC / Código Civil / CDC / CLT.
+---
 
-2. **Ações Recomendadas no JusFlow**:
-   - Utilize a aba **IA Jurídica** no menu lateral para gerar minutas e peças processuais específicas sobre este tema.
-   - Para associar esta tese a um processo específico, acesse a aba **Processos** ou busque pelo CNJ correspondente.`;
+### 1. 📚 Fundamentação Legal & Doutrinária
+- **Legislação Pátria**: A questão envolve os princípios gerais do Direito Brasileiro, devendo ser analisada sob a ótica do Código Civil, Código de Processo Civil, Código Penal ou CLT, conjuntamente com os enunciados das Súmulas do STJ e STF.
+- **Princípios de Regência**: Aplicação rigorosa da **boa-fé objetiva**, **segurança jurídica**, **ampla defesa** e **devido processo legal**.
+
+---
+
+### 2. 📝 Aplicação Prática no Escritório
+- **Elaboração de Peças**: Utilize a aba **IA Jurídica** no menu do JusFlow para gerar petições, recursos e pareceres específicos.
+- **Vinculação a Processos**: Para associar esta tese a uma causa existente, acesse a aba **Processos** e insira o número do CNJ.`;
       }
 
       setMessages((prev) => [
