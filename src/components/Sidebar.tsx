@@ -37,6 +37,9 @@ import {
   UserPlus,
   Globe,
   X,
+  Mail,
+  Database,
+  Download,
 } from "lucide-react";
 export const Sidebar: React.FC<{
   isOpenOnMobile?: boolean;
@@ -109,10 +112,12 @@ export const Sidebar: React.FC<{
       items: [
         { id: "gestao.clientes", label: "Clientes", icon: Users },
         { id: "gestao.financeiro", label: "Financeiro", icon: DollarSign },
+        { id: "gestao.emails", label: "Disparo de E-mails", icon: Mail },
         { id: "gestao.automacoes", label: "Automações", icon: Zap },
         { id: "documentos.conhecimento", label: "Conhecimento", icon: Book },
         { id: "gestao.compliance", label: "Conformidade", icon: ShieldCheck },
         { id: "gestao.notificacoes", label: "Notificações", icon: Bell },
+        { id: "gestao.exportacao", label: "Exportar Dados", icon: Download },
         { id: "gestao.conflitos", label: "Conflitos", icon: ShieldAlert },
         { id: "gestao.relatorios", label: "Relatórios", icon: BarChart3 },
         { id: "gestao.equipe", label: "Equipe", icon: UserPlus },

@@ -150,7 +150,18 @@ export const CopilotoView: React.FC = () => {
       } else if (lower.includes("processo") || lower.includes("andamento")) {
         fallbackText += `⚖️ **Processos do Escritório:**\nTemos **${processes.length} processos ativos** cadastrados. Acompanhe as movimentações na aba de **Processos**.`;
       } else {
-        fallbackText += `Como posso ajudar você hoje com seus processos, clientes, faturamento ou prazos OAB do seu escritório?`;
+        const cleanedQuery = userMessage.replace(/[*#]/g, "").trim();
+        fallbackText += `### 💡 Análise & Parecer do Copiloto Jurídico
+
+Em resposta à sua consulta sobre **"${cleanedQuery}"**:
+
+1. **Fundamentação Legal & Doutrinária**:
+   - Pela legislação brasileira vigente, a questão requer atenção aos princípios de **boa-fé objetiva, devido processo legal e razoabilidade**.
+   - Para teses em Juízo, recomenda-se correlacionar com a jurisprudência sumulada do STJ/STF e dispositivos do CPC / Código Civil / CDC / CLT.
+
+2. **Ações Recomendadas no JusFlow**:
+   - Utilize a aba **IA Jurídica** no menu lateral para gerar minutas e peças processuais específicas sobre este tema.
+   - Para associar esta tese a um processo específico, acesse a aba **Processos** ou busque pelo CNJ correspondente.`;
       }
 
       setMessages((prev) => [

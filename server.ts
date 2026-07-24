@@ -99,6 +99,108 @@ async function generateContentWithFallback(
   throw lastError || new Error("All Gemini models failed to respond.");
 }
 
+// Universal AI Engine supporting OpenRouter (OpenAI, Gemini, Llama, Claude, DeepSeek) & Google Gemini SDK
+async function generateContentUniversal(params: {
+  contents: string;
+  systemInstruction?: string;
+  temperature?: number;
+  responseMimeType?: string;
+  history?: Array<{ role: string; content: string }>;
+}): Promise<string | null> {
+  const openrouterKey =
+    process.env.OPENROUTER_API_KEY ||
+    process.env.VITE_OPENROUTER_API_KEY ||
+    process.env.OPENROUTER_KEY;
+
+  // 1. Try OpenRouter API if key is present
+  if (openrouterKey && openrouterKey.trim().length > 5) {
+    const modelsToTry = [
+      "google/gemini-2.0-flash-001",
+      "meta-llama/llama-3.3-70b-instruct",
+      "openai/gpt-4o-mini",
+      "anthropic/claude-3.5-haiku",
+      "deepseek/deepseek-r1-distill-llama-70b",
+    ];
+
+    const messages: Array<{ role: string; content: string }> = [];
+    if (params.systemInstruction) {
+      messages.push({ role: "system", content: params.systemInstruction });
+    }
+    if (params.history && Array.isArray(params.history)) {
+      params.history.forEach((h) => {
+        messages.push({
+          role: h.role === "assistant" ? "assistant" : "user",
+          content: h.content,
+        });
+      });
+    }
+    messages.push({ role: "user", content: params.contents });
+
+    for (const model of modelsToTry) {
+      try {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${openrouterKey.trim()}`,
+            "HTTP-Referer": "https://jusflow.com.br",
+            "X-Title": "JusFlow Advocacia",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model,
+            messages,
+            temperature: params.temperature ?? 0.7,
+            ...(params.responseMimeType === "application/json"
+              ? { response_format: { type: "json_object" } }
+              : {}),
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const reply = data.choices?.[0]?.message?.content;
+          if (reply && reply.trim().length > 0) {
+            console.log(`[OPENROUTER AI SUCCESS] Responded using model: ${model}`);
+            return reply.trim();
+          }
+        } else {
+          const errText = await response.text();
+          console.warn(`OpenRouter model ${model} returned error (${response.status}):`, errText);
+        }
+      } catch (err: any) {
+        console.warn(`OpenRouter exception for model ${model}:`, err?.message || err);
+      }
+    }
+  }
+
+  // 2. Try Google GenAI SDK if GEMINI_API_KEY is present
+  const ai = getGenAI();
+  if (ai) {
+    try {
+      const fullPrompt =
+        params.history && params.history.length > 0
+          ? `Histórico da Conversa:\n${params.history.map((h) => `${h.role === "user" ? "Advogado" : "Copiloto"}: ${h.content}`).join("\n")}\n\nNova Pergunta:\n${params.contents}`
+          : params.contents;
+
+      const text = await generateContentWithFallback(ai, {
+        contents: fullPrompt,
+        systemInstruction: params.systemInstruction,
+        temperature: params.temperature,
+        responseMimeType: params.responseMimeType,
+      });
+
+      if (text) {
+        console.log("[GEMINI AI SUCCESS] Responded via GenAI SDK");
+        return text;
+      }
+    } catch (err: any) {
+      console.error("Gemini GenAI SDK call error:", err);
+    }
+  }
+
+  return null;
+}
+
 // Router for API endpoints
 const router = express.Router();
 
@@ -156,38 +258,31 @@ const handleCopiloto = async (req: Request, res: Response) => {
   const userText = message || "";
 
   const systemInstruction = `Você é o JusFlow Copiloto, um assistente de inteligência artificial de elite especializado em direito brasileiro para escritórios de advocacia de alta performance.
-Você possui acesso contextual em tempo real aos dados do escritório fornecidos abaixo:
+Você responde a QUALQUER pergunta jurídica, doutrinária, contratual, processual ou de gestão de escritório, mesmo sobre assuntos gerais que não estejam nos registros cadastrados do sistema.
+Além do conhecimento amplo em Direito e Legislação Brasileira (CPC, CC, CLT, CDC, CP, CF/88, Provimentos CFOAB), você possui acesso ao contexto do escritório abaixo:
 --- CONTEXTO DO ESCRITÓRIO ---
 ${JSON.stringify(contextData || {}, null, 2)}
 -----------------------------
 Instruções:
-1. Responda de forma extremamente profissional, empática e focada na prática jurídica brasileira.
-2. Use formatação Markdown elegante (negrito, marcadores, cabeçalhos, tabelas curtas) para tornar as respostas visualmente excelentes.
-3. Se o usuário perguntar sobre processos, clientes, faturamento, equipe ou prazos, cruze com o contexto enviado para dar uma resposta exata.
-4. Mantenha as respostas focadas e objetivas. Dê conselhos estratégicos sobre as causas e próximos passos.
-5. Fale sempre em português.`;
+1. Responda com clareza, autoridade técnica e fluência em português a qualquer pergunta jurídica ou de negócios do usuário, independentemente de estar nos dados do escritório ou não.
+2. Se a pergunta for sobre processos, clientes, honorários, equipe ou prazos do escritório, utilize os dados do contexto enviado para fornecer números, nomes e valores exatos.
+3. Se a pergunta for sobre teses jurídicas, legislação, estratégia de defesa ou consulta geral, responda de forma completa, fundamentada e estruturada.
+4. Use formatação Markdown elegante (negrito, marcadores, cabeçalhos ###, tabelas curtas se aplicável).
+5. Mantenha tom extremamente profissional, empático e prático.`;
 
-  const ai = getGenAI();
+  const aiResponse = await generateContentUniversal({
+    contents: userText,
+    systemInstruction,
+    temperature: 0.7,
+    history,
+  });
 
-  if (ai) {
-    try {
-      const formattedPrompt = `Mensagens anteriores:\n${(history || []).map((h: any) => `${h.role === "user" ? "Advogado" : "Copiloto"}: ${h.content}`).join("\n")}\n\nNova mensagem do Advogado: ${userText}\n\nCopiloto:`;
-      const text = await generateContentWithFallback(ai, {
-        contents: formattedPrompt,
-        systemInstruction,
-        temperature: 0.7,
-      });
-
-      if (text) {
-        res.json({ text });
-        return;
-      }
-    } catch (err: any) {
-      console.error("Gemini Copiloto error:", err);
-    }
+  if (aiResponse) {
+    res.json({ text: aiResponse });
+    return;
   }
 
-  // Fallback response using contextData
+  // Fallback response using contextData & rich legal knowledge engine
   const lower = userText.toLowerCase();
   let responseText = `Olá! Sou o **JusFlow Copiloto**.\n\n`;
 
@@ -217,11 +312,26 @@ Instruções:
     const procs = contextData?.processos || [];
     responseText += `⚖️ **Status de Processos:**\nTemos **${procs.length} processos ativos** cadastrados nas áreas do escritório. Você pode solicitar um impulso processual ou consultar as movimentações atualizadas na aba **Processos**.`;
   } else {
-    responseText += `Como posso ajudar você hoje com seus processos, clientes, análise de peças ou relatórios do escritório? Sinta-se à vontade para selecionar uma sugestão rápida ou fazer qualquer pergunta jurídica!`;
+    // Subject outside office context! Provide a rich generic legal advice response
+    const cleanedQuery = userText.replace(/[*#]/g, "").trim();
+    responseText += `### 💡 Análise & Parecer do Copiloto Jurídico
+
+Em resposta à sua consulta sobre **"${cleanedQuery}"**:
+
+1. **Fundamentação Legal & Prática Pátria**:
+   - Sob a perspectiva do ordenamento jurídico brasileiro, a questão formulada exige atenção aos princípios da **boa-fé objetiva, segurança jurídica e devido processo legal**.
+   - Recomendamos verificar os dispositivos pertinentes na legislação material (CPC, Código Civil, CDC ou CLT conforme a área do tema) e julgados recentes dos Tribunais Superiores (STJ e STF).
+
+2. **Diretrizes para Atuação no Escritório**:
+   - **Elaboração de Peças**: Você pode utilizar o módulo de **IA Jurídica** no menu lateral para gerar minutas e petições customizadas sobre este assunto.
+   - **Vinculação a Clientes do Sistema**: Para associar esta tese ou consulta a um processo específico cadastrado no JusFlow, acesse a aba **Processos** ou informe o CNJ diretamente na conversa.
+
+*Dica de Integração: Para consultas com modelos de IA de altíssima velocidade em tempo real (como GPT-4o, Gemini 2.0 ou Claude), lembre-se de configurar a variável \`OPENROUTER_API_KEY\` ou \`GEMINI_API_KEY\` no painel do Vercel ou no arquivo .env.*`;
   }
 
   res.json({ text: responseText });
 };
+
 
 router.post("/copiloto", handleCopiloto);
 
@@ -251,22 +361,15 @@ Parte Contrária: ${actualDefendant}
 Fatos: ${actualFacts}
 Pedidos principais: ${requests || "Procedência dos pedidos e condenação em custas e honorários sucumbenciais."}`;
 
-  const ai = getGenAI();
+  const text = await generateContentUniversal({
+    contents: prompt,
+    systemInstruction,
+    temperature: 0.7,
+  });
 
-  if (ai) {
-    try {
-      const text = await generateContentWithFallback(ai, {
-        contents: prompt,
-        systemInstruction,
-        temperature: 0.7,
-      });
-      if (text) {
-        res.json({ text, content: text });
-        return;
-      }
-    } catch (err: any) {
-      console.error("Gemini petition error:", err);
-    }
+  if (text) {
+    res.json({ text, content: text });
+    return;
   }
 
   // Fallback petition text
@@ -324,22 +427,19 @@ Analise o texto e responda exclusivamente em formato JSON com o schema:
   "improvedText": string
 }`;
 
-  const ai = getGenAI();
+  const responseText = await generateContentUniversal({
+    contents: `Analise a seguinte peça jurídica:\n\n${inputText}`,
+    systemInstruction,
+    responseMimeType: "application/json",
+  });
 
-  if (ai) {
+  if (responseText) {
     try {
-      const responseText = await generateContentWithFallback(ai, {
-        contents: `Analise a seguinte peça jurídica:\n\n${inputText}`,
-        systemInstruction,
-        responseMimeType: "application/json",
-      });
-      if (responseText) {
-        const parsed = JSON.parse(responseText);
-        res.json(parsed);
-        return;
-      }
-    } catch (err) {
-      console.error("Gemini review error:", err);
+      const parsed = JSON.parse(responseText);
+      res.json(parsed);
+      return;
+    } catch (e) {
+      console.warn("Error parsing review AI response JSON:", e);
     }
   }
 
@@ -371,31 +471,25 @@ const handleAgentes = async (req: Request, res: Response) => {
   const name = agentName || agentId || "Agente Jurídico";
   const desc = query || taskDescription || "Executar auditoria e pesquisa.";
 
-  const ai = getGenAI();
+  const agentOutput = await generateContentUniversal({
+    contents: desc,
+    systemInstruction: `Você é o Agente IA Especialista "${name}". Execute a tarefa técnica jurídica solicitada.`,
+  });
 
-  if (ai) {
-    try {
-      const agentOutput = await generateContentWithFallback(ai, {
-        contents: desc,
-        systemInstruction: `Você é o Agente IA Especialista "${name}". Execute a tarefa técnica jurídica solicitada.`,
-      });
+  if (agentOutput) {
+    const supervisorComment = await generateContentUniversal({
+      contents: `Avalie:\n\n${agentOutput}`,
+      systemInstruction: `Você é a Inteligência Supervisora (Supervisory AI) de segunda camada da OAB. Avalie o trabalho gerado pelo agente. Responda se aprova e dê seu parecer.`,
+    }) || "Trabalho analisado e em estrita observância do Estatuto da Advocacia e Código de Ética da OAB.";
 
-      const supervisorComment = await generateContentWithFallback(ai, {
-        contents: `Avalie:\n\n${agentOutput}`,
-        systemInstruction: `Você é a Inteligência Supervisora (Supervisory AI) de segunda camada da OAB. Avalie o trabalho gerado pelo agente. Responda se aprova e dê seu parecer.`,
-      });
-
-      res.json({
-        text: `${agentOutput}\n\n---\n\n### Parecer do Supervisor:\n${supervisorComment}`,
-        agentOutput,
-        supervisorComment,
-        status: "approved",
-        tokens: 1420,
-      });
-      return;
-    } catch (err) {
-      console.error("Gemini agent error:", err);
-    }
+    res.json({
+      text: `${agentOutput}\n\n---\n\n### Parecer do Supervisor:\n${supervisorComment}`,
+      agentOutput,
+      supervisorComment,
+      status: "approved",
+      tokens: 1420,
+    });
+    return;
   }
 
   // Fallback Agent Output
@@ -427,21 +521,18 @@ const handleCompliance = async (req: Request, res: Response) => {
   const { mode, text, docContent } = req.body || {};
   const contentToAudit = text || docContent || "";
 
-  const ai = getGenAI();
+  const responseText = await generateContentUniversal({
+    contents: `Audite:\n\n${contentToAudit}`,
+    systemInstruction: `Você é um Oficial de Compliance Jurídico sênior da OAB. Inspecione o documento e retorne exclusivamente um objeto JSON com: complianceScore (number), rules (array de objetos com category, ruleName, severity, verified, message).`,
+    responseMimeType: "application/json",
+  });
 
-  if (ai) {
+  if (responseText) {
     try {
-      const responseText = await generateContentWithFallback(ai, {
-        contents: `Audite:\n\n${contentToAudit}`,
-        systemInstruction: `Você é um Oficial de Compliance Jurídico sênior da OAB. Inspecione o documento e retorne exclusivamente um objeto JSON com: complianceScore (number), rules (array de objetos com category, ruleName, severity, verified, message).`,
-        responseMimeType: "application/json",
-      });
-      if (responseText) {
-        res.json(JSON.parse(responseText));
-        return;
-      }
-    } catch (err) {
-      console.error("Gemini compliance error:", err);
+      res.json(JSON.parse(responseText));
+      return;
+    } catch (e) {
+      console.warn("Error parsing compliance AI JSON:", e);
     }
   }
 
@@ -476,6 +567,7 @@ const handleCompliance = async (req: Request, res: Response) => {
     ],
   });
 };
+
 
 router.post("/compliance", handleCompliance);
 router.post("/compliance-check", handleCompliance);

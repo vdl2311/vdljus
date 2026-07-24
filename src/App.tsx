@@ -30,6 +30,8 @@ import { RelatoriosAnalyticsView } from "./components/gestao/RelatoriosAnalytics
 import { EquipeView } from "./components/gestao/EquipeView";
 import { AdminOfficeView } from "./components/gestao/AdminOfficeView";
 import { NotificacoesView } from "./components/gestao/NotificacoesView";
+import { EmailDispatchesView } from "./components/gestao/EmailDispatchesView";
+import { DataPortabilitySection } from "./components/gestao/DataPortabilitySection";
 import { PortalClienteView } from "./components/cliente/PortalClienteView";
 import { SuporteView } from "./components/cliente/SuporteView";
 
@@ -66,6 +68,8 @@ const AppContent: React.FC = () => {
         "gestao.equipe": "Equipe",
         "gestao.admin": "Administração",
         "gestao.notificacoes": "Notificações",
+        "gestao.emails": "Disparo de E-mails (Brevo)",
+        "gestao.exportacao": "Exportação & Backup de Dados",
         "cliente.portal": "Portal do Cliente",
         "cliente.suporte": "Suporte"
       };
@@ -115,6 +119,14 @@ const AppContent: React.FC = () => {
         return <AdminOfficeView />;
       case "gestao.notificacoes":
         return <NotificacoesView />;
+      case "gestao.emails":
+        return <EmailDispatchesView />;
+      case "gestao.exportacao":
+        return (
+          <div className="p-6 overflow-y-auto h-full bg-background text-left">
+            <DataPortabilitySection />
+          </div>
+        );
       case "cliente.portal":
         return <PortalClienteView />;
       case "cliente.suporte":

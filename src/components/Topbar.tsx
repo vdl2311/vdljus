@@ -80,7 +80,11 @@ export const Topbar: React.FC<{
       case "gestao.admin":
         return { title: "Painel Administrativo do Escritório", subtitle: "Configurações do escritório" };
       case "gestao.notificacoes":
-        return { title: "Notificações", subtitle: "Alertas do sistema" };
+        return { title: "Notificações & Central de Alertas", subtitle: "Alertas do sistema" };
+      case "gestao.emails":
+        return { title: "Módulo de Disparos e Campanhas de E-mail", subtitle: "Integração com Brevo API v3" };
+      case "gestao.exportacao":
+        return { title: "Portabilidade & Exportação de Dados", subtitle: "Backup ilimitado em Excel e PDF" };
       case "cliente.portal":
         return { title: "Portal Externo do Cliente", subtitle: "Área do cliente" };
       default:
@@ -155,7 +159,7 @@ export const Topbar: React.FC<{
 
         {/* Quick Export Data Button */}
         <button
-          onClick={() => setIsExportModalOpen(true)}
+          onClick={() => setActiveTab("gestao.exportacao")}
           title="Exportar Todos os Dados (Backup PDF & Excel)"
           aria-label="Exportar Todos os Dados do Sistema em Excel e PDF"
           className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 rounded-md text-xs font-semibold transition-all cursor-pointer shrink-0"
