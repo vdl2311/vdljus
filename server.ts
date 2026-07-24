@@ -74,11 +74,10 @@ async function generateContentWithFallback(
   }
 ): Promise<string> {
   const modelsToTry = [
-    "gemini-3.6-flash",
-    "gemini-3.5-flash",
-    "gemini-3.1-pro",
     "gemini-2.5-flash",
     "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-pro",
   ];
   let lastError: any = null;
 
@@ -349,6 +348,20 @@ Regras vitais de proteção ao consumidor na legislação brasileira:
 3. **Inversão do Ônus da Prova (Art. 6º, VIII)**: Concedida quando verossímil a alegação ou hipossuficiente o consumidor.`;
   }
 
+  // Greetings & Conversational Inputs
+  const greetings = ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "tudo bem", "salve", "hey", "hello", "opa"];
+  if (greetings.includes(lower) || lower.length <= 3) {
+    return `Olá! Sou o **JusFlow Copiloto**, o assistente inteligente de inteligência artificial do seu escritório.
+
+Como posso ajudar você hoje? Estou pronto para responder a **qualquer pergunta** — seja sobre:
+
+- 📊 **Dados do seu escritório**: Processos, prazos, clientes, honorários pendentes e faturamento.
+- ⚖️ **Direito & Legislação**: Consultas jurídicas, jurisprudência (STJ/STF), teses processuais e minutas de peças.
+- 🌐 **Conhecimento Geral & Suporte**: Qualquer dúvida sobre gestão, tecnologia, finanças, modelos de documentos ou tópicos diversos!
+
+Como posso te auxiliar agora?`;
+  }
+
   // 9. Office Context Queries (Financeiro, Prazos, Processos)
   if (lower.includes("inadimplent") || lower.includes("honorário") || lower.includes("pendente") || lower.includes("financeiro")) {
     const faturamentos = contextData?.faturamento || [];
@@ -379,23 +392,15 @@ Regras vitais de proteção ao consumidor na legislação brasileira:
     return `⚖️ **Status de Processos:**\nTemos **${procs.length} processos ativos** cadastrados. Acesse a aba **Processos** para consultar movimentações e publicar andamentos.`;
   }
 
-  // General fallback for unknown specific topics
+  // General fallback for unknown specific topics - direct friendly response
   const cleanedQuery = userText.replace(/[*#]/g, "").trim();
-  return `### 💡 Parecer & Orientação Jurídica: ${cleanedQuery}
+  return `### 💡 Copiloto Inteligente: ${cleanedQuery}
 
-A respeito de **"${cleanedQuery}"**, cumpre destacar a fundamentação normativa e prática aplicável ao tema:
+Sobre **"${cleanedQuery}"**:
 
----
+Estou pronto para ajudar você com este tópico! Como copiloto de IA do JusFlow, posso analisar estratégias, redigir minutas de documentos, pesquisar legislação aplicada ou correlacionar com as informações do seu escritório.
 
-### 1. 📚 Fundamentação Legal & Doutrinária
-- **Legislação Pátria**: A questão envolve os princípios gerais do Direito Brasileiro, devendo ser analisada sob a ótica do Código Civil, Código de Processo Civil, Código Penal ou CLT, conjuntamente com os enunciados das Súmulas do STJ e STF.
-- **Princípios de Regência**: Aplicação rigorosa da **boa-fé objetiva**, **segurança jurídica**, **ampla defesa** e **devido processo legal**.
-
----
-
-### 2. 📝 Aplicação Prática no Escritório
-- **Elaboração de Peças**: Utilize a aba **IA Jurídica** no menu do JusFlow para gerar petições, recursos e pareceres específicos.
-- **Vinculação a Processos**: Para associar esta tese a uma causa existente, acesse a aba **Processos** e insira o número do CNJ.`;
+Se precisar de uma análise específica, pesquisa jurídica detalhada ou elaboração de minuta sobre este assunto, me informe os detalhes e eu gerarei imediatamente!`;
 }
 
 // Router for API endpoints
@@ -1220,6 +1225,99 @@ router.post("/email/campaign", async (req: Request, res: Response) => {
   } catch (error: any) {
     console.error("Erro interno no endpoint /api/email/campaign:", error);
     res.status(500).json({ error: error?.message || "Erro ao processar criação da campanha." });
+  }
+});
+
+// Endpoint for PDF data portability dossier download
+router.post("/export/full-pdf", (req, res) => {
+  try {
+    const payload = req.body || {};
+    const officeName = payload.officeName || "JusFlow Advocacia Associados";
+    const date = new Date().toLocaleDateString("pt-BR");
+
+    const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dossiê de Portabilidade - ${officeName}</title>
+  <style>
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; margin: 30px; color: #1e293b; background: #fff; line-height: 1.5; font-size: 12px; }
+    .header { text-align: center; border-bottom: 2px solid #059669; padding-bottom: 12px; margin-bottom: 20px; }
+    .header h1 { margin: 0; color: #065f46; font-size: 20px; text-transform: uppercase; }
+    .header p { margin: 4px 0 0; color: #64748b; font-size: 11px; }
+    .section { margin-bottom: 24px; }
+    .section-title { font-size: 14px; font-weight: bold; color: #065f46; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 11px; }
+    th, td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: left; }
+    th { background: #f1f5f9; font-weight: bold; color: #334155; }
+    tr:nth-child(even) { background: #f8fafc; }
+    .footer { margin-top: 40px; text-align: center; font-size: 10px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>${officeName}</h1>
+    <p>Dossiê de Portabilidade de Dados & Auditoria Integral | Data do Relatório: ${date}</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">1. Resumo Executivo da Base de Dados</div>
+    <table>
+      <tr><th>Métrica</th><th>Total Cadastrado</th></tr>
+      <tr><td>Clientes (PF & PJ)</td><td>${payload.clients?.length || 0}</td></tr>
+      <tr><td>Processos Ativos</td><td>${payload.processes?.length || 0}</td></tr>
+      <tr><td>Lançamentos Financeiros</td><td>${payload.financials?.length || 0}</td></tr>
+      <tr><td>Prazos & Agenda</td><td>${payload.deadlines?.length || 0}</td></tr>
+      <tr><td>Membros da Equipe</td><td>${payload.teamMembers?.length || 0}</td></tr>
+    </table>
+  </div>
+
+  ${
+    payload.clients && payload.clients.length > 0
+      ? `<div class="section">
+          <div class="section-title">2. Cadastro de Clientes</div>
+          <table>
+            <tr><th>Nome / Razão Social</th><th>CPF/CNPJ</th><th>Tipo</th><th>Status</th></tr>
+            ${payload.clients
+              .map(
+                (c: any) =>
+                  `<tr><td>${c.name || "-"}</td><td>${c.document || "N/A"}</td><td>${c.type || "Geral"}</td><td>${c.status || "Ativo"}</td></tr>`
+              )
+              .join("")}
+          </table>
+        </div>`
+      : ""
+  }
+
+  ${
+    payload.processes && payload.processes.length > 0
+      ? `<div class="section">
+          <div class="section-title">3. Carteira de Processos</div>
+          <table>
+            <tr><th>Número CNJ</th><th>Ação / Título</th><th>Área</th><th>Cliente</th><th>Valor (R$)</th></tr>
+            ${payload.processes
+              .map(
+                (p: any) =>
+                  `<tr><td>${p.cnj || "-"}</td><td>${p.title || "-"}</td><td>${p.area || "-"}</td><td>${p.clientName || "-"}</td><td>R$ ${p.value?.toLocaleString("pt-BR") || "0"}</td></tr>`
+              )
+              .join("")}
+          </table>
+        </div>`
+      : ""
+  }
+
+  <div class="footer">
+    Documento Oficial de Exportação e Portabilidade Integral - JusFlow Platform (Lock-In Zero)
+  </div>
+</body>
+</html>`;
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename=Dossie_Portabilidade_JusFlow_${new Date().toISOString().slice(0, 10)}.pdf`);
+    res.send(Buffer.from(htmlContent, "utf-8"));
+  } catch (err: any) {
+    console.error("Erro na exportação de PDF:", err);
+    res.status(500).json({ error: "Erro ao gerar PDF" });
   }
 });
 

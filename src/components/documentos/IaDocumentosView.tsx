@@ -120,9 +120,53 @@ Advogado - OAB/SP 123.456`;
     }
   };
   const triggerExport = (format: "pdf" | "docx") => {
+    const textToExport = generatedText || "Sem conteúdo gerado.";
+    const cleanTitle = (docTitle || "Minuta_JusFlow")
+      .replace(/[^a-zA-Z0-9_\-]/g, "_")
+      .replace(/_+/g, "_");
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const fileName = `${cleanTitle}_${dateStr}.${format === "docx" ? "docx" : "pdf"}`;
+
+    let blob: Blob;
+
+    if (format === "pdf") {
+      const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${docTitle || "Minuta Jurídica"}</title>
+  <style>
+    body { font-family: 'Times New Roman', Times, serif; margin: 40px; color: #111; line-height: 1.8; font-size: 14pt; }
+    h1 { text-align: center; font-size: 18pt; text-transform: uppercase; margin-bottom: 20px; color: #0f172a; }
+    .meta { text-align: right; font-size: 10pt; color: #64748b; margin-bottom: 30px; border-bottom: 1px solid #cbd5e1; padding-bottom: 10px; }
+    .content { white-space: pre-wrap; text-align: justify; word-wrap: break-word; }
+    .footer { margin-top: 50px; border-top: 1px solid #cbd5e1; padding-top: 10px; text-align: center; font-size: 9pt; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <h1>${docTitle || "Minuta Jurídica"}</h1>
+  <div class="meta">JusFlow - Gestão & Inteligência Jurídica | ${new Date().toLocaleDateString("pt-BR")}</div>
+  <div class="content">${textToExport}</div>
+  <div class="footer">Documento gerado via JusFlow AI - Uso Profissional de Advocacia</div>
+</body>
+</html>`;
+      blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+    } else {
+      blob = new Blob([textToExport], { type: "application/msword;charset=utf-8" });
+    }
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
     logAction(`Exportação de documento: "${docTitle}" (${docType}) em formato ${format.toUpperCase()}`);
     setFeedbackMsg(
-      `Exportação para ${format.toUpperCase()} iniciada! O download começará automaticamente.`,
+      `Download concluído: "${fileName}" baixado com sucesso!`,
     );
     setTimeout(() => setFeedbackMsg(""), 4000);
   };

@@ -9,11 +9,15 @@ import {
   CornerDownLeft,
   Bot,
   User,
+  Copy,
+  Download,
+  Check,
 } from "lucide-react";
 export const CopilotoView: React.FC = () => {
   const { processes, deadlines, financials, clients, teamMembers } =
     useJusFlow();
   const [input, setInput] = useState("");
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [messages, setMessages] = useState<
     Array<{ role: "user" | "assistant"; content: string }>
   >([
@@ -215,23 +219,25 @@ O **Artigo 300 do CPC** disciplina os requisitos legais para deferimento da **Tu
         }
       } else if (lower.includes("processo") || lower.includes("andamento")) {
         fallbackText = `⚖️ **Processos do Escritório:**\nTemos **${processes.length} processos ativos** cadastrados. Acompanhe as movimentações na aba de **Processos**.`;
+      } else if (["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "tudo bem", "salve", "hey", "hello", "opa"].includes(lower) || lower.length <= 3) {
+        fallbackText = `Olá! Sou o **JusFlow Copiloto**, o assistente de inteligência artificial do seu escritório.
+
+Como posso ajudar você hoje? Estou pronto para responder a **qualquer pergunta** — seja sobre:
+
+- 📊 **Dados do seu escritório**: Processos, prazos, clientes, honorários pendentes e faturamento.
+- ⚖️ **Direito & Legislação**: Consultas jurídicas, jurisprudência, teses processuais e minutas de peças.
+- 🌐 **Conhecimento Geral & Suporte**: Qualquer dúvida sobre gestão, tecnologia, modelos de documentos ou tópicos diversos!
+
+Como posso te auxiliar agora?`;
       } else {
         const cleanedQuery = userMessage.replace(/[*#]/g, "").trim();
-        fallbackText = `### 💡 Parecer & Orientação Jurídica: ${cleanedQuery}
+        fallbackText = `### 💡 Copiloto Inteligente: ${cleanedQuery}
 
-A respeito de **"${cleanedQuery}"**, cumpre destacar a fundamentação normativa e prática aplicável ao tema:
+Sobre **"${cleanedQuery}"**:
 
----
+Estou pronto para ajudar você com este tópico! Como copiloto de IA do JusFlow, posso analisar estratégias, redigir minutas de documentos, pesquisar legislação aplicada ou correlacionar com as informações do seu escritório.
 
-### 1. 📚 Fundamentação Legal & Doutrinária
-- **Legislação Pátria**: A questão envolve os princípios gerais do Direito Brasileiro, devendo ser analisada sob a ótica do Código Civil, Código de Processo Civil, Código Penal ou CLT, conjuntamente com os enunciados das Súmulas do STJ e STF.
-- **Princípios de Regência**: Aplicação rigorosa da **boa-fé objetiva**, **segurança jurídica**, **ampla defesa** e **devido processo legal**.
-
----
-
-### 2. 📝 Aplicação Prática no Escritório
-- **Elaboração de Peças**: Utilize a aba **IA Jurídica** no menu do JusFlow para gerar petições, recursos e pareceres específicos.
-- **Vinculação a Processos**: Para associar esta tese a uma causa existente, acesse a aba **Processos** e insira o número do CNJ.`;
+Se precisar de uma análise específica, pesquisa jurídica detalhada ou elaboração de minuta sobre este assunto, me informe os detalhes!`;
       }
 
       setMessages((prev) => [
@@ -307,6 +313,24 @@ A respeito de **"${cleanedQuery}"**, cumpre destacar a fundamentação normativa
       );
     });
   }; // Inline bold parser
+  const handleCopyMessage = (content: string, index: number) => {
+    navigator.clipboard.writeText(content);
+    setCopiedIdx(index);
+    setTimeout(() => setCopiedIdx(null), 2000);
+  };
+
+  const handleDownloadMessage = (content: string, index: number) => {
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Resposta_Copiloto_JusFlow_${index + 1}_${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const parseBold = (text: string) => {
     const parts = text.split(/\*\*(.*?)\*\*/g);
     return parts.map((part, i) =>
@@ -355,6 +379,33 @@ A respeito de **"${cleanedQuery}"**, cumpre destacar a fundamentação normativa
                   {isAI ? (
                     <div className="space-y-0.5">
                       {formatContent(m.content)}
+                      <div className="mt-3 pt-2 border-t border-border/40 flex items-center justify-end gap-3 text-[11px] text-muted-foreground">
+                        <button
+                          onClick={() => handleCopyMessage(m.content, idx)}
+                          className="flex items-center gap-1 hover:text-emerald-500 transition-colors cursor-pointer"
+                          title="Copiar texto da resposta"
+                        >
+                          {copiedIdx === idx ? (
+                            <>
+                              <Check className="w-3 h-3 text-emerald-500" />
+                              <span className="text-emerald-500 font-semibold">Copiado!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3" />
+                              <span>Copiar</span>
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => handleDownloadMessage(m.content, idx)}
+                          className="flex items-center gap-1 hover:text-emerald-500 transition-colors cursor-pointer"
+                          title="Baixar resposta em arquivo TXT"
+                        >
+                          <Download className="w-3 h-3" />
+                          <span>Baixar (.txt)</span>
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     <p className="text-xs sm:text-sm text-foreground leading-relaxed font-medium">
