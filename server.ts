@@ -862,13 +862,17 @@ router.post("/datajud", async (req: Request, res: Response) => {
 
     const tribunalKey = tribunalMap[trCode] || "tjsp";
     const apiKey =
+      (req.headers["x-datajud-key"] as string) ||
       req.body?.datajudKey ||
       process.env.DATAJUD_API_KEY ||
       process.env.CNJ_API_KEY ||
       process.env.VITE_DATAJUD_API_KEY ||
-      (req.headers["x-datajud-key"] as string) ||
       (req.headers["authorization"]?.startsWith("APIKey ") ? req.headers["authorization"].substring(7) : undefined) ||
       "cDZpQnlOWWJfc0JoTGxJQUdCbU06V3M4N2w4VmlSUGFFU1BwTUJ5M1Frdw=="; // CNJ Public Test Key
+
+    const authHeaderValue = apiKey.trim().startsWith("APIKey ")
+      ? apiKey.trim()
+      : `APIKey ${apiKey.trim()}`;
 
     const dataJudUrl = `https://api-publica.datajud.cnj.jus.br/api_publica_${tribunalKey}/_search`;
     
@@ -877,7 +881,7 @@ router.post("/datajud", async (req: Request, res: Response) => {
     const response = await fetch(dataJudUrl, {
       method: "POST",
       headers: {
-        "Authorization": `APIKey ${apiKey.trim()}`,
+        "Authorization": authHeaderValue,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

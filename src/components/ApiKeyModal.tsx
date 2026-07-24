@@ -22,7 +22,10 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
       setOpenopenaiKey(localStorage.getItem("openai_api_key") || "");
       setGeminiKey(localStorage.getItem("gemini_api_key") || "");
       setGroqKey(localStorage.getItem("groq_api_key") || "");
-      setDatajudKey(localStorage.getItem("datajud_api_key") || "");
+      setDatajudKey(
+        localStorage.getItem("datajud_api_key") ||
+        "cDZpQnlOWWJfc0JoTGxJQUdCbU06V3M4N2w4VmlSUGFFU1BwTUJ5M1Frdw=="
+      );
       setSavedSuccess(false);
       setTestStatus({});
     }
@@ -207,19 +210,28 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ isOpen, onClose }) => 
 
           {/* DataJud CNJ Key */}
           <div className="space-y-1.5">
-            <label className="font-bold text-foreground flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
+            <div className="flex items-center justify-between">
+              <label className="font-bold text-foreground flex items-center gap-1.5">
                 <Database className="w-3.5 h-3.5 text-indigo-500" /> DataJud CNJ API Key (Base Pública CNJ)
-              </span>
-              <span className="text-[10px] text-muted-foreground font-mono">DATAJUD_API_KEY</span>
-            </label>
+              </label>
+              <button
+                type="button"
+                onClick={() => setDatajudKey("cDZpQnlOWWJfc0JoTGxJQUdCbU06V3M4N2w4VmlSUGFFU1BwTUJ5M1Frdw==")}
+                className="text-[10px] text-indigo-500 hover:underline cursor-pointer"
+              >
+                Restaurar Chave Pública CNJ
+              </button>
+            </div>
             <input
-              type="password"
-              placeholder="cDZpQnlOWWJfc0Jo..."
+              type="text"
+              placeholder="cDZpQnlOWWJfc0JoTGxJQUdCbU0..."
               value={datajudKey}
               onChange={(e) => setDatajudKey(e.target.value)}
               className="w-full bg-background border border-border rounded-lg px-3 py-2 font-mono text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
             />
+            <p className="text-[10px] text-muted-foreground">
+              Obtenha ou atualize gratuitamente no portal oficial do CNJ (datajud-wiki.cnj.jus.br) ou insira a chave pública de acesso.
+            </p>
           </div>
         </div>
 
