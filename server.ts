@@ -837,49 +837,121 @@ const handleCompliance = async (req: Request, res: Response) => {
 router.post("/compliance", handleCompliance);
 router.post("/compliance-check", handleCompliance);
 
-// 7. DataJud API Integration
+// 7. DataJud API Integration (CNJ Official + Robust Fallback)
 router.post("/datajud", async (req: Request, res: Response) => {
-  const { cnj } = req.body || {};
-  const cleanCnj = (cnj || "").replace(/\D/g, "");
+  try {
+    const { cnj } = req.body || {};
+    const rawCnj = (cnj || "").toString();
+    const cleanCnj = rawCnj.replace(/\D/g, "");
 
-  if (cleanCnj.length !== 20) {
-    res.status(400).json({ error: "CNJ inválido. Deve conter exatamente 20 dígitos numéricos." });
-    return;
+    if (cleanCnj.length !== 20) {
+      res.status(400).json({ error: "CNJ inválido. Deve conter exatamente 20 dígitos numéricos (ex: 5012345-67.2026.8.26.0100)." });
+      return;
+    }
+
+    const formattedCnj = cleanCnj.replace(/^(\d{7})(\d{2})(\d{4})(\d{1})(\d{2})(\d{4})$/, "$1-$2.$3.$4.$5.$6");
+    const trCode = cleanCnj.substring(14, 16);
+    
+    const tribunalMap: Record<string, string> = {
+      "26": "tjsp", "19": "tjrj", "13": "tjmg", "04": "tjrs", "21": "tjpr",
+      "15": "tjba", "03": "tjce", "16": "tjpe", "05": "tjdf", "06": "tjes",
+      "07": "tjgo", "08": "tjma", "09": "tjmt", "10": "tjms", "11": "tjpa",
+      "12": "tjpb", "14": "tjpi", "17": "tjrn", "18": "tjro", "20": "tjrr",
+      "22": "tjsc", "23": "tjse", "24": "tjto", "01": "tjac", "02": "tjal"
+    };
+
+    const tribunalKey = tribunalMap[trCode] || "tjsp";
+    const apiKey =
+      req.body?.datajudKey ||
+      process.env.DATAJUD_API_KEY ||
+      process.env.CNJ_API_KEY ||
+      process.env.VITE_DATAJUD_API_KEY ||
+      (req.headers["x-datajud-key"] as string) ||
+      (req.headers["authorization"]?.startsWith("APIKey ") ? req.headers["authorization"].substring(7) : undefined) ||
+      "cDZpQnlOWWJfc0JoTGxJQUdCbU06V3M4N2w4VmlSUGFFU1BwTUJ5M1Frdw=="; // CNJ Public Test Key
+
+    const dataJudUrl = `https://api-publica.datajud.cnj.jus.br/api_publica_${tribunalKey}/_search`;
+    
+    console.log(`[DataJud Real Query] URL: ${dataJudUrl}, CNJ: ${cleanCnj}`);
+
+    const response = await fetch(dataJudUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": `APIKey ${apiKey.trim()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: {
+          match: {
+            numeroProcesso: cleanCnj
+          }
+        }
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.warn(`DataJud API response error (${response.status}):`, errText);
+
+      let userError = `Erro na consulta ao DataJud CNJ (status ${response.status}).`;
+
+      if (response.status === 401) {
+        userError = `A chave pública da API DataJud CNJ para o tribunal ${tribunalKey.toUpperCase()} expirou ou é inválida. Por favor, insira uma chave pública válida do CNJ no botão 'Chaves IA' na barra superior ou defina a variável DATAJUD_API_KEY no arquivo .env.`;
+      } else if (response.status === 404) {
+        userError = `Processo ${formattedCnj} não localizado no tribunal ${tribunalKey.toUpperCase()} na base pública do DataJud.`;
+      } else {
+        try {
+          const parsed = JSON.parse(errText);
+          if (parsed?.error?.root_cause?.[0]?.reason) {
+            userError = `Erro na consulta ao DataJud CNJ: ${parsed.error.root_cause[0].reason}`;
+          }
+        } catch {
+          if (errText && errText.length < 200) {
+            userError = `Erro na consulta ao DataJud: ${errText}`;
+          }
+        }
+      }
+
+      res.status(response.status).json({
+        error: userError
+      });
+      return;
+    }
+
+    const json = await response.json();
+    const hit = json?.hits?.hits?.[0]?._source;
+
+    if (!hit) {
+      res.status(404).json({
+        error: `Processo ${formattedCnj} não encontrado na base pública do DataJud (${tribunalKey.toUpperCase()}). Verifique o número CNJ ou se o processo está indexado publicamente.`
+      });
+      return;
+    }
+
+    const apiData = {
+      cnj: formattedCnj,
+      tribunal: tribunalKey.toUpperCase(),
+      class: hit.classe?.nome || "Procedimento Comum Cível",
+      subject: hit.assuntos?.[0]?.nome || "Assunto não especificado",
+      distributionDate: hit.dataAjuizamento ? new Date(hit.dataAjuizamento).toLocaleDateString("pt-BR") : "Não informada",
+      value: hit.valorCausa || 0.0,
+      plaintiff: hit.partes?.[0]?.nome || "Autor não identificado",
+      defendant: hit.partes?.[1]?.nome || "Réu não identificado",
+      division: hit.orgaoJulgador?.nome || "Juízo não especificado",
+      movements: (hit.movimentos || []).map((m: any, idx: number) => ({
+        id: `m_${idx}`,
+        date: m.dataHora ? new Date(m.dataHora).toLocaleString("pt-BR") : "Data recente",
+        description: m.nome || "Movimentação processual",
+        details: m.complementosTabelados?.[0]?.descricao || "Sem detalhes adicionais registrados."
+      }))
+    };
+
+    res.json(apiData);
+
+  } catch (err: any) {
+    console.error("Erro na consulta DataJud:", err);
+    res.status(500).json({ error: `Erro interno ao processar consulta DataJud: ${err?.message || err}` });
   }
-
-  const formattedCnj = cleanCnj.replace(/^(\d{7})(\d{2})(\d{4})(\d{1})(\d{2})(\d{4})$/, "$1-$2.$3.$4.$5.$6");
-
-  res.json({
-    cnj: formattedCnj,
-    tribunal: "TJSP",
-    class: "Procedimento Comum Cível",
-    subject: "Indenização por Dano Moral - Inadimplemento Contratual",
-    distributionDate: "12/03/2024",
-    value: 55000.0,
-    plaintiff: "Indústria e Comércio Bandeirantes Ltda.",
-    defendant: "Tech Solutions S.A.",
-    division: "3ª Vara Cível de São Paulo",
-    movements: [
-      {
-        id: "m1",
-        date: "15/07/2026 14:30",
-        description: "Conclusos para Julgamento",
-        details: "Autos conclusos ao Magistrado para prolação de sentença.",
-      },
-      {
-        id: "m2",
-        date: "02/06/2026 10:15",
-        description: "Juntada de Petição de Especificação de Provas",
-        details: "Petição protocolada requerendo a produção de prova pericial e oral.",
-      },
-      {
-        id: "m3",
-        date: "20/04/2026 16:45",
-        description: "Decisão Saneadora Proferida",
-        details: "O juízo fixou os pontos controvertidos e deferiu a produção de provas.",
-      },
-    ],
-  });
 });
 
 // 8. Busca de Jurisprudência

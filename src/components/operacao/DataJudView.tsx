@@ -13,6 +13,8 @@ import {
   BarChart3,
   Activity,
   Filter,
+  Key,
+  RefreshCw,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -106,12 +108,19 @@ export const DataJudView: React.FC = () => {
     setError("");
     setResult(null);
     try {
+      const storedDataJudKey = localStorage.getItem("datajud_api_key") || "";
       const response = await fetch("/api/datajud", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cnj, isDemo: true }),
+        headers: {
+          "Content-Type": "application/json",
+          ...(storedDataJudKey ? { "x-datajud-key": storedDataJudKey } : {}),
+        },
+        body: JSON.stringify({ cnj, datajudKey: storedDataJudKey, isDemo: true }),
       });
-      if (!response.ok) throw new Error("Falha na varredura do DataJud.");
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        throw new Error(errJson.error || `Falha na consulta ao DataJud (status ${response.status}).`);
+      }
       const data = await response.json();
       setResult(data); // Record in context sync logs
       addSyncLog({
@@ -502,12 +511,32 @@ export const DataJudView: React.FC = () => {
             </div>
           )}
           {error && (
-            <div className="h-[300px] bg-card border border-border rounded-xl flex flex-col items-center justify-center p-6 text-center text-rose-500">
-              <AlertCircle className="w-10 h-10 text-rose-500 mb-2" />
-              <p className="text-xs font-bold">Falha de Integração</p>
-              <p className="text-[10px] text-muted-foreground mt-1 max-w-sm">
-                {error}
-              </p>
+            <div className="p-6 bg-card border border-rose-500/30 rounded-xl flex flex-col items-center justify-center text-center space-y-4">
+              <div className="p-3 bg-rose-500/10 text-rose-500 rounded-full">
+                <AlertCircle className="w-8 h-8" />
+              </div>
+              <div className="space-y-1">
+                <p className="text-xs font-bold text-foreground">Falha na Consulta DataJud CNJ</p>
+                <p className="text-xs text-muted-foreground max-w-md leading-relaxed">
+                  {error}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-apikey-modal'))}
+                  className="px-3.5 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+                >
+                  <Key className="w-3.5 h-3.5" />
+                  <span>Configurar Chave DataJud</span>
+                </button>
+                <button
+                  onClick={handleConsultDataJud}
+                  className="px-3.5 py-2 bg-muted hover:bg-accent text-foreground rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Tentar Novamente</span>
+                </button>
+              </div>
             </div>
           )}
           {!result && !isLoading && !error && (

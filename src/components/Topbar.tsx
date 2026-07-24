@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useJusFlow } from "../store/JusFlowContext";
 import { DataPortabilitySection } from "./gestao/DataPortabilitySection";
+import { ApiKeyModal } from "./ApiKeyModal";
 import {
   Bell,
   Search,
@@ -36,7 +37,14 @@ export const Topbar: React.FC<{
   } = useJusFlow();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false); // Derive title from activeTab
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
+
+  React.useEffect(() => {
+    const handleOpenApiKeyModal = () => setIsApiKeyModalOpen(true);
+    window.addEventListener("open-apikey-modal", handleOpenApiKeyModal);
+    return () => window.removeEventListener("open-apikey-modal", handleOpenApiKeyModal);
+  }, []);
   const getTabTitle = (): { title: string; subtitle?: string } => {
     switch (activeTab) {
       case "principal.dashboard":
@@ -155,6 +163,17 @@ export const Topbar: React.FC<{
           <kbd className="hidden sm:inline-block px-1 bg-muted rounded text-[10px] font-mono">
             ⌘K
           </kbd>
+        </button>
+
+        {/* Quick API Keys Button */}
+        <button
+          onClick={() => setIsApiKeyModalOpen(true)}
+          title="Configurar Chaves de API (OpenAI, OpenRouter, Gemini, Groq, DataJud)"
+          aria-label="Configurar Chaves de API"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 rounded-md text-xs font-semibold transition-all cursor-pointer shrink-0"
+        >
+          <Key className="w-3.5 h-3.5" />
+          <span className="hidden md:inline">Chaves IA</span>
         </button>
 
         {/* Quick Export Data Button */}
@@ -411,6 +430,9 @@ export const Topbar: React.FC<{
           </div>
         </div>
       )}
+
+      {/* API Key Configuration Modal */}
+      <ApiKeyModal isOpen={isApiKeyModalOpen} onClose={() => setIsApiKeyModalOpen(false)} />
     </div>
   );
 };

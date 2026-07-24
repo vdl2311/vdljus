@@ -110,12 +110,19 @@ export const CopilotoView: React.FC = () => {
       })),
     };
     try {
-      const storedKey = localStorage.getItem("openrouter_api_key") || localStorage.getItem("jusflow_api_key") || "";
+      const storedOpenRouter = localStorage.getItem("openrouter_api_key") || localStorage.getItem("jusflow_api_key") || "";
+      const storedOpenAI = localStorage.getItem("openai_api_key") || "";
+      const storedGemini = localStorage.getItem("gemini_api_key") || "";
+      const storedGroq = localStorage.getItem("groq_api_key") || "";
+
       const response = await fetch("/api/copiloto", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(storedKey ? { "x-openrouter-key": storedKey } : {}),
+          ...(storedOpenRouter ? { "x-openrouter-key": storedOpenRouter } : {}),
+          ...(storedOpenAI ? { "x-openai-key": storedOpenAI } : {}),
+          ...(storedGemini ? { "x-gemini-key": storedGemini } : {}),
+          ...(storedGroq ? { "x-groq-key": storedGroq } : {}),
         },
         body: JSON.stringify({
           message: userMessage,
@@ -123,7 +130,10 @@ export const CopilotoView: React.FC = () => {
             .slice(-5)
             .map((m) => ({ role: m.role, content: m.content })),
           contextData,
-          openrouterKey: storedKey,
+          openrouterKey: storedOpenRouter,
+          openaiKey: storedOpenAI,
+          geminiKey: storedGemini,
+          groqKey: storedGroq,
         }),
       });
       if (!response.ok) throw new Error("API call failed");
