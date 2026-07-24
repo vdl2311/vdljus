@@ -37,20 +37,23 @@ app.use((req, res, next) => {
 
 const PORT = 3000;
 
-// Dynamic GenAI client creation
+// Dynamic GenAI client creation supporting all common Google API key env names
 function getGenAI(): GoogleGenAI | null {
   const apiKey =
     process.env.GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY ||
     process.env.VITE_GEMINI_API_KEY ||
+    process.env.VITE_GOOGLE_API_KEY ||
     process.env.API_KEY ||
-    process.env.VITE_API_KEY;
+    process.env.VITE_API_KEY ||
+    process.env.GOOGLE_GENAI_API_KEY;
 
-  if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
+  if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey.trim() === "") {
     return null;
   }
   try {
     return new GoogleGenAI({
-      apiKey,
+      apiKey: apiKey.trim(),
       httpOptions: {
         headers: {
           "User-Agent": "aistudio-build",
@@ -104,7 +107,7 @@ async function generateContentWithFallback(
   throw lastError || new Error("All Gemini models failed to respond.");
 }
 
-// Universal AI Engine supporting OpenRouter (OpenAI, Gemini, Llama, Claude, DeepSeek) & Google Gemini SDK
+// Universal AI Engine supporting OpenRouter, OpenAI, Groq, Anthropic & Google Gemini SDK
 async function generateContentUniversal(params: {
   contents: string;
   systemInstruction?: string;
@@ -112,6 +115,7 @@ async function generateContentUniversal(params: {
   responseMimeType?: string;
   history?: Array<{ role: string; content: string }>;
   openrouterApiKey?: string;
+  openaiApiKey?: string;
 }): Promise<string | null> {
   const openrouterKey =
     params.openrouterApiKey ||
@@ -119,7 +123,62 @@ async function generateContentUniversal(params: {
     process.env.VITE_OPENROUTER_API_KEY ||
     process.env.OPENROUTER_KEY;
 
-  // 1. Try OpenRouter API if key is present
+  const openaiKey =
+    params.openaiApiKey ||
+    process.env.OPENAI_API_KEY ||
+    process.env.VITE_OPENAI_API_KEY;
+
+  const groqKey =
+    process.env.GROQ_API_KEY ||
+    process.env.VITE_GROQ_API_KEY;
+
+  // 1. Try OpenAI API if key is present
+  if (openaiKey && openaiKey.trim().length > 5) {
+    try {
+      const messages: Array<{ role: string; content: string }> = [];
+      if (params.systemInstruction) {
+        messages.push({ role: "system", content: params.systemInstruction });
+      }
+      if (params.history && Array.isArray(params.history)) {
+        params.history.forEach((h) => {
+          messages.push({
+            role: h.role === "assistant" ? "assistant" : "user",
+            content: h.content,
+          });
+        });
+      }
+      messages.push({ role: "user", content: params.contents });
+
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${openaiKey.trim()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages,
+          temperature: params.temperature ?? 0.7,
+          ...(params.responseMimeType === "application/json"
+            ? { response_format: { type: "json_object" } }
+            : {}),
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content;
+        if (reply && reply.trim().length > 0) {
+          console.log(`[OPENAI AI SUCCESS] Responded using gpt-4o-mini`);
+          return reply.trim();
+        }
+      }
+    } catch (e: any) {
+      console.warn("OpenAI API call error:", e?.message || e);
+    }
+  }
+
+  // 2. Try OpenRouter API if key is present
   if (openrouterKey && openrouterKey.trim().length > 5) {
     const modelsToTry = [
       "openrouter/auto",
@@ -129,7 +188,6 @@ async function generateContentUniversal(params: {
       "deepseek/deepseek-r1:free",
       "openai/gpt-4o-mini",
       "anthropic/claude-3.5-haiku",
-      "meta-llama/llama-3.3-70b-instruct",
     ];
 
     const messages: Array<{ role: string; content: string }> = [];
@@ -173,9 +231,6 @@ async function generateContentUniversal(params: {
             console.log(`[OPENROUTER AI SUCCESS] Responded using model: ${model}`);
             return reply.trim();
           }
-        } else {
-          const errText = await response.text();
-          console.warn(`OpenRouter model ${model} returned error (${response.status}):`, errText);
         }
       } catch (err: any) {
         console.warn(`OpenRouter exception for model ${model}:`, err?.message || err);
@@ -183,7 +238,50 @@ async function generateContentUniversal(params: {
     }
   }
 
-  // 2. Try Google GenAI SDK if GEMINI_API_KEY is present
+  // 3. Try Groq API if key is present
+  if (groqKey && groqKey.trim().length > 5) {
+    try {
+      const messages: Array<{ role: string; content: string }> = [];
+      if (params.systemInstruction) {
+        messages.push({ role: "system", content: params.systemInstruction });
+      }
+      if (params.history && Array.isArray(params.history)) {
+        params.history.forEach((h) => {
+          messages.push({
+            role: h.role === "assistant" ? "assistant" : "user",
+            content: h.content,
+          });
+        });
+      }
+      messages.push({ role: "user", content: params.contents });
+
+      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${groqKey.trim()}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages,
+          temperature: params.temperature ?? 0.7,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content;
+        if (reply && reply.trim().length > 0) {
+          console.log(`[GROQ AI SUCCESS] Responded using llama-3.3-70b-versatile`);
+          return reply.trim();
+        }
+      }
+    } catch (e: any) {
+      console.warn("Groq API call error:", e?.message || e);
+    }
+  }
+
+  // 4. Try Google GenAI SDK if GEMINI_API_KEY / GOOGLE_API_KEY is present
   const ai = getGenAI();
   if (ai) {
     try {
@@ -456,11 +554,13 @@ router.get("/cep/:cep", async (req: Request, res: Response) => {
 
 // 2. Copiloto Jurídico
 const handleCopiloto = async (req: Request, res: Response) => {
-  const { message, history, contextData, openrouterKey: bodyKey } = req.body || {};
+  const { message, history, contextData, openrouterKey: bodyKey, openaiKey: bodyOpenaiKey } = req.body || {};
   const userText = message || "";
 
   const headerKey =
     (req.headers["x-openrouter-key"] as string) ||
+    (req.headers["x-openai-key"] as string) ||
+    (req.headers["x-api-key"] as string) ||
     (req.headers["authorization"]?.startsWith("Bearer ")
       ? req.headers["authorization"].substring(7)
       : undefined);
@@ -484,6 +584,7 @@ ${JSON.stringify(contextData || {}, null, 2)}
     temperature: 0.7,
     history,
     openrouterApiKey: bodyKey || headerKey,
+    openaiApiKey: bodyOpenaiKey || headerKey,
   });
 
   if (aiResponse) {

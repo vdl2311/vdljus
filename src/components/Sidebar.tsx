@@ -272,50 +272,6 @@ export const Sidebar: React.FC<{
             );
           })}
         </div>
-        {/* Footer / Account Status */}
-        <div className="p-3 border-t border-border bg-background/40 shrink-0">
-          {!isCollapsed ? (
-            <div className="space-y-3">
-              {/* Green Promo Card */}
-              <div className="bg-[#f0fdf4] dark:bg-emerald-950/25 border border-emerald-100/50 dark:border-emerald-900/40 rounded-xl p-3 text-left">
-                <div className="font-bold text-xs text-emerald-800 dark:text-emerald-300">
-                  Plano Pro • Trial
-                </div>
-                <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">
-                  14 dias restantes • SaaS multi-escritório
-                </div>
-              </div>
-
-              {/* Collapse button */}
-              <button
-                onClick={() => setIsCollapsed(true)}
-                className="w-full flex items-center gap-2 px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-all cursor-pointer"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                <span>Recolher</span>
-              </button>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-3">
-              {/* Small status dot/badge for collapsed */}
-              <div
-                className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-950/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400"
-                title="Pro Trial - 14 dias"
-              >
-                <Sparkle className="w-4 h-4 animate-pulse" />
-              </div>
-
-              {/* Expand button */}
-              <button
-                onClick={() => setIsCollapsed(false)}
-                className="p-1.5 hover:bg-accent text-muted-foreground hover:text-foreground rounded-lg transition-all cursor-pointer"
-                title="Expandir Menu"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-        </div>
       </aside>
     </>
   );
