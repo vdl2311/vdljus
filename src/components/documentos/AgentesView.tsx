@@ -113,7 +113,7 @@ export const AgentesView = (): React.ReactElement => {
     if (selectedAgent === "jurisprudence") {
       setInputQuery("Jurisprudência sobre rescisão contratual sem justa causa e aviso prévio indenizado.");
     } else if (selectedAgent === "lgpd") {
-      setInputQuery("Contrato de Licenciamento de Software SaaS corporativo entre Aliança SA e TechCore Ltda contendo cláusulas de compartilhamento de logs.");
+      setInputQuery("Contrato de prestação de serviços advocatícios e honorários contendo cláusulas de confidencialidade e foro de eleição.");
     } else if (selectedAgent === "apelação") {
       setInputQuery("Sentença que julgou improcedente o pedido de danos morais sob fundamento de mero aborrecimento cotidiano em caso de atraso de vôo de 18 horas.");
     }

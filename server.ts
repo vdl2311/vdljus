@@ -77,6 +77,7 @@ async function generateContentWithFallback(
   }
 ): Promise<string> {
   const modelsToTry = [
+    "gemini-3.6-flash",
     "gemini-2.5-flash",
     "gemini-2.0-flash",
     "gemini-1.5-flash",
@@ -181,6 +182,7 @@ async function generateContentUniversal(params: {
   // 2. Try OpenRouter API if key is present
   if (openrouterKey && openrouterKey.trim().length > 5) {
     const modelsToTry = [
+      "google/gemini-3.6-flash",
       "openrouter/auto",
       "google/gemini-2.0-flash-001",
       "google/gemini-2.0-flash-lite-preview-02-05:free",

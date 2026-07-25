@@ -42,7 +42,7 @@ export const CopilotoView: React.FC = () => {
     {
       label: "Resumo de processo",
       prompt:
-        "Faça um resumo executivo estratégico do processo tributário de R$ 850 mil da Aliança.",
+        "Faça um resumo executivo estratégico do último processo cadastrado no escritório.",
     },
     {
       label: "Audiências agendadas",

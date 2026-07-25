@@ -301,11 +301,9 @@ export const TarefasView: React.FC = () => {
                     </span>
                     <button
                       onClick={() => {
-                        if (window.confirm("Excluir esta tarefa?")) {
-                          deleteTask(task.id);
-                          logAction(`Tarefa deletada: "${task.title}"`);
-                          toast.error("Tarefa excluída");
-                        }
+                        deleteTask(task.id);
+                        logAction(`Tarefa deletada: "${task.title}"`);
+                        toast.error("Tarefa excluída");
                       }}
                       className="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-muted-foreground hover:text-rose-500 rounded-md transition-all cursor-pointer shrink-0"
                       title="Excluir tarefa"

@@ -139,59 +139,52 @@ export const ProcessosView: React.FC = () => {
           <Plus className="w-4 h-4" /> Cadastrar Processo{" "}
         </button>{" "}
       </div>{" "}
-      {/* Filter and Search Bar */}{" "}
-      <div className="p-4 bg-card border border-border rounded-xl shadow-sm flex flex-col md:flex-row gap-3">
-        {" "}
-        {/* Search */}{" "}
-        <div className="flex-1 relative">
-          {" "}
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />{" "}
+      {/* Filter and Search Bar */}
+      <div className="p-4 bg-card border border-border rounded-xl shadow-sm flex flex-col sm:flex-row gap-3">
+        {/* Search */}
+        <div className="flex-1 relative min-w-0">
+          <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Pesquisar por Título, CNJ, Autor ou Réu..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all"
-          />{" "}
-        </div>{" "}
-        {/* Filters */}{" "}
-        <div className="flex gap-2 shrink-0">
-          {" "}
-          {/* Area */}{" "}
-          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground">
-            {" "}
-            <Filter className="w-3.5 h-3.5 text-muted-foreground shrink-0" />{" "}
+          />
+        </div>
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto shrink-0">
+          {/* Area */}
+          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground w-full sm:w-auto flex-1 min-w-0">
+            <Filter className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             <select
               value={filterArea}
               onChange={(e) => setFilterArea(e.target.value)}
-              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="w-full bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-2 cursor-pointer text-muted-foreground truncate"
             >
-              {" "}
-              <option value="All">Todas Áreas</option>{" "}
-              <option value="Civil">Civil</option>{" "}
-              <option value="Trabalhista">Trabalhista</option>{" "}
-              <option value="Tributário">Tributário</option>{" "}
-              <option value="Penal">Penal</option>{" "}
-              <option value="Família">Família</option>{" "}
-            </select>{" "}
-          </div>{" "}
-          {/* Status */}{" "}
-          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground">
-            {" "}
+              <option value="All">Todas Áreas</option>
+              <option value="Civil">Civil</option>
+              <option value="Trabalhista">Trabalhista</option>
+              <option value="Tributário">Tributário</option>
+              <option value="Penal">Penal</option>
+              <option value="Família">Família</option>
+            </select>
+          </div>
+          {/* Status */}
+          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground w-full sm:w-auto flex-1 min-w-0">
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="w-full bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-2 cursor-pointer text-muted-foreground truncate"
             >
-              {" "}
-              <option value="All">Todos Status</option>{" "}
-              <option value="active">Ativo</option>{" "}
-              <option value="suspended">Suspenso</option>{" "}
-              <option value="completed">Encerrado</option>{" "}
-              <option value="archived">Arquivado</option>{" "}
-            </select>{" "}
-          </div>{" "}
-        </div>{" "}
+              <option value="All">Todos Status</option>
+              <option value="active">Ativo</option>
+              <option value="suspended">Suspenso</option>
+              <option value="completed">Encerrado</option>
+              <option value="archived">Arquivado</option>
+            </select>
+          </div>
+        </div>
       </div>{" "}
       {/* Grid: Process Cards */}{" "}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

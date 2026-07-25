@@ -194,50 +194,43 @@ export const FinanceiroView: React.FC = () => {
           </div>{" "}
         </div>{" "}
       </div>{" "}
-      {/* Query panel */}{" "}
-      <div className="p-4 bg-card border border-border rounded-xl shadow-sm flex flex-col md:flex-row gap-3">
-        {" "}
-        <div className="flex-1 relative">
-          {" "}
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />{" "}
+      {/* Query panel */}
+      <div className="p-4 bg-card border border-border rounded-xl shadow-sm flex flex-col sm:flex-row gap-3">
+        <div className="flex-1 relative min-w-0">
+          <Search className="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Pesquisar lançamentos ou categorias..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all"
-          />{" "}
-        </div>{" "}
-        <div className="flex gap-2 shrink-0">
-          {" "}
-          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground">
-            {" "}
-            <Filter className="w-3.5 h-3.5 text-muted-foreground" />{" "}
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto shrink-0">
+          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground w-full sm:w-auto flex-1 min-w-0">
+            <Filter className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="w-full bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-2 cursor-pointer text-muted-foreground truncate"
             >
-              {" "}
-              <option value="All">Créditos/Débitos</option>{" "}
-              <option value="income">Apenas Receitas (+)</option>{" "}
-              <option value="expense">Apenas Despesas (-)</option>{" "}
-            </select>{" "}
-          </div>{" "}
-          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground">
-            {" "}
+              <option value="All">Créditos/Débitos</option>
+              <option value="income">Apenas Receitas (+)</option>
+              <option value="expense">Apenas Despesas (-)</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground w-full sm:w-auto flex-1 min-w-0">
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="w-full bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-2 cursor-pointer text-muted-foreground truncate"
             >
-              {" "}
-              <option value="All">Status Pagamento</option>{" "}
-              <option value="paid">Confirmados (Pago)</option>{" "}
-              <option value="pending">Aguardando (Pendente)</option>{" "}
-            </select>{" "}
-          </div>{" "}
-        </div>{" "}
+              <option value="All">Status Pagamento</option>
+              <option value="paid">Confirmados (Pago)</option>
+              <option value="pending">Aguardando (Pendente)</option>
+            </select>
+          </div>
+        </div>
       </div>{" "}
       {/* Main List */}{" "}
       <div className="bg-card border border-border rounded-xl shadow-sm text-left overflow-hidden">

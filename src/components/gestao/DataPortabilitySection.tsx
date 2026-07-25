@@ -11,6 +11,10 @@ import {
   Lock,
   ArrowUpRight,
   Info,
+  Trash2,
+  RefreshCw,
+  AlertTriangle,
+  X,
 } from "lucide-react";
 
 export const DataPortabilitySection: React.FC<{
@@ -32,10 +36,13 @@ export const DataPortabilitySection: React.FC<{
     documents,
     teamMembers,
     auditLogs,
+    resetToProductionMode,
   } = useJusFlow();
 
   const [isExportingExcel, setIsExportingExcel] = useState(false);
   const [isExportingPDF, setIsExportingPDF] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
 
   const handleExportExcel = async () => {
     setIsExportingExcel(true);
@@ -74,6 +81,16 @@ export const DataPortabilitySection: React.FC<{
       });
     } finally {
       setIsExportingPDF(false);
+    }
+  };
+
+  const handleConfirmReset = async () => {
+    setIsResetting(true);
+    try {
+      await resetToProductionMode();
+      setShowResetModal(false);
+    } finally {
+      setIsResetting(false);
     }
   };
 
@@ -190,7 +207,7 @@ export const DataPortabilitySection: React.FC<{
       </div>
 
       {/* Actions buttons */}
-      <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+      <div className="flex flex-col sm:flex-row flex-wrap items-center gap-3 pt-2">
         <button
           type="button"
           onClick={handleExportExcel}
@@ -211,10 +228,81 @@ export const DataPortabilitySection: React.FC<{
           {isExportingPDF ? "Gerando Dossiê PDF..." : "Exportar Dossiê Completo (PDF)"}
         </button>
 
+        <button
+          type="button"
+          onClick={() => setShowResetModal(true)}
+          disabled={isResetting}
+          title="Apaga quaisquer dados de teste para deixar a base pronta para o uso real do cliente"
+          className="w-full sm:w-auto px-4 py-2.5 bg-rose-500/10 border border-rose-500/20 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold text-xs rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
+        >
+          <Trash2 className="w-4 h-4 text-rose-500" />
+          {isResetting ? "Redefinindo..." : "Iniciar Base Limpa (Produção)"}
+        </button>
+
         <span className="text-[11px] text-muted-foreground flex items-center gap-1 sm:ml-auto">
           <Lock className="w-3.5 h-3.5 text-emerald-500" /> Criptografia de Ponta a Ponta Ativa
         </span>
       </div>
+
+      {/* Confirmation Modal */}
+      {showResetModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4 animate-in fade-in zoom-in duration-200">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2.5 text-rose-600 dark:text-rose-400 font-bold text-base">
+                <div className="p-2 bg-rose-500/10 rounded-lg">
+                  <AlertTriangle className="w-5 h-5 text-rose-500" />
+                </div>
+                <h3>Redefinir Base para Produção</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowResetModal(false)}
+                className="p-1 hover:bg-accent rounded-md text-muted-foreground transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Deseja realmente redefinir a base de dados para o <strong>Modo Produção Limpo</strong>?
+              Todos os cadastros, processos, prazos, tarefas e lançamentos financeiros de teste serão permanently apagados para que o usuário final possa iniciar o sistema totalmente zerado.
+            </p>
+
+            <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg text-[11px] text-amber-700 dark:text-amber-300 font-medium leading-normal">
+              Esta ação limpa o cache local e synchronized collections para inicialização imediata.
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowResetModal(false)}
+                className="px-4 py-2 bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-xs rounded-lg transition-colors cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmReset}
+                disabled={isResetting}
+                className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-lg transition-all flex items-center gap-1.5 shadow-md shadow-rose-600/20 cursor-pointer disabled:opacity-50"
+              >
+                {isResetting ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    Limpando Base...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Sim, Zerar Base de Dados
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

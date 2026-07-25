@@ -110,37 +110,32 @@ export const ClientesCRMView: React.FC = () => {
             className="w-full bg-background border border-border focus:border-emerald-500 rounded-md pl-9 pr-4 py-2 text-xs text-card-foreground focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all"
           />{" "}
         </div>{" "}
-        {/* Filters */}{" "}
-        <div className="flex gap-2 shrink-0">
-          {" "}
-          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground">
-            {" "}
-            <Filter className="w-3.5 h-3.5 text-muted-foreground" />{" "}
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto shrink-0">
+          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground w-full sm:w-auto flex-1 min-w-0">
+            <Filter className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="w-full bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-2 cursor-pointer text-muted-foreground truncate"
             >
-              {" "}
-              <option value="All">Todos Tipos</option>{" "}
-              <option value="pf">Pessoa Física (PF)</option>{" "}
-              <option value="pj">Pessoa Jurídica (PJ)</option>{" "}
-            </select>{" "}
-          </div>{" "}
-          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground">
-            {" "}
+              <option value="All">Todos Tipos</option>
+              <option value="pf">Pessoa Física (PF)</option>
+              <option value="pj">Pessoa Jurídica (PJ)</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-1 bg-background border border-border rounded-md px-2 text-xs text-muted-foreground w-full sm:w-auto flex-1 min-w-0">
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-1.5 cursor-pointer text-muted-foreground"
+              className="w-full bg-transparent border-0 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:outline-none transition-all text-xs py-2 cursor-pointer text-muted-foreground truncate"
             >
-              {" "}
-              <option value="All">Todos Status</option>{" "}
-              <option value="active">Ativo</option>{" "}
-              <option value="prospect">Prospect</option>{" "}
-              <option value="inactive">Inativo</option>{" "}
-            </select>{" "}
-          </div>{" "}
+              <option value="All">Todos Status</option>
+              <option value="active">Ativo</option>
+              <option value="prospect">Prospect</option>
+              <option value="inactive">Inativo</option>
+            </select>
+          </div>
         </div>{" "}
       </div>{" "}
       {/* Clients list cards */}{" "}
