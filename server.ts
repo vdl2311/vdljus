@@ -22,9 +22,15 @@ const apiLimiter = rateLimit({
 });
 
 // Enable CORS and safe JSON parsing
-app.use((req, res, next) => {
-  // If req.body is already parsed (e.g. by Vercel serverless platform), skip express.json()
-  if (req.body && typeof req.body === "object") {
+app.use((req: any, res: any, next: any) => {
+  if (req.body !== undefined && req.body !== null) {
+    if (typeof req.body === "string" && req.body.trim().length > 0) {
+      try {
+        req.body = JSON.parse(req.body);
+      } catch (e) {
+        // Keep as string if not JSON
+      }
+    }
     return next();
   }
   express.json({ limit: "10mb" })(req, res, next);
