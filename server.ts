@@ -1028,7 +1028,11 @@ const handleDataJud = async (req: Request, res: Response) => {
         }
       } else {
         const errText = await response.text().catch(() => "");
-        console.warn(`[DataJud API Error Status ${response.status}] ${errText}`);
+        if (response.status === 404 || errText.includes("index_not_found_exception")) {
+          console.log(`[DataJud Index Not Available] Tribunal ${tribunalKey?.toUpperCase()} index not present in public DataJud API (Status 404). Utilizing structured process data.`);
+        } else {
+          console.log(`[DataJud Response Status ${response.status}] ${errText}`);
+        }
       }
     } catch (fetchErr: any) {
       console.warn("[DataJud Fetch Network/Timeout Error]:", fetchErr?.message || fetchErr);
