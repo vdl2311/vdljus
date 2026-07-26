@@ -321,33 +321,27 @@ export const Topbar: React.FC<{
             </div>
           )}{" "}
         </div>{" "}
-        {/* User Account / Profile Menu */}{" "}
+        {/* User Account / Profile Menu */}
         <div className="relative">
-          {" "}
           <button
             onClick={() => {
               setIsUserMenuOpen(!isUserMenuOpen);
               setIsNotifOpen(false);
             }}
-            className="flex items-center gap-2 p-1 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+            className="flex items-center gap-2 p-1 px-1.5 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
           >
-            {" "}
-            <div className="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shadow-md">
-              {" "}
-              {currentUser?.name.charAt(3) || "A"}{" "}
-            </div>{" "}
-            <div className="hidden md:flex flex-col text-left">
-              {" "}
-              <span className="text-xs font-semibold text-card-foreground leading-tight">
-                {" "}
-                {currentUser?.name || "Dr. André JusFlow"}{" "}
-              </span>{" "}
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold">
-                {" "}
-                OAB: {currentUser?.oab || "SP123456"}{" "}
-              </span>{" "}
-            </div>{" "}
-          </button>{" "}
+            <div className="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shadow-xs shrink-0">
+              {currentUser?.name?.charAt(0) || "A"}
+            </div>
+            <div className="hidden md:flex flex-col text-left justify-center min-w-0">
+              <span className="text-xs font-semibold text-card-foreground leading-tight truncate max-w-[140px]">
+                {currentUser?.name || "Dr. André JusFlow"}
+              </span>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-bold whitespace-nowrap leading-none mt-0.5">
+                OAB: {currentUser?.oab || "SP123456"}
+              </span>
+            </div>
+          </button>
           {isUserMenuOpen && (
             <div className="absolute right-0 mt-2 w-52 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden divide-y divide-border/50 dark:divide-border">
               {" "}
