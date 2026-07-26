@@ -38,8 +38,9 @@ app.use((req, res, next) => {
 const PORT = 3000;
 
 // Dynamic GenAI client creation supporting all common Google API key env names
-function getGenAI(): GoogleGenAI | null {
+function getGenAI(geminiApiKey?: string): GoogleGenAI | null {
   const apiKey =
+    geminiApiKey ||
     process.env.GEMINI_API_KEY ||
     process.env.GOOGLE_API_KEY ||
     process.env.VITE_GEMINI_API_KEY ||
@@ -117,6 +118,8 @@ async function generateContentUniversal(params: {
   history?: Array<{ role: string; content: string }>;
   openrouterApiKey?: string;
   openaiApiKey?: string;
+  geminiApiKey?: string;
+  groqApiKey?: string;
 }): Promise<string | null> {
   const openrouterKey =
     params.openrouterApiKey ||
@@ -130,8 +133,11 @@ async function generateContentUniversal(params: {
     process.env.VITE_OPENAI_API_KEY;
 
   const groqKey =
+    params.groqApiKey ||
     process.env.GROQ_API_KEY ||
     process.env.VITE_GROQ_API_KEY;
+
+  const geminiKey = params.geminiApiKey;
 
   // 1. Try OpenAI API if key is present
   if (openaiKey && openaiKey.trim().length > 5) {
@@ -284,7 +290,7 @@ async function generateContentUniversal(params: {
   }
 
   // 4. Try Google GenAI SDK if GEMINI_API_KEY / GOOGLE_API_KEY is present
-  const ai = getGenAI();
+  const ai = getGenAI(geminiKey);
   if (ai) {
     try {
       const fullPrompt =
@@ -556,7 +562,7 @@ router.get("/cep/:cep", async (req: Request, res: Response) => {
 
 // 2. Copiloto Jurídico
 const handleCopiloto = async (req: Request, res: Response) => {
-  const { message, history, contextData, openrouterKey: bodyKey, openaiKey: bodyOpenaiKey } = req.body || {};
+  const { message, history, contextData, openrouterKey: bodyKey, openaiKey: bodyOpenaiKey, geminiKey: bodyGeminiKey, groqKey: bodyGroqKey } = req.body || {};
   const userText = message || "";
 
   const headerKey =
@@ -566,6 +572,9 @@ const handleCopiloto = async (req: Request, res: Response) => {
     (req.headers["authorization"]?.startsWith("Bearer ")
       ? req.headers["authorization"].substring(7)
       : undefined);
+
+  const headerGeminiKey = req.headers["x-gemini-key"] as string;
+  const headerGroqKey = req.headers["x-groq-key"] as string;
 
   const systemInstruction = `Você é o JusFlow Copiloto, uma inteligência artificial universal de alta performance conectada ao modelo de linguagem de última geração.
 Você atua como copiloto inteligente e assistente cognitivo, especializado em Direito Brasileiro, Gestão de Escritórios e Conhecimento Geral.
@@ -587,6 +596,8 @@ ${JSON.stringify(contextData || {}, null, 2)}
     history,
     openrouterApiKey: bodyKey || headerKey,
     openaiApiKey: bodyOpenaiKey || headerKey,
+    geminiApiKey: bodyGeminiKey || headerGeminiKey,
+    groqApiKey: bodyGroqKey || headerGroqKey,
   });
 
   if (aiResponse) {
@@ -852,17 +863,58 @@ router.post("/datajud", async (req: Request, res: Response) => {
     }
 
     const formattedCnj = cleanCnj.replace(/^(\d{7})(\d{2})(\d{4})(\d{1})(\d{2})(\d{4})$/, "$1-$2.$3.$4.$5.$6");
+    const segmento = cleanCnj.charAt(13); // dígito J
     const trCode = cleanCnj.substring(14, 16);
-    
-    const tribunalMap: Record<string, string> = {
+
+    const tjMap: Record<string, string> = {
       "26": "tjsp", "19": "tjrj", "13": "tjmg", "04": "tjrs", "21": "tjpr",
       "15": "tjba", "03": "tjce", "16": "tjpe", "05": "tjdf", "06": "tjes",
       "07": "tjgo", "08": "tjma", "09": "tjmt", "10": "tjms", "11": "tjpa",
       "12": "tjpb", "14": "tjpi", "17": "tjrn", "18": "tjro", "20": "tjrr",
-      "22": "tjsc", "23": "tjse", "24": "tjto", "01": "tjac", "02": "tjal"
+      "22": "tjsc", "23": "tjse", "24": "tjto", "01": "tjac", "02": "tjal",
+      "27": "tjdf", "28": "tjto"
     };
 
-    const tribunalKey = tribunalMap[trCode] || "tjsp";
+    const treMap: Record<string, string> = {
+      "01": "ac", "02": "al", "03": "ap", "04": "am", "05": "ba", "06": "ce",
+      "07": "df", "08": "es", "09": "go", "10": "ma", "11": "mt", "12": "ms",
+      "13": "mg", "14": "pa", "15": "pb", "16": "pr", "17": "pe", "18": "pi",
+      "19": "rj", "20": "rn", "21": "rs", "22": "ro", "23": "rr", "24": "sc",
+      "25": "sp", "26": "se", "27": "to"
+    };
+
+    let tribunalKey: string | null = null;
+    if (segmento === "8") {
+      tribunalKey = tjMap[trCode] || null;
+    } else if (segmento === "4") {
+      const trfNum = parseInt(trCode, 10);
+      if (!isNaN(trfNum)) {
+        tribunalKey = `trf${trfNum}`;
+      }
+    } else if (segmento === "5") {
+      const trtNum = parseInt(trCode, 10);
+      if (!isNaN(trtNum)) {
+        tribunalKey = `trt${trtNum}`;
+      }
+    } else if (segmento === "6") {
+      const sigla = treMap[trCode];
+      if (sigla) {
+        tribunalKey = `tre${sigla}`;
+      }
+    } else if (segmento === "3") {
+      tribunalKey = "stj";
+    } else if (segmento === "1") {
+      tribunalKey = "stf";
+    } else if (segmento === "2") {
+      tribunalKey = "cnj";
+    }
+
+    if (!tribunalKey) {
+      res.status(400).json({
+        error: `Não foi possível identificar o tribunal para o CNJ ${formattedCnj} (Segmento: ${segmento}, Tribunal: ${trCode}). Verifique se o número do processo está correto.`
+      });
+      return;
+    }
     const apiKey =
       (req.headers["x-datajud-key"] as string) ||
       req.body?.datajudKey ||
