@@ -21,12 +21,22 @@ const apiLimiter = rateLimit({
   message: { error: "Muitas requisições enviadas. Por favor, tente novamente em alguns minutos." },
 });
 
-// Enable CORS and JSON parsing
-app.use(express.json({ limit: "10mb" }));
-app.use("/api", apiLimiter);
+// Enable CORS and safe JSON parsing
+app.use((req, res, next) => {
+  // If req.body is already parsed (e.g. by Vercel serverless platform), skip express.json()
+  if (req.body && typeof req.body === "object") {
+    return next();
+  }
+  express.json({ limit: "10mb" })(req, res, next);
+});
+
+if (!process.env.VERCEL) {
+  app.use("/api", apiLimiter);
+}
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-datajud-key, x-gemini-key, x-groq-key, x-openai-key, x-openrouter-key, x-api-key");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   if (req.method === "OPTIONS") {
     res.sendStatus(200);
@@ -851,7 +861,7 @@ router.post("/compliance", handleCompliance);
 router.post("/compliance-check", handleCompliance);
 
 // 7. DataJud API Integration (CNJ Official + Robust Fallback for Vercel/Serverless)
-router.post("/datajud", async (req: Request, res: Response) => {
+const handleDataJud = async (req: Request, res: Response) => {
   try {
     const { cnj } = req.body || {};
     const rawCnj = (cnj || "").toString();
@@ -1026,6 +1036,15 @@ router.post("/datajud", async (req: Request, res: Response) => {
     console.error("Erro na consulta DataJud:", err);
     res.status(500).json({ error: `Erro interno ao processar consulta DataJud: ${err?.message || err}` });
   }
+};
+
+router.post("/datajud", handleDataJud);
+router.post("/api/datajud", handleDataJud);
+router.post("/", (req: Request, res: Response, next: any) => {
+  if (req.body?.cnj) {
+    return handleDataJud(req, res);
+  }
+  next();
 });
 
 // 8. Busca de Jurisprudência
@@ -1571,6 +1590,18 @@ router.post("/export/full-pdf", (req, res) => {
 // Mount router on both /api and / (handles Vercel rewrite stripping or keeping /api)
 app.use("/api", router);
 app.use("/", router);
+
+// Global Express error handler for Vercel and serverless functions
+app.use((err: any, req: Request, res: Response, next: any) => {
+  console.error("[Global API Error Handler]:", err);
+  if (!res.headersSent) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.status(500).json({
+      error: "Erro no servidor ao processar requisição da API.",
+      details: err?.message || String(err)
+    });
+  }
+});
 
 // Serve static frontend files in production
 if (process.env.NODE_ENV === "production") {
